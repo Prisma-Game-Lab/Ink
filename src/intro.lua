@@ -1,22 +1,27 @@
+local game = require "game"
+
 local intro = {}
 
-function intro.load(callback)
-	print(callback)
+function intro.load()
+
   love.mouse.setVisible(true)
-  intro.callback = callback
+  scenes = { intro = intro, menu = menu, game = game}
+  
 end
 
-function intro.start()
-
+function change_scene(new)
+  scene = new
+  scenes[scene].load()
 end
 
 function intro.update(dt)
 
 end
 
+
 function intro.keypressed(key)
   if key == "n" then
-    intro.callback()
+    change_scene("game")
   end
 
 end

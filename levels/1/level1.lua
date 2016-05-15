@@ -1,12 +1,15 @@
 local level1 = {}
 
-local bump = require 'libs/bump'
-local cron = require 'libs/cron'
-local gamera = require 'libs/gamera'
-local anim8 = require 'libs/anim8'
+require "src/player"
+local bump = require 'lib/bump'
+local cron = require 'lib/cron'
+local gamera = require 'lib/gamera'
+local anim8 = require 'lib/anim8'
 
 local lvl1 = bump.newWorld(50)
-local cam1 = gamera.new(0,720,2560,1440)
+local player = Player:new(lvl1,60,1060,30,45,0,0)
+
+local cam1 = gamera.new(0,0,2560,1440)
 
 local objects = require "levels/1/obj1"
 --cam1:setScale(0.5)
@@ -14,74 +17,80 @@ local objects = require "levels/1/obj1"
 function level1.load()
   bg = love.graphics.newImage("assets/Background1.png")
   
-for i=1,#objects.plataformas,1 do
+  for i=1,#objects.plataformas do
+    local t = objects.plataformas
+    lvl1:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
+    print(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
+  end
   
-   local t = objects.plataformas
-   lvl1:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
-   
+  levels = {level1 = level1} 
 end
-   
-  levels = {level1 = level1}
-    
-    
-end
+
 function change_level(new)
-  
     level = new
     levels[level].load()
-    
 end
+
 function level1.update(dt)
-  
-
+  player:update(cam1,lvl1,dt)
 end
+
 function level1.keypressed(key)
-  
+  if key == "up" or key == "w" or key == "space" then
+    player:jump(lvl1)
+  end
 
+  if key == "right" then
+    player:moveRight()
+  end
+  
+  if key == "left" then
+    player:moveLeft()
+  end
 end
+
 function level1.keyreleased(key)
+  if key == "right" then
+    if player.speedX > 0 and player.dashing == false then
+      player:stop()
+    end
+  end
   
-
+  if key == "left" then
+    if player.speedX < 0 and player.dashing == false then
+      player:stop()
+    end
+  end
 end
+
 function level1.mousepressed(x, y, button, istouch)
   
 
 end
+
 function level1.mousereleased(x, y, button, istouch)
   
 
 end
+
 function level1.mousemoved(x, y, dx, dy )
   
  
 end
+
 function level1.draw()
-  --love.graphics.print(tostring(objects.plataformas[1].h),100,100)
-  
-cam1:draw(function(l,t,w,h)
-   --DRAW STUFF HERE
-  love.graphics.draw(bg,0,0)
-  love.graphics.print("LEVEL 1",0,0)
-  
-for i=1,#objects.plataformas,1 do
-  
-  
-  local t = objects.plataformas
-  love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)
-   
-end
-  
-  
-   --love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)
-   
-   
+  cam1:draw(function(l,t,w,h)
+    --DRAW STUFF HERE
+    love.graphics.draw(bg,0,0)
+    love.graphics.print("LEVEL 1",0,0)
 
+    player:draw()
 
-  
- 
-
-end)
-
+    for i=1,#objects.plataformas,1 do
+      local t = objects.plataformas
+      love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)
+    end
+  end)
 end
 
 return level1
