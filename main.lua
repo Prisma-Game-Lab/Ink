@@ -1,4 +1,5 @@
 io.stdout:setvbuf("no")
+
 require "utils"
 
 local dir = love.filesystem.getSourceBaseDirectory() .. '/Ink/'
