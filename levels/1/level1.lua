@@ -7,7 +7,7 @@ local gamera = require 'lib/gamera'
 local anim8 = require 'lib/anim8'
 
 local lvl1 = bump.newWorld(50)
-local player = Player:new(lvl1,60,1060,30,45,0,0)
+local player = Player:new(lvl1,60,1295,30,45,0,0)
 
 local cam1 = gamera.new(0,0,2560,1440)
 

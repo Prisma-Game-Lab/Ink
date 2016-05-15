@@ -11,9 +11,9 @@ local JMP_SPD = -500
 local HOP_SPD = -200
 local WALK_SPD = 500
 local DASH_SPD = 1000
-local GRAVITY = 900
+local GRAVITY = 980
 local dashin_counter = 0
-local DASH_TIME = 0.5
+local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
 
 
@@ -27,7 +27,8 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.dir = direction.right
   self.walking = false
   self.dashing = false
-
+  self.jumping = true
+  
   self.SBR = love.graphics.newImage('assets/SBR.png')
   self.SBL = love.graphics.newImage('assets/SBL.png')
   local gr = anim8.newGrid(30, 45, self.SBR:getWidth(), self.SBR:getHeight())
@@ -44,13 +45,24 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   
   self.DASHR = love.graphics.newImage('assets/DASHR.png')
   self.DASHL = love.graphics.newImage('assets/DASHL.png')
-  local gdr = anim8.newGrid(60, 50, self.DASHR:getWidth(), self.DASHR:getHeight())
-  local gdl = anim8.newGrid(60, 50, self.DASHL:getWidth(), self.DASHL:getHeight())
+  local gdr = anim8.newGrid(60, 45, self.DASHR:getWidth(), self.DASHR:getHeight())
+  local gdl = anim8.newGrid(60, 45, self.DASHL:getWidth(), self.DASHL:getHeight())
   self.DashanimationR = anim8.newAnimation(gdr('1-6',1), 0.033333)
   self.DashanimationL = anim8.newAnimation(gdl('1-6',1), 0.033333)
   
-  self.jumpImage = love.graphics.newImage('assets/Jump.png')  
-  self.fallImage = love.graphics.newImage('assets/Fall.png')
+  self.jumpImageR = love.graphics.newImage('assets/JumpR.png')
+  self.jumpImageL = love.graphics.newImage('assets/JumpL.png')
+  local gjr = anim8.newGrid(self.jumpImageR:getWidth(), self.jumpImageR:getHeight(), self.jumpImageR:getWidth(), self.jumpImageR:getHeight())
+  local gjl = anim8.newGrid(self.jumpImageL:getWidth(), self.jumpImageL:getHeight(), self.jumpImageL:getWidth(), self.jumpImageL:getHeight())
+  self.JumpAnimationR = anim8.newAnimation(gjr(1,1), 0.033333)
+  self.JumpAnimationL = anim8.newAnimation(gjl(1,1), 0.033333)
+  
+  self.fallImageR = love.graphics.newImage('assets/FallR.png')
+  self.fallImageL = love.graphics.newImage('assets/FallL.png')
+  local gfr = anim8.newGrid(self.fallImageR:getWidth(), self.fallImageR:getHeight(), self.fallImageR:getWidth(), self.fallImageR:getHeight())
+  local gfl = anim8.newGrid(self.fallImageL:getWidth(), self.fallImageL:getHeight(), self.fallImageL:getWidth(), self.fallImageL:getHeight())
+  self.FallAnimationR = anim8.newAnimation(gfr(1,1), 0.033333)
+  self.FallAnimationL = anim8.newAnimation(gfl(1,1), 0.033333)
 
   self.currentAnimation = self.IdleanimationR
   self.currentImage = self.SBIR
@@ -59,10 +71,14 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
 end
 
 function Player:jump(world)
+  if self.dashing then
+    return
+  end
+  
   local canJump = false
     
   local actualX, actualY, cols, len = world:check(self, self.x, self.y+1)
-
+  
   for i=1,len do
     local other = cols[i].other
     if other.tipo == "plat" then
@@ -73,9 +89,16 @@ function Player:jump(world)
     
   if canJump then 
     self.speedY = JMP_SPD
+    self.jumping = true
+    if self.dir == direction.right then
+      self.currentAnimation = self.JumpAnimationR
+      self.currentImage = self.jumpImageR
+    elseif self.dir == direction.left then
+      self.currentAnimation = self.JumpAnimationL
+      self.currentImage = self.jumpImageL
+    end
   end
 end
-
 function Player:shortHop()
   if self.speedY < HOP_SPD then
     self.speedY = HOP_SPD
@@ -119,6 +142,10 @@ function Player:keyreleased(key)
 end 
 
 function Player:moveRight()
+  if self.dashing then
+    return
+  end
+  
   self.dir = direction.right
   self:move(self.dir*WALK_SPD)  
   self.currentAnimation = self.WalkanimationR
@@ -126,6 +153,10 @@ function Player:moveRight()
 end
 
 function Player:moveLeft()
+  if self.dashing then
+    return
+  end
+  
   self.dir = direction.left
   self:move(self.dir*WALK_SPD)
   self.currentAnimation = self.WalkanimationL
@@ -133,6 +164,10 @@ function Player:moveLeft()
 end
 
 function Player:move(spd)
+  if self.dashing then
+    return
+  end
+  
   self.speedX = spd
   self.walking = true
 end
@@ -149,22 +184,30 @@ function Player:stop()
   self.speedX = 0
   self.walking = false
   self.dashing = false
-
 end
+
 function Player:dash()  
   if not self.dashing then
-    self:move(self.dir*(self.speedX + DASH_SPD))
+    self:move(self.speedX + self.dir*DASH_SPD)
     self.walking = false
     self.dashing = true   
+    if self.dir == direction.right then
+      self.currentAnimation = self.DashanimationR
+      self.currentImage = self.DASHR
+    elseif self.dir == direction.left then
+      self.currentAnimation = self.DashanimationL
+      self.currentImage = self.DASHL
+    end
   end
 end
 
 function Player:draw()
-  self.currentAnimation:draw(self.currentImage,self.x,self.y)  
+  self.currentAnimation:draw(self.currentImage,self.x,self.y)
   self.w,self.h = self.currentAnimation:getDimensions()
 end
 
 function Player:update(cam,world,dt)
+
   if self.dashing then
     dashin_counter = dashin_counter + dt
   end
@@ -172,17 +215,41 @@ function Player:update(cam,world,dt)
     self.dashing = false
     self:stop()
     dashin_counter = 0
+    if love.keyboard.isDown('right') then
+      self:moveRight()
+    elseif love.keyboard.isDown('left') then
+      self:moveLeft()
+    end 
   end
   self.currentAnimation:update(dt)
   self.speedY = self.speedY + GRAVITY*dt
   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
   for i=1,len do
     local other = cols[i].other
-    if other.tipo == "plat" then
-      if actualX == self.x + self.speedX * dt then
+    if other.tipo == "plat" and not ((self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y > other.y and self.y < other.y + other.h)) then
+    
         self.speedY = 0
+        if self.jumping then
+          if love.keyboard.isDown('right') then
+            self:moveRight()
+          elseif love.keyboard.isDown('left') then
+            self:moveLeft()
+          else 
+            self:stop()
+          end
+        end
+        self.jumping = false
         break
-      end
+      
+    end
+  end
+  if self.speedY > 0 then
+    if self.dir == direction.right then
+      self.currentAnimation = self.FallAnimationR
+      self.currentImage = self.fallImageR
+    elseif self.dir == direction.left then
+      self.currentAnimation = self.FallAnimationL
+      self.currentImage = self.fallImageL
     end
   end
   self.x = actualX
