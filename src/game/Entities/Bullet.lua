@@ -1,8 +1,9 @@
 local path = getPath(...)
-require (path..'MovingEntity')
+local MovingEntity = require (path..'MovingEntity')
 require (path..'Mask')
+local class = require 'lib/class'
 
-Bullet = class_extends(MovingEntity,"Bullet")
+local Bullet = class.extends(MovingEntity,"Bullet")
 
 Bullet.movSpeed = 300
 Bullet.mask = Mask.Enemy
@@ -12,3 +13,5 @@ function Bullet.new(x,y,width,height)
 	local self = Bullet.newObject(x,y,width,height,{x=Bullet.movSpeed,y=0})
 	return self
 end
+
+return Bullet

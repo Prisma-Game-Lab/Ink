@@ -6,9 +6,11 @@
 --  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 -- Script to simulate class and inheritance in Lua
--- Version 2.0 - 2016/04/22
+-- Version 2.1 - 2016/05/14
 
-function class_new(name)
+local class = {}
+
+function class.new(name)
   local new_class = {}
   function new_class.newObject(...)
     local sup = new_class:superClass()
@@ -58,7 +60,7 @@ function class_new(name)
   function new_class:is_a(someClass)
     local cur_class = new_class
     while cur_class ~= nil do
-      if cur_class == someClass then return true
+      if cur_class:name() == someClass:name() then return true
       else cur_class = cur_class:superClass() end
     end
     return false
@@ -67,8 +69,8 @@ function class_new(name)
   return new_class
 end
 
-function class_extends(baseClass,name)
-  local new_class = class_new(name)
+function class.extends(baseClass,name)
+  local new_class = class.new(name)
   if baseClass~=nil then 
     setmetatable(new_class,{__index=baseClass})
     function new_class:superClass()
@@ -77,3 +79,5 @@ function class_extends(baseClass,name)
   end
   return new_class
 end
+
+return class

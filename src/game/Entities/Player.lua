@@ -1,14 +1,15 @@
 local path = getPath(...)
-require (path.."MovingEntity")
+local MovingEntity = require (path.."MovingEntity")
+local class = require 'lib/class'
 require (path..'Mask')
 
-Player = class_extends(MovingEntity,"Player")
+local Player = class.extends(MovingEntity,"Player")
 
 Player.movSpeed = 200
 Player.jumpForce = 500
 Player.localGravity = 700
 Player.mask = Mask.Player
-Player.collisionMask = Obstacle.mask
+Player.collisionMask = Mask.Obstacle
 
 Player.color = {0,0,255}
 
@@ -41,3 +42,5 @@ function Player:keypressed(key)
 		self.speed.y = -self.jumpForce
 	end
 end
+
+return Player

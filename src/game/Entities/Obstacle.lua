@@ -1,8 +1,9 @@
 local path = getPath(...)
-require (path..'Entity')
+local Entity = require (path..'Entity')
+local class = require 'lib/class'
 require (path..'Mask')
 
-Obstacle = class_extends(Entity,"obstacle")
+local Obstacle = class.extends(Entity,"obstacle")
 Obstacle.mask = Mask.Obstacle
 
 function Obstacle.new(x,y,width,height)
@@ -14,3 +15,5 @@ function Obstacle:draw()
 	love.graphics.setColor(0,0,0)
 	love.graphics.rectangle("fill",self.x,self.y,self.width,self.height)
 end
+
+return Obstacle

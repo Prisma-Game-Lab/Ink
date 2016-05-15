@@ -1,8 +1,7 @@
 local path = getPath(...)
-local Obstacle = require (path.."Entities.Obstacle")
-local Player = require (path.."Entities.Player")
-local Bullet = require (path.."Entities.Bullet")
-local filter = require (path.."Entities.Entity").filter
+require (path.."Entities.Obstacle")
+require (path.."Entities.Player")
+require (path.."Entities.Bullet")
 local Bump = require "lib/bump"
 local world = Bump.newWorld()
 local floor, player -- Floor nao vai entrar, só para teste
@@ -18,7 +17,7 @@ local Level = {
 -- Auxiliary functions
 ------------------------------------------
 local function move(entity)
-	entity.x,entity.y,c,q = world:move(entity,entity.x,entity.y,filter)
+	entity.x,entity.y,c,q = world:move(entity,entity.x,entity.y,Entity.filter)
 	return c,q
 end
 local function add(entity)

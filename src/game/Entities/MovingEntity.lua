@@ -1,6 +1,8 @@
 local path = getPath(...)
-require (path..'Entity')
-MovingEntity = class_extends(Entity,"MovingEntity")
+local Entity = require (path..'Entity')
+local class = require 'lib/class'
+
+local MovingEntity = class.extends(Entity,"MovingEntity")
 
 function MovingEntity.new(x,y,width,height,speed)
 	local self = MovingEntity.newObject(x,y,width,height)
@@ -16,3 +18,5 @@ function MovingEntity:update(dt)
 	self.x=self.x+self.speed.x*dt
 	self.y=self.y+self.speed.y*dt
 end
+
+return MovingEntity

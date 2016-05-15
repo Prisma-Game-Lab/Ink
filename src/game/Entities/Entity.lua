@@ -1,7 +1,7 @@
-require "lib/class"
+local class = require "lib/class"
 require "lib/bit"
 
-Entity = class_new("Entity")
+local Entity = class.new("Entity")
 
 Entity.color = {255,0,0}
 Entity.collisionMask = 0
@@ -30,3 +30,5 @@ Entity.filter = function(item,other)
 	if bit.band(item.contactMask,other.mask) ~=0 then return 'cross' end
 	return nil
 end
+
+return Entity
