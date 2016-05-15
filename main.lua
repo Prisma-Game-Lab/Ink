@@ -1,10 +1,6 @@
 io.stdout:setvbuf("no")
 
 require "utils"
-
-local dir = love.filesystem.getSourceBaseDirectory() .. '/Ink/'
-love.filesystem.setRequirePath("?.lua;?/init.lua;" .. dir .. "?.lua;")
-
 local RPG_Logo = require "RPG_Full_Logo/RPG_Logo"
 local game = require "src.game"
 
@@ -16,6 +12,7 @@ function love.load()
     RPG_Logo.load(1.5,1.5,1.5,function ()
     	change_scene("game")
   	end)
+  	game.load()
     scenes = { logo = RPG_Logo, game = game }
     change_scene("logo")
 end
