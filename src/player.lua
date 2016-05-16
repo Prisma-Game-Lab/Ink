@@ -238,18 +238,24 @@ function Player:update(cam,world,dt)
   
   self.currentAnimation:update(dt)
   
-  if self.dashing then
+    if self.dashing then
     dashin_counter = dashin_counter + dt
     self.speedY = 0
   else
     self.speedY = self.speedY + GRAVITY*dt
   end
-  
-  actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
+   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
   
   local tempWallJump = false
   for i=1,len do
     local other = cols[i].other
+    
+    for l=1,len do
+      local oother = cols[l].other
+      if other.tipo == "plat" and oother.tipo == "wall" then
+        tempWallJump = true
+      end
+    end
     if other.tipo == "plat" then
       if (self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y - 1 > other.y and self.y - 1 < other.y + other.h) then
         self.speedY = 100
@@ -272,7 +278,7 @@ function Player:update(cam,world,dt)
       tempWallJump = true
     end
   end
-
+  
   self.canWallJump = tempWallJump
 
   if self.speedY > 0 then
