@@ -88,7 +88,16 @@ function Player:jump(world)
     end
   end
     
-  if canJump or self.canWallJump then 
+  if canJump or self.canWallJump then
+    
+    if self.canWallJump then
+      if self.dir == direction.right then
+        self:moveLeft()
+      elseif self.dir == direction.left then
+        self:moveRight()
+      end
+    end
+    
     self.speedY = JMP_SPD
     self.jumping = true
     if self.dir == direction.right then
@@ -225,7 +234,7 @@ function Player:update(cam,world,dt)
   self.currentAnimation:update(dt)
   self.speedY = self.speedY + GRAVITY*dt
   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
-  self.canWallJump = false
+  local tempWallJump = false
   for i=1,len do
     local other = cols[i].other
     if other.tipo == "plat" and not ((self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y > other.y and self.y < other.y + other.h)) then
@@ -244,9 +253,12 @@ function Player:update(cam,world,dt)
         break
     elseif other.tipo == "wall" and self.jumping then
       self.speedY = 100
-      self.canWallJump = true
+      tempWallJump = true
     end
   end
+
+  self.canWallJump = tempWallJump
+
   if self.speedY > 0 then
     if self.dir == direction.right then
       self.currentAnimation = self.FallAnimationR
