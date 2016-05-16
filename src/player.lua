@@ -7,7 +7,7 @@ require "lib/bump"
 
 Player = class('Player')
 
-local JMP_SPD = -500
+local JMP_SPD = -700
 local HOP_SPD = -200
 local WALK_SPD = 500
 local DASH_SPD = 1000
@@ -28,6 +28,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.walking = false
   self.dashing = false
   self.jumping = true
+  self.canWallJump = false
   
   self.SBR = love.graphics.newImage('assets/SBR.png')
   self.SBL = love.graphics.newImage('assets/SBL.png')
@@ -87,7 +88,7 @@ function Player:jump(world)
     end
   end
     
-  if canJump then 
+  if canJump or self.canWallJump then 
     self.speedY = JMP_SPD
     self.jumping = true
     if self.dir == direction.right then
@@ -224,6 +225,7 @@ function Player:update(cam,world,dt)
   self.currentAnimation:update(dt)
   self.speedY = self.speedY + GRAVITY*dt
   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
+  self.canWallJump = false
   for i=1,len do
     local other = cols[i].other
     if other.tipo == "plat" and not ((self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y > other.y and self.y < other.y + other.h)) then
@@ -240,7 +242,9 @@ function Player:update(cam,world,dt)
         end
         self.jumping = false
         break
-      
+    elseif other.tipo == "wall" and self.jumping then
+      self.speedY = 100
+      self.canWallJump = true
     end
   end
   if self.speedY > 0 then
