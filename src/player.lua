@@ -109,6 +109,7 @@ function Player:jump(world)
     end
   end
 end
+
 function Player:shortHop()
   if self.speedY < HOP_SPD then
     self.speedY = HOP_SPD
@@ -157,9 +158,12 @@ function Player:moveRight()
   end
   
   self.dir = direction.right
-  self:move(self.dir*WALK_SPD)  
-  self.currentAnimation = self.WalkanimationR
-  self.currentImage = self.SBR
+  self:move(self.dir*WALK_SPD)
+  
+  if not self.jumping then
+    self.currentAnimation = self.WalkanimationR
+    self.currentImage = self.SBR
+  end
 end
 
 function Player:moveLeft()
@@ -169,8 +173,11 @@ function Player:moveLeft()
   
   self.dir = direction.left
   self:move(self.dir*WALK_SPD)
-  self.currentAnimation = self.WalkanimationL
-  self.currentImage = self.SBL
+  
+  if not self.jumping then
+    self.currentAnimation = self.WalkanimationL
+    self.currentImage = self.SBL
+  end
 end
 
 function Player:move(spd)
@@ -196,8 +203,8 @@ function Player:stop()
   self.dashing = false
 end
 
-function Player:dash()  
-  if not self.dashing then
+function Player:dash()
+  if not self.dashing and not self.canWallJump then
     self:move(self.speedX + self.dir*DASH_SPD)
     self.walking = false
     self.dashing = true   
