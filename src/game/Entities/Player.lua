@@ -2,6 +2,7 @@ local path = getPath(...)
 local MovingEntity = require (path.."MovingEntity")
 local class = require 'lib/class'
 require (path..'Mask')
+local states = require(path..'Player.states')
 
 local Player = class.extends(MovingEntity,"Player")
 
@@ -13,34 +14,39 @@ Player.collisionMask = Mask.Obstacle
 
 Player.color = {0,0,255}
 
+Player.keys = {
+	jump = 'space'
+}
+
 function Player.new(x,y,width,height)
 	local self = Player.newObject(x,y,width,height)
 	self.isOnFloor = false
+	self:changeToState("standing")
 	return self
 end
 
 function Player:update(dt)
-	self.speed.y = self.speed.y + self.localGravity*dt
-	if love.keyboard.isDown('left') then
-		self.speed.x = -self.movSpeed
-	elseif love.keyboard.isDown('right') then
-		self.speed.x = self.movSpeed
-	else
-		self.speed.x = 0
-	end
-	self.super:update(dt)
+	self.state:update(dt)
+	self.super:update(dt) --Run MovingEntityUpdate
 end
 
-function Player:touchedFloor()
-	self.isOnFloor = true
-	self.speed.y = 0
+function Player:changeToState(key,...)
+	local s = states[key].new()
+	s:enter(self,...)
+	self.state = s
+end
+
+function Player:is_in_state(key)
+	return self.state:is_a(states[key])
+end
+
+function Player:touchedFloor(didTouch)
+	if didTouch then self.state:event("touchedFloor")
+	else self.state:event("notTouchedFloor") end
 end
 
 function Player:keypressed(key)
-	if key=='space' then
-		self.isOnFloor = false
-		self.speed.y = -self.jumpForce
-	end
+	self.state:keypressed(key)
 end
 
 return Player

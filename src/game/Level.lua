@@ -46,14 +46,13 @@ function Level.update(dt)
 	--em update. A funcao NAO altera as posicoes x e y da table player, por isso é importante
 	--ter player.x e player.y recebendo os retornos da funcao (:move retorn a posicao para a qual
 	--de fato o objeto se mexeu)
+	local py = player.y
 	c,q = move(player)
 	--Caso teve alguma colisao informa que o jogador tocou o chao, zerando sua velocidade
 	--(claro que isso atende somente as necessidades desse exercicio. Para um jogo é mais
 	--complicado. Pois precisa-se saber se ele tocou com o "pé" ou com a "cabeça".
 	--Há varias formas de fazer isso, mas para essa demonstração não vem ao caso).
-	if q>0 then
-		player:touchedFloor()
-	end
+	player:touchedFloor(player.y~=py and player.speed.y>0)
 	timer = timer-dt
 	--Trecho para spawnar bullet. Podemos usar a lib cron para cuidar desse comportamento timer
 	if timer<0 then
@@ -77,6 +76,7 @@ function Level.update(dt)
 		if q>0 then
 			player.x=0
 			player.y=0
+			player.speed.y=0
 			--Repare que aqui foi usado :update ao inves de :move. Isso porque :update considera
 			--colisoes e contatos. update nao. update "força" um "teleporte" do dado objeto.
 			world:update(player,player.x,player.y)
