@@ -237,20 +237,23 @@ function Player:update(cam,world,dt)
   local tempWallJump = false
   for i=1,len do
     local other = cols[i].other
-    if other.tipo == "plat" and not ((self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y > other.y and self.y < other.y + other.h)) then
-    
+    if other.tipo == "plat" then
+      if (self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y - 1 > other.y and self.y - 1 < other.y + other.h) then
+        self.speedY = 100
+        tempWallJump = true
+      else
         self.speedY = 0
-        if self.jumping then
-          if love.keyboard.isDown('right') then
-            self:moveRight()
-          elseif love.keyboard.isDown('left') then
-            self:moveLeft()
-          else 
-            self:stop()
-          end
+        
+        if love.keyboard.isDown('right') then
+          self:moveRight()
+        elseif love.keyboard.isDown('left') then
+          self:moveLeft()
+        else 
+          self:stop()
         end
         self.jumping = false
         break
+      end
     elseif other.tipo == "wall" and self.jumping then
       self.speedY = 100
       tempWallJump = true
