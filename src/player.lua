@@ -217,10 +217,7 @@ function Player:draw()
 end
 
 function Player:update(cam,world,dt)
-
-  if self.dashing then
-    dashin_counter = dashin_counter + dt
-  end
+ 
   if dashin_counter > DASH_TIME then
     self.dashing = false
     self:stop()
@@ -231,9 +228,18 @@ function Player:update(cam,world,dt)
       self:moveLeft()
     end 
   end
+  
   self.currentAnimation:update(dt)
-  self.speedY = self.speedY + GRAVITY*dt
+  
+  if self.dashing then
+    dashin_counter = dashin_counter + dt
+    self.speedY = 0
+  else
+    self.speedY = self.speedY + GRAVITY*dt
+  end
+  
   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
+  
   local tempWallJump = false
   for i=1,len do
     local other = cols[i].other
@@ -254,7 +260,7 @@ function Player:update(cam,world,dt)
         self.jumping = false
         break
       end
-    elseif other.tipo == "wall" and self.jumping then
+    elseif other.tipo == "wall" and self.jumping or self.speedY > 100 then
       self.speedY = 100
       tempWallJump = true
     end
