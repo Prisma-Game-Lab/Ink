@@ -104,13 +104,17 @@ function Player:jump(world)
     
     self.speedY = JMP_SPD
     self.jumping = true
-    if self.dir == direction.right then
+    
+    --[[  VERIFICAR SE OUTRAS ANIMAÇÕES ESTÃO COM O MESMO PROBLEMA DA DIREÇÃO DA ANIMAÇÃO 
+          NÃO SER ATUALIZADA A TODO MOMENTO PELA UPDATE!! ]]--
+    
+    --[[if self.dir == direction.right then
       self.currentAnimation = self.JumpAnimationR
       self.currentImage = self.jumpImageR
     elseif self.dir == direction.left then
       self.currentAnimation = self.JumpAnimationL
       self.currentImage = self.jumpImageL
-    end
+    end]]--
   end
 end
 
@@ -293,6 +297,15 @@ function Player:update(world,dt)
     elseif self.dir == direction.left then
       self.currentAnimation = self.FallAnimationL
       self.currentImage = self.fallImageL
+    end
+    
+     elseif self.speedY < 0 then -- Executa a animação do personagem pulando atualizando a direção.
+      if self.dir == direction.right then
+      self.currentAnimation = self.JumpAnimationR
+      self.currentImage = self.jumpImageR
+    elseif self.dir == direction.left then
+      self.currentAnimation = self.JumpAnimationL
+      self.currentImage = self.jumpImageL
     end
   end
   self.x = actualX
