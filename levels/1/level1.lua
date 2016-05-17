@@ -34,6 +34,7 @@ end
 function level1.update(dt)
   player:update(lvl1,dt)
   cam:update(player:getX(),player:getY(),dt)
+  player:decreaseHp(dt)
 end
 
 function level1.keypressed(key)

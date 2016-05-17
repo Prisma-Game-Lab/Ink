@@ -15,6 +15,7 @@ local GRAVITY = 980
 local dashin_counter = 0
 local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
+local HP_TIME_SEC = 10
 
 
 function Player:initialize(world, x, y, w, h, speedX, speedY)
@@ -29,6 +30,9 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.dashing = false
   self.jumping = true
   self.canWallJump = false
+  self.hp = 100
+  
+  self.hpBar = love.graphics.newImage('assets/HPBAR.png')
   
   self.SBR = love.graphics.newImage('assets/SBR.png')
   self.SBL = love.graphics.newImage('assets/SBL.png')
@@ -221,6 +225,7 @@ end
 function Player:draw()
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
   self.w,self.h = self.currentAnimation:getDimensions()
+  self:drawHp()
 end
 
 function Player:update(world,dt)
@@ -300,3 +305,24 @@ end
 function Player:getY()
   return self.y
 end
+
+function Player:decreaseHp(dt)
+  self.hp = self.hp - 100*dt/HP_TIME_SEC
+  if self.hp < 0 then
+    print("end")
+  end
+end
+
+function Player:takeDamage(dam)
+  self.hp = self.hp - dam
+end
+
+function Player:increaseHp()
+  
+end
+
+function Player:drawHp()
+  --love.graphics.draw(self.hpBar,self.x,self.y,0,math.max(0,self.hp)/100,1)
+  love.graphics.rectangle("fill",self.x,self.y-10,30*math.max(0,self.hp)/100,5)
+end
+
