@@ -1,15 +1,15 @@
 local level1 = {}
 
 require "src/player"
+require "src/camera"
 local bump = require 'lib/bump'
 local cron = require 'lib/cron'
-local gamera = require 'lib/gamera'
 local anim8 = require 'lib/anim8'
 
 local lvl1 = bump.newWorld(50)
 local player = Player:new(lvl1,60,1295,30,45,0,0)
 
-local cam1 = gamera.new(0,0,2560,1440)
+local cam = Camera:new(0,0,2560,1440)
 
 local objects = require "levels/1/obj1"
 --cam1:setScale(0.5)
@@ -32,7 +32,8 @@ function change_level(new)
 end
 
 function level1.update(dt)
-  player:update(cam1,lvl1,dt)
+  player:update(lvl1,dt)
+  cam:update(player:getX(),player:getY(),dt)
 end
 
 function level1.keypressed(key)
@@ -64,7 +65,7 @@ function level1.mousemoved(x, y, dx, dy )
 end
 
 function level1.draw()
-  cam1:draw(function(l,t,w,h)
+  cam:getCamera():draw(function(l,t,w,h)
     --DRAW STUFF HERE
     love.graphics.draw(bg,0,0)
     love.graphics.print("LEVEL 1",0,0)

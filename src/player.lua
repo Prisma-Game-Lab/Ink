@@ -223,7 +223,7 @@ function Player:draw()
   self.w,self.h = self.currentAnimation:getDimensions()
 end
 
-function Player:update(cam,world,dt)
+function Player:update(world,dt)
  
   if dashin_counter > DASH_TIME then
     self.dashing = false
@@ -291,5 +291,12 @@ function Player:update(cam,world,dt)
     end
   end
   self.x = actualX
-  cam:setPosition(self.x, self.y)
+end
+
+function Player:getX()
+  return self.x
+end
+
+function Player:getY()
+  return self.y
 end
