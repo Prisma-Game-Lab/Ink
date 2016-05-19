@@ -198,7 +198,6 @@ function Player:move(spd)
 end
 
 function Player:stop()
-  print("parei")
   if self.dir == direction.right then
     self.currentAnimation = self.IdleanimationR
     self.currentImage = self.SBIR
@@ -242,9 +241,9 @@ function Player:update(world,dt)
     self.dashing = false
     self:stop()
     dashin_counter = 0
-    if love.keyboard.isDown('right') or joystick1:isGamepadDown('dpright') then
+    if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
       self:moveRight()
-    elseif love.keyboard.isDown('left') or joystick1:isGamepadDown('dpleft') then
+    elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
       self:moveLeft()
     end 
   end
@@ -278,15 +277,16 @@ function Player:update(world,dt)
       else
         self.speedY = 0
         
-        if love.keyboard.isDown('right') or joystick1:isGamepadDown('dpright') then
+        if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
           self:moveRight()
-        elseif love.keyboard.isDown('left') or joystick1:isGamepadDown('dpleft') then
+        elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
           self:moveLeft()
         else 
           if self.dir == direction.right then
             self.currentAnimation = self.IdleanimationR
             self.currentImage = self.SBIR
           elseif self.dir == direction.left then
+            self.speedX = 0
             self.currentAnimation = self.IdleanimationL
             self.currentImage = self.SBIL
           end
