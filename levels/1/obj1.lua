@@ -13,4 +13,18 @@ plataformas =
 
 }
 
-return {plataformas = plataformas}
+enemys = 
+
+{
+  {name = "enemy1",x=2410,y=1240,w=68,h=94,spdx = -100,tipo = "enemy"},
+  {name = "enemy2",x=800,y=850,w=68,h=94,spdx = 50,tipo = "enemy"}
+  
+}
+
+triggers = 
+
+{
+  {name = "levelend",x=140,y=40,w=107,h=143,tipo = "levelend"},
+}
+
+return {plataformas = plataformas,enemys = enemys,triggers = triggers}
