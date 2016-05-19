@@ -11,12 +11,12 @@ local WALK_SPD = 500
 local GRAVITY = 980
 local direction = { right = 1, left = -1 }
 
-function Enemy:initialize(world, x, y, w, h, speedX, speedY)
+function Enemy:initialize(world, x, y, w, h, spdX)
   self.x = x
   self.y = y
   self.w = w
   self.h = h
-  self.speedX = 100
+  self.speedX = spdX
   self.dir = direction.right
   self.alive = true
 
@@ -53,6 +53,13 @@ function Enemy:draw()
 end
 
 function Enemy:update(world,dt)
+  if self.speedX  > 0 then
+    self.currentAnimation = self.WalkanimationR
+    self.currentImage = self.WalkR
+  elseif self.speedX < 0 then
+    self.currentAnimation = self.WalkanimationL
+    self.currentImage = self.WalkL
+  end
   self.x, self.y, cols, len = world:move(self, self.x + self.speedX * dt, self.y)
   
   self.currentAnimation:update(dt)

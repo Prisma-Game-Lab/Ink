@@ -15,7 +15,7 @@ local GRAVITY = 980
 local dashin_counter = 0
 local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
-local HP_TIME_SEC = 60
+local HP_TIME_SEC = 30
 
 
 function Player:initialize(world, x, y, w, h, speedX, speedY)
@@ -31,7 +31,10 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.jumping = true
   self.canWallJump = false
   self.hp = 100
+  self.alive = true
   
+  self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
+  self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
   
   self.SBR = love.graphics.newImage('assets/SBR.png')
@@ -231,9 +234,13 @@ function Player:dash()
 end
 
 function Player:draw(cam)
+  local camLeft, camTop = cam:getCamera():getVisible()
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
   self.w,self.h = self.currentAnimation:getDimensions()
   self:drawHp(cam)
+  if not self.alive then
+    love.graphics.draw(self.deathImg,camLeft,camTop + 360)
+  end
 end
 
 function Player:update(world,dt)
@@ -299,7 +306,7 @@ function Player:update(world,dt)
       tempWallJump = true
     elseif other.tipo == "enemy" and self.dashing then
       other:die(world)
-      self:increaseHp(500)
+      self:increaseHp(20)
     end
   end
   
@@ -338,7 +345,7 @@ end
 function Player:decreaseHp(dt)
   self.hp = self.hp - 100*dt/HP_TIME_SEC
   if self.hp <= 0 then
-    
+    self:die()
   end
 end
 
@@ -349,11 +356,14 @@ end
 function Player:increaseHp(ink)
   self.hp = math.min(100, self.hp + ink)
 end
-
+function Player:die()
+  self.alive = false
+  love.audio.play(self.deathSound)
+end
 function Player:drawHp(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   
-  love.graphics.setColor(255, 0, 0)  
+  love.graphics.setColor(155, 0, 0)  
   love.graphics.rectangle("fill", camLeft + 20, camTop + 20, 500 * math.max(0, self.hp)/100, 30)
   love.graphics.setColor(0, 0, 0)
   love.graphics.rectangle("line", camLeft + 20, camTop + 20, 500, 30)
