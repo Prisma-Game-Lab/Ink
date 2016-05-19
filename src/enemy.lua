@@ -16,42 +16,36 @@ function Enemy:initialize(world, x, y, w, h, speedX, speedY)
   self.y = y
   self.w = w
   self.h = h
-  self.speedX = 10
+  self.speedX = 100
   self.dir = direction.right
-    
-  self.SBR = love.graphics.newImage('assets/SBR.png')
-  self.SBL = love.graphics.newImage('assets/SBL.png')
-  local gr = anim8.newGrid(30, 45, self.SBR:getWidth(), self.SBR:getHeight())
-  local gl = anim8.newGrid(30, 45, self.SBL:getWidth(), self.SBL:getHeight())
-  self.WalkanimationR = anim8.newAnimation(gr('1-8',1), 0.1)
-  self.WalkanimationL = anim8.newAnimation(gl('1-8',1), 0.1)
+  self.alive = true
+
+  self.WalkR = love.graphics.newImage('assets/enemyR.png')
+  self.WalkL = love.graphics.newImage('assets/enemyL.png')
+  local gr = anim8.newGrid(68, 94, self.WalkR:getWidth(), self.WalkR:getHeight())
+  local gl = anim8.newGrid(68, 94, self.WalkL:getWidth(), self.WalkL:getHeight())
+  self.WalkanimationR = anim8.newAnimation(gr('1-2',1), 0.4)
+  self.WalkanimationL = anim8.newAnimation(gl('1-2',1), 0.4)
   
   self.currentAnimation = self.WalkanimationR
-  self.currentImage = self.SBR
+  self.currentImage = self.WalkR
 
-  world:add(self,self.x,self.y,self.w,self.h)
+  self.tipo = "enemy"
+  world:add(self, self.x, self.y, self.w, self.h)
 end
 
 function Enemy:moveRight(world)
-  
   self.dir = direction.right
   
   self.currentAnimation = self.WalkanimationR
-  self.currentImage = self.SBR
-  
-  --self.c2:update(dt)
-  self.x, self.y, cols, len = world:move(self, self.x + self.speedX, self.y)
-  
+  self.currentImage = self.WalkR
 end
 
 function Enemy:moveLeft(world)
-
   self.dir = direction.left
   
   self.currentAnimation = self.WalkanimationL
-  self.currentImage = self.SBL
-
-  self.x, self.y, cols, len = world:move(self, self.x + self.speedX, self.y)
+  self.currentImage = self.WalkL
 end
 
 function Enemy:draw()
@@ -59,7 +53,9 @@ function Enemy:draw()
 end
 
 function Enemy:update(world,dt)
-
+  self.x, self.y, cols, len = world:move(self, self.x + self.speedX * dt, self.y)
+  
+  self.currentAnimation:update(dt)
 end
 
 function Enemy:getX()
@@ -68,4 +64,10 @@ end
 
 function Enemy:getY()
   return self.y
+end
+
+function Enemy:die(world)
+  self.alive = false
+  
+  world:remove(self)
 end

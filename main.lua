@@ -9,6 +9,9 @@ local game = require "src.game"
 
 local scene
 
+local joystickList = love.joystick.getJoysticks()
+joystick1 = joystickList[1]
+
 function love.load()
     love.mouse.setVisible(false)
     --love.keyboard.setKeyRepeat( true )
@@ -31,6 +34,50 @@ end
 function love.keypressed(key)
   if scenes[scene].keypressed then
     scenes[scene].keypressed(key)
+  end
+end
+
+function love.gamepadpressed( joystick, button )
+  if button == "dpright" then
+    love.keypressed("right")
+  end
+  
+  if button == "dpleft" then
+      love.keypressed("left")
+  end
+end
+
+function love.gamepadreleased(joystick, button)
+  if button == "dpright" then
+    love.keyreleased("right")
+  end
+  
+  if button == "dpleft" then
+      love.keyreleased("left")
+  end
+end
+
+function love.joystickpressed(joystick, button)
+  if button == 1 then
+    love.keypressed("up")
+  end
+  
+  if button == 3 then
+    love.keypressed("d")
+  end
+  
+  if button == 8 then
+    love.keypressed("return")
+  end
+end
+
+function love.joystickreleased(joystick, button)
+  if button == 1 then
+    love.keyreleased("up")
+  end
+  
+  if button == 3 then
+    love.keyreleased("d")
   end
 end
 

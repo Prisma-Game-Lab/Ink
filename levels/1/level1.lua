@@ -10,12 +10,10 @@ local anim8 = require 'lib/anim8'
 local lvl1 = bump.newWorld(50)
 local player = Player:new(lvl1,60,1295,30,45,0,0)
 
-local enemy = Enemy:new(lvl1,90,1295,30,45,0,0)
+local enemyList = {}
+table.insert(enemyList, Enemy:new(lvl1, 100, 1240, 68, 94, 0, 0))
 
 local cam = Camera:new(0,0,2560,1440)
-
-local c1 = cron.every(0.1,Enemy.moveRight,enemy,lvl1)
-local c2 = cron.after(0.1,Enemy.moveLeft,enemy,lvl1)
 
 local objects = require "levels/1/obj1"
 --cam1:setScale(0.5)
@@ -30,6 +28,12 @@ function level1.load()
   end
   
   levels = {level1 = level1} 
+  
+  for i,enemy in ipairs(enemyList) do
+    if enemy.alive then
+      enemy:moveRight(lvl1)
+    end
+  end
 end
 
 function change_level(new)
@@ -38,11 +42,16 @@ function change_level(new)
 end
 
 function level1.update(dt)
-  player:update(lvl1,dt)
-  cam:update(player:getX(),player:getY(),dt)
+  player:update(lvl1, dt)
   player:decreaseHp(dt)
-  enemy:update(lvl1,dt)
-  c1:update(dt)
+  
+  cam:update(player:getX(),player:getY(),dt)
+  
+  for i,enemy in ipairs(enemyList) do
+    if enemy.alive then
+      enemy:update(lvl1, dt)
+    end
+  end
 end
 
 function level1.keypressed(key)
@@ -79,13 +88,18 @@ function level1.draw()
     love.graphics.draw(bg,0,0)
     love.graphics.print("LEVEL 1",0,0)
 
-    player:draw()
-    enemy:draw()
+    for i,enemy in ipairs(enemyList) do
+      if enemy.alive then
+        enemy:draw()
+      end
+    end
 
     for i=1,#objects.plataformas,1 do
       local t = objects.plataformas
       love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)
     end
+    
+    player:draw(cam)
   end)
 end
 
