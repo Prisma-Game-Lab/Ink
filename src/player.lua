@@ -15,7 +15,7 @@ local GRAVITY = 980
 local dashin_counter = 0
 local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
-local HP_TIME_SEC = 10
+local HP_TIME_SEC = 30
 
 
 function Player:initialize(world, x, y, w, h, speedX, speedY)
@@ -31,7 +31,11 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.jumping = true
   self.canWallJump = false
   self.hp = 100
+  self.alive = true
+  self.tipo = "player"
   
+  self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
+  self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
   
   self.SBR = love.graphics.newImage('assets/SBR.png')
@@ -72,7 +76,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.currentAnimation = self.IdleanimationR
   self.currentImage = self.SBIR
 
-  world:add(self,self.x,self.y,self.w,self.h)
+  world:add(self, self.x, self.y, self.w, self.h)
 end
 
 function Player:jump(world)
@@ -198,7 +202,6 @@ function Player:move(spd)
 end
 
 function Player:stop()
-
   if self.dir == direction.right then
     self.currentAnimation = self.IdleanimationR
     self.currentImage = self.SBIR
@@ -214,8 +217,10 @@ end
 function Player:dash()
   if not self.dashing and not self.canWallJump then
     self:move(self.speedX + self.dir*DASH_SPD)
+    
     self.walking = false
-    self.dashing = true   
+    self.dashing = true
+    
     if self.dir == direction.right then
       self.currentAnimation = self.DashanimationR
       self.currentImage = self.DASHR
@@ -223,37 +228,44 @@ function Player:dash()
       self.currentAnimation = self.DashanimationL
       self.currentImage = self.DASHL
     end
+    
+    self.hp = self.hp - 5
   end
 end
 
-function Player:draw()
+function Player:draw(cam)
+  local camLeft, camTop = cam:getCamera():getVisible()
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
   self.w,self.h = self.currentAnimation:getDimensions()
-  self:drawHp()
+  self:drawHp(cam)
+  if not self.alive then
+    love.graphics.draw(self.deathImg,camLeft,camTop + 360)
+  end
 end
 
 function Player:update(world,dt)
  
-  if dashin_counter > DASH_TIME then
+  if self.dashing and dashin_counter > DASH_TIME then
     self.dashing = false
     self:stop()
     dashin_counter = 0
-    if love.keyboard.isDown('right') then
+    if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
       self:moveRight()
-    elseif love.keyboard.isDown('left') then
+    elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
       self:moveLeft()
     end 
   end
   
   self.currentAnimation:update(dt)
   
-    if self.dashing then
+  if self.dashing then
     dashin_counter = dashin_counter + dt
     self.speedY = 0
   else
     self.speedY = self.speedY + GRAVITY*dt
   end
-   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
+  
+  actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
   
   local tempWallJump = false
   for i=1,len do
@@ -265,6 +277,7 @@ function Player:update(world,dt)
         tempWallJump = true
       end
     end
+    
     if other.tipo == "plat" then
       if (self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y - 1 > other.y and self.y - 1 < other.y + other.h) then
         self.speedY = 100
@@ -272,12 +285,19 @@ function Player:update(world,dt)
       else
         self.speedY = 0
         
-        if love.keyboard.isDown('right') then
+        if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
           self:moveRight()
-        elseif love.keyboard.isDown('left') then
+        elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
           self:moveLeft()
         else 
-          self:stop()
+          if self.dir == direction.right then
+            self.currentAnimation = self.IdleanimationR
+            self.currentImage = self.SBIR
+          elseif self.dir == direction.left then
+            self.speedX = 0
+            self.currentAnimation = self.IdleanimationL
+            self.currentImage = self.SBIL
+          end
         end
         self.jumping = false
         break
@@ -285,6 +305,9 @@ function Player:update(world,dt)
     elseif other.tipo == "wall" and self.jumping or self.speedY > 100 then
       self.speedY = 100
       tempWallJump = true
+    elseif other.tipo == "enemy" and self.dashing then
+      other:die(world)
+      self:increaseHp(20)
     end
   end
   
@@ -308,6 +331,7 @@ function Player:update(world,dt)
       self.currentImage = self.jumpImageL
     end
   end
+  
   self.x = actualX
 end
 
@@ -318,11 +342,16 @@ end
 function Player:getY()
   return self.y
 end
-
+function Player:getW()
+  return self.w
+end
+function Player:getH()
+  return self.h
+end
 function Player:decreaseHp(dt)
   self.hp = self.hp - 100*dt/HP_TIME_SEC
-  if self.hp < 0 then
-    print("end")
+  if self.hp <= 0 then
+    self:die()
   end
 end
 
@@ -330,12 +359,27 @@ function Player:takeDamage(dam)
   self.hp = self.hp - dam
 end
 
-function Player:increaseHp()
-  
+function Player:increaseHp(ink)
+  self.hp = math.min(100, self.hp + ink)
 end
-
-function Player:drawHp()
-  --love.graphics.draw(self.hpBar,self.x,self.y,0,math.max(0,self.hp)/100,1)
-  love.graphics.rectangle("fill",self.x,self.y-10,30*math.max(0,self.hp)/100,5)
+function Player:die()
+  self.alive = false
+  love.audio.play(self.deathSound)
+end
+function Player:push(world,amount,dir)
+  print("push") 
+  self.x, self.y, cols, len = world:move(self, self.x +(dir*amount), self.y-10) 
+end
+function Player:removePlayer(world)
+  world:remove(self)
+end
+function Player:drawHp(cam)
+  local camLeft, camTop = cam:getCamera():getVisible()
+  
+  love.graphics.setColor(155, 0, 0)  
+  love.graphics.rectangle("fill", camLeft + 20, camTop + 20, 500 * math.max(0, self.hp)/100, 30)
+  love.graphics.setColor(0, 0, 0)
+  love.graphics.rectangle("line", camLeft + 20, camTop + 20, 500, 30)
+  love.graphics.setColor(255, 255, 255)
 end
 

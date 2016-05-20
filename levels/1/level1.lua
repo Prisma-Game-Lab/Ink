@@ -1,6 +1,7 @@
 local level1 = {}
 
 require "src/player"
+require "src/enemy"
 require "src/camera"
 local bump = require 'lib/bump'
 local cron = require 'lib/cron'
@@ -9,6 +10,9 @@ local anim8 = require 'lib/anim8'
 local lvl1 = bump.newWorld(50)
 local player = Player:new(lvl1,60,1295,30,45,0,0)
 
+local enemyList = {}
+
+
 local cam = Camera:new(0,0,2560,1440)
 
 local objects = require "levels/1/obj1"
@@ -16,14 +20,36 @@ local objects = require "levels/1/obj1"
 
 function level1.load()
   bg = love.graphics.newImage("assets/Background1.png")
+  lvlend = love.graphics.newImage('assets/portal.png')
+  local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
+  Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
   
   for i=1,#objects.plataformas do
     local t = objects.plataformas
     lvl1:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
-    print(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
+  end
+  
+  for i=1,#objects.enemys do
+    local t = objects.enemys
+    table.insert(enemyList, Enemy:new(lvl1, t[i].x, t[i].y, t[i].w,t[i].h,t[i].spdx))
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h,t[i].spdx)
+    
+  end
+  for i=1,#objects.triggers do
+    local t = objects.triggers
+    lvl1:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
+    
   end
   
   levels = {level1 = level1} 
+  
+  for i,enemy in ipairs(enemyList) do
+    if enemy.alive then
+      enemy:moveRight(lvl1)
+    end
+  end
 end
 
 function change_level(new)
@@ -32,12 +58,49 @@ function change_level(new)
 end
 
 function level1.update(dt)
-  player:update(lvl1,dt)
-  cam:update(player:getX(),player:getY(),dt)
+  local playerin = false
+  local enemyin = false
+  local levelend = false
+  
+  if player.alive then
+  player:update(lvl1, dt)
   player:decreaseHp(dt)
+  Portalanimation:update(dt)
+  
+  local items, len = lvl1:queryRect(player:getX()-1,player:getY(),player:getW()+2,player:getH()+1)
+  if len > 1 then
+      for i=1,len,1 do
+          if items[i].tipo == "player" then
+            playerin = true
+          elseif items[i].tipo == "enemy" then
+            enemyin = true
+          elseif items[i].tipo == "levelend" then
+            player:die()
+          end
+      end
+    if playerin and enemyin and not player.dashing then
+      player:push(lvl1,100,-player.dir)
+      print("dano")
+      player:takeDamage(10)
+      
+    end
+  end
+  
+  cam:update(player:getX(),player:getY(),dt)
+  
+    for i,enemy in ipairs(enemyList) do
+      if enemy.alive then
+        enemy:update(lvl1, dt)
+      end
+    end
+  end
 end
-
 function level1.keypressed(key)
+  --[[if key == "r" then
+    level1.reset()  
+    change_scene("logo")
+  end
+  -]]
   if player.keypressed then
     player:keypressed(lvl1, key)
   end
@@ -69,15 +132,45 @@ function level1.draw()
   cam:getCamera():draw(function(l,t,w,h)
     --DRAW STUFF HERE
     love.graphics.draw(bg,0,0)
-    love.graphics.print("LEVEL 1",0,0)
-
-    player:draw()
-
+    
+    for i,enemy in ipairs(enemyList) do
+      if enemy.alive then
+        enemy:draw()
+      end
+    end
+    love.graphics.setColor(112,112,112)
     for i=1,#objects.plataformas,1 do
       local t = objects.plataformas
-      love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)
+      love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)   
     end
+    love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
+    for i=1,#objects.triggers,1 do
+      local t = objects.triggers
+      if t[i].tipo == "levelend" then
+      Portalanimation:draw(lvlend,t[i].x,t[i].y)
+      end
+    end
+    
+    player:draw(cam)
+     
+    
   end)
 end
-
+function level1.reset()
+  for i=1,#objects.plataformas do
+    local t = objects.plataformas
+    lvl1:remove(t[i])
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
+  end
+  
+  for i, enemy in ipairs(enemyList) do
+    lvl1:remove(enemy)
+  end
+  for i=1,#objects.triggers do
+    local t = objects.triggers
+    lvl1:remove(t[i])
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)    
+  end
+  --player:removePlayer(lvl1)
+end
 return level1
