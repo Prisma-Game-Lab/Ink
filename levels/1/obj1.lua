@@ -1,3 +1,12 @@
+--  obj1.lua
+--  Project Nanquim
+--  Created by RPG Programming Team
+--  Copyright © 2016 Rio PUC Games. All rights reserved.
+
+
+--This file contains all the objects present in the level
+--The objects contain the information in tables inside the corresponding table (sorted by type)
+
 plataformas = 
 
 {
