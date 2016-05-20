@@ -1,3 +1,8 @@
+--  main.lua
+--  Project Nanquim
+--  Created by RPG Programming Team
+--  Copyright © 2016 Rio PUC Games. All rights reserved.
+
 io.stdout:setvbuf("no")
 require "utils"
 
