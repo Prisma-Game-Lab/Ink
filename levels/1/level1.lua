@@ -97,7 +97,7 @@ function level1.update(dt)
       player:push(lvl1,100,-player.dir)
       print("dano")
       player:takeDamage(10)
-    end  
+    end
   end
   
   cam:update(player:getX(),player:getY(),dt)
@@ -109,6 +109,8 @@ function level1.update(dt)
         enemy:update(lvl1, dt)
       end
     end
+   else 
+    love.audio.stop(song) 
   end
 end
 function level1.keypressed(key)
