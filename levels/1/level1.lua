@@ -51,7 +51,7 @@ function level1.load()
   end
   --The list of levels that can be used in the change_scene function
   levels = {level1 = level1} 
-  
+  time = 0
 end
 --[[ 
         change_level
@@ -79,7 +79,7 @@ function level1.update(dt)
   if player.alive then
   player:update(lvl1, dt)
   Portalanimation:update(dt)
-  
+  time =  time + dt
   local items, len = lvl1:queryRect(player:getX()-1,player:getY(),player:getW()+2,player:getH()+1)
   if len > 1 then
       for i=1,len,1 do
@@ -94,13 +94,14 @@ function level1.update(dt)
     if playerin and enemyin and not player.dashing then
       player:push(lvl1,100,-player.dir)
       print("dano")
-      player:takeDamage(10)
-      
-    end
+      player:takeDamage(10)      
+    end  
   end
   
   cam:update(player:getX(),player:getY(),dt)
-  
+  if player:getY() > 1440 then
+    player:die()
+  end
     for i,enemy in ipairs(enemyList) do
       if enemy.alive then
         enemy:update(lvl1, dt)
@@ -169,6 +170,7 @@ function level1.draw()
       end
     end
     
+    love.graphics.print(tostring(math.floor(time)),l + 550,t+10,0,0.3,0.3)
     player:draw(cam)
      
     
