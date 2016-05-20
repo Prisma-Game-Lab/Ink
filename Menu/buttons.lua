@@ -27,6 +27,7 @@ end
 
 function buttons.start()
   
+  
   buttons.remove()
   buttons.create(2, direction.vertical, tw/2-150, 500, 200, 50)
   buttons.color = {{255, 255, 255}}
@@ -41,6 +42,8 @@ function buttons.start()
   buttons.select(1)
   buttons.collided()
   
+  buttons.load()
+  
 end
 
 function buttons.update(dt)
@@ -50,7 +53,9 @@ end
 
 function buttons.draw()
 
---love.graphics.draw(titleImg, title.pos.x, title.pos.y - 100, 0, 1, 1)
+love.graphics.draw(titleImg, title.pos.x, title.pos.y - 100, 0, 1, 1)
+
+
 for i, but in ipairs(buttons) do
   
     love.graphics.draw(but.imageCurrent, but.x, but.y)
