@@ -32,6 +32,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.canWallJump = false
   self.hp = 100
   self.alive = true
+  self.tipo = "player"
   
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
@@ -341,7 +342,12 @@ end
 function Player:getY()
   return self.y
 end
-
+function Player:getW()
+  return self.w
+end
+function Player:getH()
+  return self.h
+end
 function Player:decreaseHp(dt)
   self.hp = self.hp - 100*dt/HP_TIME_SEC
   if self.hp <= 0 then
@@ -359,6 +365,13 @@ end
 function Player:die()
   self.alive = false
   love.audio.play(self.deathSound)
+end
+function Player:push(world,amount,dir)
+  print("push") 
+  self.x, self.y, cols, len = world:move(self, self.x +(dir*amount), self.y-10) 
+end
+function Player:removePlayer(world)
+  world:remove(self)
 end
 function Player:drawHp(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
