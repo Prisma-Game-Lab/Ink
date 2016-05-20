@@ -1,3 +1,8 @@
+--  player.lua
+--  Project Nanquim
+--  Created by RPG Programming Team
+--  Copyright © 2016 Rio PUC Games. All rights reserved.
+
 local class = require 'lib/middleclass'
 local cron = require 'lib/cron'
 local anim8 = require "lib/anim8"
@@ -17,7 +22,19 @@ local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 30
 
+--[[Player:initialize
+- inizializes all the variables of the class 'player'
 
+Parameters:
+  - world: the world created on the 'level' module used to move the player and do all the collision
+  - x: the initial x position of the player, relative to the top left corner of the screen
+  - y: the initial y position of the player, relative to the top left corner of the screen
+  - w: the width of the player's hit box
+  - h: the height of the player's hit box
+  - speedX: the initial speed in the horizontal direction of the player 
+  - speedY: the initial speed in the vertical direction of the player 
+  Returns: -nothing-
+]]--
 function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.x = x
   self.y = y
@@ -32,6 +49,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.canWallJump = false
   self.hp = 100
   self.alive = true
+  self.tipo = "player"
   
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
@@ -78,6 +96,14 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   world:add(self, self.x, self.y, self.w, self.h)
 end
 
+--[[Player:jump
+- makes tha player jump
+
+Parameters:
+  - world: calls the created world to make the player move accordingly to the 'bump.lua' lib used
+  
+  returns: -nothing-
+]]--
 function Player:jump(world)
   if self.dashing then
     return
@@ -107,27 +133,34 @@ function Player:jump(world)
     
     self.speedY = JMP_SPD
     self.jumping = true
-    
-    --[[  VERIFICAR SE OUTRAS ANIMAÇÕES ESTÃO COM O MESMO PROBLEMA DA DIREÇÃO DA ANIMAÇÃO 
-          NÃO SER ATUALIZADA A TODO MOMENTO PELA UPDATE!! ]]--
-    
-    --[[if self.dir == direction.right then
-      self.currentAnimation = self.JumpAnimationR
-      self.currentImage = self.jumpImageR
-    elseif self.dir == direction.left then
-      self.currentAnimation = self.JumpAnimationL
-      self.currentImage = self.jumpImageL
-    end]]--
   end
 end
 
+--[[Player:shortHop
+- like the function above, makes the player jump, but only a short height depending on how much time he mantain pressed the button 
+
+Parameters:
+  - None
+  
+  returns: -nothing-
+]]--
 function Player:shortHop()
   if self.speedY < HOP_SPD then
     self.speedY = HOP_SPD
   end
 end
 
+--[[Player:Keypressed
+- function of the LÖVE 2D engine that reads the keys pressed on the keyboard 
+
+Parameters:
+  - lvl: uses tha lvl parameter to send the world to the jump function
+  - key: parameter defined by the engine
+
+  returns: -nothing-
+]]--
 function Player:keypressed(lvl, key)
+  
   if key == "up" or key == "w" or key == "space" then
     self:jump(lvl)
   end
@@ -145,6 +178,14 @@ function Player:keypressed(lvl, key)
   
 end
 
+--[[Player:keyreleased
+- function from the engine, works the same way as the function above, only diference it receives the keys that were realesed instead of the pressed ones
+
+Parameters:
+  - Key: parameter defined by the engine 
+  
+  returns: -nothing-
+]]--
 function Player:keyreleased(key)
   if key == 'up' then
     self:shortHop()
@@ -163,6 +204,12 @@ function Player:keyreleased(key)
   end
 end 
 
+--[[Player:moveRight
+- defines the movement of the player to the right on the horizontal 
+
+Don't uses parameters
+returns nothing
+]]--
 function Player:moveRight()
   if self.dashing then
     return
@@ -177,6 +224,12 @@ function Player:moveRight()
   end
 end
 
+--[[Player:moveLeft
+- defines the movement of the player to the left on the horizontal 
+
+Don't uses parameters
+returns nothing
+]]--
 function Player:moveLeft()
   if self.dashing then
     return
@@ -191,6 +244,13 @@ function Player:moveLeft()
   end
 end
 
+--[[Player:move
+- defines the speed of the player on the horizontal 
+
+Parameters:
+  - spd: sets the player's actual speed for the movement 
+returns nothing
+]]--
 function Player:move(spd)
   if self.dashing then
     return
@@ -200,6 +260,12 @@ function Player:move(spd)
   self.walking = true
 end
 
+--[[Player:stop
+- used to stop, when necessary, a movement of the player, this way seting it in the iddle animation
+
+Don't uses parameters
+returns nothing
+]]--
 function Player:stop()
   if self.dir == direction.right then
     self.currentAnimation = self.IdleanimationR
@@ -213,6 +279,12 @@ function Player:stop()
   self.dashing = false
 end
 
+--[[Player:dash
+- makes the player dash in a higher speed than its normal, and function as an attack as well, but also reduces the player's HP
+
+Don't uses parameters
+returns nothing
+]]--
 function Player:dash()
   if not self.dashing and not self.canWallJump then
     self:move(self.speedX + self.dir*DASH_SPD)
@@ -232,6 +304,14 @@ function Player:dash()
   end
 end
 
+--[[Player:draw
+- used to draw the player 
+
+Parameters:
+  - cam: an instance of the class camera used in the game to follow the player 
+  
+  returns nothing
+]]--
 function Player:draw(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
@@ -242,6 +322,15 @@ function Player:draw(cam)
   end
 end
 
+--[[Player:update
+- used to make the game loop updating by the time its parameters
+
+Parameters:
+  - world: uses the world to define the players movements by the 'bump.lua' lib
+  - dt: time parameter used to the lesser delta time of the PC
+  
+  returns nothing
+]]--
 function Player:update(world,dt)
  
   if self.dashing and dashin_counter > DASH_TIME then
@@ -330,18 +419,50 @@ function Player:update(world,dt)
       self.currentImage = self.jumpImageL
     end
   end
-  
+  self:decreaseHp(dt)
   self.x = actualX
 end
 
+--[[Player:getX
+- used to return the actual x position of the player
+Don't uses parameters
+]]--
 function Player:getX()
   return self.x
 end
 
+--[[Player:getY
+- used to return the actual y position of the player
+Don't uses parameters
+]]--
 function Player:getY()
   return self.y
 end
 
+--[[Player:getW
+- used to return the actual width of the player
+Don't uses parameters
+]]--
+function Player:getW()
+  return self.w
+end
+
+--[[Player:getH
+- used to return the actual height of the player
+Don't uses parameters
+]]--
+function Player:getH()
+  return self.h
+end
+
+--[[Player:decreaseHp
+- used to decrease the player's Hp by the variation of time 
+
+Parameters:
+  - dt: parameter used to get the lesser delta time of the PC
+  
+  returns nothing
+]]--
 function Player:decreaseHp(dt)
   self.hp = self.hp - 100*dt/HP_TIME_SEC
   if self.hp <= 0 then
@@ -349,17 +470,73 @@ function Player:decreaseHp(dt)
   end
 end
 
+--[[Player:takeDamage
+- used to make the player take damage from any sources 
+
+Parameters:
+  - dam: used to quantify the damage taken by the player and reduce its Hp
+  
+  returns nothing
+]]--
 function Player:takeDamage(dam)
   self.hp = self.hp - dam
 end
 
+--[[Player:increaseHp
+- used to increase the players Hp according to the parameter 'ink'
+
+Parameters:
+  - ink: parameter used to quantify how much Hp the player will receive
+  
+  returns nothing
+]]--
 function Player:increaseHp(ink)
   self.hp = math.min(100, self.hp + ink)
 end
+--[[Player:die
+- used to determine if the player is going to die
+
+Don't uses parameters
+returns nothing
+]]--
 function Player:die()
   self.alive = false
   love.audio.play(self.deathSound)
 end
+
+--[[Player:push
+- used to make the player go back a little when collinding with a foe
+
+Parameters:
+  - world: used by the 'bump.lua' lib to move the player 
+  - amount: defines how much the player will move
+  - dir: defines the direction of the movement
+  
+  returns nothing
+]]--
+function Player:push(world,amount,dir)
+  print("push") 
+  self.x, self.y, cols, len = world:move(self, self.x +(dir*amount), self.y-10) 
+end
+--[[Player:removePlayer
+- still doesn't do anything, but its meant to remove the player from its actual world(in case of death or something else)
+
+Parameters:
+  - world: used by the 'bump.lua' lib to define objects in the world
+  
+  returns nothing
+]]--
+function Player:removePlayer(world)
+  world:remove(self)
+end
+--[[Player:drawHp
+- used to draw players Hp based on it actual size
+
+Parameters:
+  - cam: used define the drawing position of the Hp bar according to the camera
+  
+  returns nothing
+]]--
 function Player:drawHp(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   

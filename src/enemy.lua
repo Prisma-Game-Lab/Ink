@@ -19,6 +19,7 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.speedX = spdX
   self.dir = direction.right
   self.alive = true
+  self.tipo = "enemy"
 
   self.WalkR = love.graphics.newImage('assets/enemyR.png')
   self.WalkL = love.graphics.newImage('assets/enemyL.png')

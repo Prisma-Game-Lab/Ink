@@ -1,3 +1,8 @@
+--  main.lua
+--  Project Nanquim
+--  Created by RPG Programming Team
+--  Copyright © 2016 Rio PUC Games. All rights reserved.
+
 io.stdout:setvbuf("no")
 require "utils"
 
@@ -5,22 +10,39 @@ local dir = love.filesystem.getSourceBaseDirectory() .. '/Ink/'
 love.filesystem.setRequirePath("?.lua;?/init.lua;" .. dir .. "?.lua;")
 
 local RPG_Logo = require "RPG_Full_Logo/RPG_Logo"
-local game = require "src.game"
+local game = require "src/game"
+local menu = require "Menu/menu"
 
 local scene
+
+--[[ 
+    - Engine check for avaible Joysticks in PC and add them to a table
+    - Our game is a Single Player game, so we only use the first Joystick in the list  
+]]
 
 local joystickList = love.joystick.getJoysticks()
 joystick1 = joystickList[1]
 
 function love.load()
     love.mouse.setVisible(false)
+    local font = love.graphics.setNewFont("Assets/TimeMachino.ttf", 100)
     --love.keyboard.setKeyRepeat( true )
     RPG_Logo.load(1.5,1.5,1.5,function ()
-    	change_scene("game")
+    	change_scene("menu")
   	end)
-    scenes = { logo = RPG_Logo, game = game }
+    scenes = { logo = RPG_Logo, game = game, menu = menu }
     change_scene("logo")
 end
+
+--[[ 
+        change_scene
+        -This function the the current "scene". When it changes all the functions in main changes and use now the current scene to load,update,draw,...
+        Parameters:
+        -new : a string with the name of the new scene, this new scene must also be inside a table, normally called "scenes"
+    
+        Inside : 
+        -Change the scene based on the string in the parameter and calls that scene start function
+]]
 
 function change_scene(new,...)
     scene = new
@@ -36,7 +58,9 @@ function love.keypressed(key)
     scenes[scene].keypressed(key)
   end
 end
-
+--[[
+    -Check the buttons pressed on the Gamepad and transform them in keyboard keys
+]]
 function love.gamepadpressed( joystick, button )
   if button == "dpright" then
     love.keypressed("right")
