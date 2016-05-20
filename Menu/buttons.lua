@@ -28,7 +28,7 @@ end
 function buttons.start()
   
   buttons.remove()
-  buttons.create(2, direction.vertical, tw/(2-150), 500, 200, 50)
+  buttons.create(2, direction.vertical, tw/2-150, 500, 200, 50)
   buttons.color = {{255, 255, 255}}
   for i = 1, #buttons do
     
