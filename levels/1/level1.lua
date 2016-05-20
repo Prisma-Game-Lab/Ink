@@ -58,10 +58,33 @@ function change_level(new)
 end
 
 function level1.update(dt)
+  local playerin = false
+  local enemyin = false
+  local levelend = false
+  
   if player.alive then
   player:update(lvl1, dt)
   player:decreaseHp(dt)
   Portalanimation:update(dt)
+  
+  local items, len = lvl1:queryRect(player:getX()-1,player:getY(),player:getW()+2,player:getH()+1)
+  if len > 1 then
+      for i=1,len,1 do
+          if items[i].tipo == "player" then
+            playerin = true
+          elseif items[i].tipo == "enemy" then
+            enemyin = true
+          elseif items[i].tipo == "levelend" then
+            player:die()
+          end
+      end
+    if playerin and enemyin and not player.dashing then
+      player:push(lvl1,100,-player.dir)
+      print("dano")
+      player:takeDamage(10)
+      
+    end
+  end
   
   cam:update(player:getX(),player:getY(),dt)
   
@@ -73,6 +96,11 @@ function level1.update(dt)
   end
 end
 function level1.keypressed(key)
+  --[[if key == "r" then
+    level1.reset()  
+    change_scene("logo")
+  end
+  -]]
   if player.keypressed then
     player:keypressed(lvl1, key)
   end
@@ -128,5 +156,21 @@ function level1.draw()
     
   end)
 end
-
+function level1.reset()
+  for i=1,#objects.plataformas do
+    local t = objects.plataformas
+    lvl1:remove(t[i])
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
+  end
+  
+  for i, enemy in ipairs(enemyList) do
+    lvl1:remove(enemy)
+  end
+  for i=1,#objects.triggers do
+    local t = objects.triggers
+    lvl1:remove(t[i])
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)    
+  end
+  --player:removePlayer(lvl1)
+end
 return level1
