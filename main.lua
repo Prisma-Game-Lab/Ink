@@ -15,6 +15,11 @@ local menu = require "Menu/menu"
 
 local scene
 
+--[[ 
+    - Engine check for avaible Joysticks in PC and add them to a table
+    - Our game is a Single Player game, so we only use the first Joystick in the list  
+]]
+
 local joystickList = love.joystick.getJoysticks()
 joystick1 = joystickList[1]
 
@@ -27,6 +32,16 @@ function love.load()
     scenes = { logo = RPG_Logo, game = game, menu = menu }
     change_scene("logo")
 end
+
+--[[ 
+        change_scene
+        -This function the the current "scene". When it changes all the functions in main changes and use now the current scene to load,update,draw,...
+        Parameters:
+        -new : a string with the name of the new scene, this new scene must also be inside a table, normally called "scenes"
+    
+        Inside : 
+        -Change the scene based on the string in the parameter and calls that scene start function
+]]
 
 function change_scene(new,...)
     scene = new
@@ -42,7 +57,9 @@ function love.keypressed(key)
     scenes[scene].keypressed(key)
   end
 end
-
+--[[
+    -Check the buttons pressed on the Gamepad and transform them in keyboard keys
+]]
 function love.gamepadpressed( joystick, button )
   if button == "dpright" then
     love.keypressed("right")
