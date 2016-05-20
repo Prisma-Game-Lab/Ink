@@ -24,6 +24,7 @@ local cam = Camera:new(0,0,2560,1440)
 local objects = require "levels/1/obj1"
 
 function level1.load()
+  song = love.audio.newSource("assets/06.mp3", "stream")
   bg = love.graphics.newImage("assets/Background1.png")
   lvlend = love.graphics.newImage('assets/portal.png')
   local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
@@ -52,6 +53,7 @@ function level1.load()
   --The list of levels that can be used in the change_scene function
   levels = {level1 = level1} 
   time = 0
+  love.audio.play(song)
 end
 --[[ 
         change_level
