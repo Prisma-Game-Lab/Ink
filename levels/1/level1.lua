@@ -96,7 +96,7 @@ function level1.update(dt)
     if playerin and enemyin and not player.dashing then
       player:push(lvl1,100,-player.dir)
       print("dano")
-      player:takeDamage(10)      
+      player:takeDamage(10)
     end  
   end
   

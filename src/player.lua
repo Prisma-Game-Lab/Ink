@@ -371,18 +371,19 @@ function Player:update(world,dt)
         self.speedY = 100
         tempWallJump = true
       else
+        -- Se foi uma colisão vertical
         self.speedY = 0
         
         if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
           self:moveRight()
         elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
           self:moveLeft()
-        else 
-          if self.dir == direction.right then
+        else
+          self.speedX = 0        
+          if self.dir == direction.right then  
             self.currentAnimation = self.IdleanimationR
             self.currentImage = self.SBIR
           elseif self.dir == direction.left then
-            self.speedX = 0
             self.currentAnimation = self.IdleanimationL
             self.currentImage = self.SBIL
           end
@@ -409,9 +410,8 @@ function Player:update(world,dt)
       self.currentAnimation = self.FallAnimationL
       self.currentImage = self.fallImageL
     end
-    
-     elseif self.speedY < 0 then -- Executa a animação do personagem pulando atualizando a direção.
-      if self.dir == direction.right then
+  elseif self.speedY < 0 then -- Executa a animação do personagem pulando atualizando a direção.
+    if self.dir == direction.right then
       self.currentAnimation = self.JumpAnimationR
       self.currentImage = self.jumpImageR
     elseif self.dir == direction.left then
@@ -419,6 +419,7 @@ function Player:update(world,dt)
       self.currentImage = self.jumpImageL
     end
   end
+  
   self:decreaseHp(dt)
   self.x = actualX
 end
