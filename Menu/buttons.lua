@@ -1,3 +1,23 @@
+--  buttons.lua
+--  Project Nanquim
+--  Created by RPG Programming Team
+--  Copyright © 2016 Rio PUC Games. All rights reserved.
+
+
+--[[
+local variables
+
+buttons:  a table that holds the features and functions of the start buttons
+
+tw:  the widht of the game screen
+th:  the height of the game screen
+
+title:  a table that hold the features of the title image
+
+direction: a table {x = 1 or 0 or -1, y = 1 or 0 or -1}, specifying the direction of the start buttons
+
+]]--
+
 buttons = {}
 
 local tw = love.graphics.getWidth()
@@ -7,12 +27,25 @@ local title = {}
 
 local direction = {horizontal = 0, vertical = 1}
 
+
+--[[
+buttons.load
+-it loads the title image and buttons form the start the menu
+
+
+ - titleImg: the title image itself
+ - title.width: the width of the titleImg
+ - title.height: the height of the titleImg
+ - title.pos: a table {x = (tw-title.width)/2, y = (th-title.height)/2} 
+
+ - There is no return
+]]--
 function buttons.load()
   
-  mouse = {}
+  --mouse = {}
   
-  mouse.x = 0
-  mouse.y = 0
+  --mouse.x = 0
+  --mouse.y = 0
   
   titleImg = love.graphics.newImage("assets/Menu/Title.png")
   title.width = titleImg:getWidth()
@@ -25,11 +58,23 @@ function buttons.load()
   
 end
 
+--[[
+ - buttons.start
+ - it create and start the start buttons
+ 
+ 
+ - buttons.remove: clear the table from all buttons
+ - buttons.create(number of buttons, direction, width position, height position)
+ - buttons.color = {{Red,Green,Blue}}; RGB definition of button color
+ - buttons[i].imageNormal: the "not selected" image of a button i
+ - buttons[i].selected: the "selected" image of a button i
+]]--
+
 function buttons.start()
   
   
   buttons.remove()
-  buttons.create(2, direction.vertical, tw/2-150, 500, 200, 50)
+  buttons.create(2, direction.vertical, tw/2-140, 500, 200, 50)
   buttons.color = {{255, 255, 255}}
   for i = 1, #buttons do
     
@@ -51,6 +96,12 @@ function buttons.update(dt)
 
 end
 
+--[[
+buttons.draw
+it draws the buttons and title images
+
+]]--
+
 function buttons.draw()
 
 love.graphics.draw(titleImg, title.pos.x, title.pos.y - 100, 0, 1, 1)
@@ -63,6 +114,12 @@ for i, but in ipairs(buttons) do
   end
 
 end
+
+--[[
+buttons.keypressed
+it detects the key that is pressed to change the selected button
+
+]]--
 
 function buttons.keypressed(key)
   
@@ -93,6 +150,23 @@ function buttons.keypressed(key)
  
 end
 
+
+--[[
+buttons.create
+it creates and insert the buttons
+
+parameter
+
+n: number of images
+tipo: direction in wich the button will be showed
+but1_pos_x: x position of the image
+but1_pos_y: y position of the image
+but1_w: screen width 
+but1_h: screen height
+
+
+]]--
+
 function buttons.create(n, tipo, but1_pos_x, but1_pos_y, but1_w, but1_h)
   local spacing = 75
   if tipo == 0 then
@@ -105,6 +179,13 @@ function buttons.create(n, tipo, but1_pos_x, but1_pos_y, but1_w, but1_h)
     end
   end
 end
+
+--[[
+buttons.select
+it changes the selected button
+index: the index of the button to be selected
+
+]]--
   
 function buttons.select(index)
   if buttons.pressed ~= nil then
@@ -118,6 +199,11 @@ function buttons.select(index)
   --b.color = {255, 0, 0}
 end
  
+ 
+ --[[
+ buttons.remove
+ it removes the buttons
+ ]]--
 function buttons.remove()
   while #buttons > 0 do
     table.remove(buttons)
@@ -133,7 +219,7 @@ function buttons.collided()
 end
 
 function buttons.checkMouseCollision(but_x, but_y, but_h, but_w, mouse_x, mouse_y)
-  return but_x < mouse_x+1 and but_y < mouse_y +1 and mouse_x < but_x+but_w and mouse_y < but_y+but_h
+--  return but_x < mouse_x+1 and but_y < mouse_y +1 and mouse_x < but_x+but_w and mouse_y < but_y+but_h
 end
 
 return buttons
