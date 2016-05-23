@@ -42,7 +42,8 @@ end
 function menu.keypressed(key)
   buttons.keypressed(key)
   if key == "return" and buttons.pressed == 1 then
-    change_scene("game")
+    buttons.remove()
+    change_scene("level")
   elseif key == "return" and buttons.pressed == 2 then
     love.event.push("quit")
   end

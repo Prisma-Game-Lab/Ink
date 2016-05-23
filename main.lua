@@ -12,6 +12,7 @@ love.filesystem.setRequirePath("?.lua;?/init.lua;" .. dir .. "?.lua;")
 local RPG_Logo = require "RPG_Full_Logo/RPG_Logo"
 local game = require "src/game"
 local menu = require "Menu/menu"
+local level = require "Menu/Level Selector/level_selector"
 
 local scene
 
@@ -30,7 +31,7 @@ function love.load()
     RPG_Logo.load(1.5,1.5,1.5,function ()
     	change_scene("menu")
   	end)
-    scenes = { logo = RPG_Logo, game = game, menu = menu }
+    scenes = { logo = RPG_Logo, game = game, menu = menu, level = level }
     change_scene("logo")
 end
 
