@@ -48,9 +48,9 @@ function level_selector.keypressed(key)
   if key == "return" and buttonsl.pressed == 1 then
     change_scene("game")
   elseif key == "return" and buttonsl.pressed == 2 then
-    love.event.push("game")
+    change_scene("game")
     elseif key == "return" and buttonsl.pressed == 3 then
-    love.event.push("game")
+    change_scene("game")
   end
   
 end
