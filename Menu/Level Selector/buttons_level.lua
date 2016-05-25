@@ -111,7 +111,7 @@ function buttonsl.keypressed(key)
   elseif key == "a" or key == "left" then
   
     local q = #buttonsl
-    local index = (buttonsl.pressed-2+q)%q+1
+    local index = (buttonsl.pressed-2+#buttonsl)%q+1
     
     buttonsl.select(index)
   
@@ -182,7 +182,7 @@ but1_h: screen height
 ]]--
 
 function buttonsl.create(n, tipo, but1_pos_x, but1_pos_y, but1_w, but1_h)
-  local spacing = 75
+  local spacing = -250
   if tipo == 0 then
     for i=1, n do
       table.insert(buttonsl, {x = but1_pos_x +(spacing + but1_w)*(i-1), y = but1_pos_y, width = but1_w, height = but1_h})
