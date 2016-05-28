@@ -11,6 +11,7 @@ require "src/camera"
 local bump = require 'lib/bump'
 local cron = require 'lib/cron'
 local anim8 = require 'lib/anim8'
+require 'lib/dialogbox'
 
 --Create a new world in bump called lvl1, ikt will be used as the primary world in all collisions
 local lvl1 = bump.newWorld(50)
@@ -22,6 +23,8 @@ local enemyList = {}
 local cam = Camera:new(0,0,2560,1440)
 --Require the objects file, a .lua file that contain in tables all the informations need to add the objects to the world
 local objects = require "levels/1/obj1"
+
+local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift", "bottom", 4)
 
 function level1.load()
   song = love.audio.newSource("assets/06.mp3", "stream")
@@ -74,6 +77,8 @@ end
  --Many functions here in this update won't work if the player is currently dead
  --Only update enemies if they're alive in the moment
 function level1.update(dt)
+  dlgBox:update(dt)
+
   local playerin = false
   local enemyin = false
   local levelend = false
@@ -174,9 +179,9 @@ function level1.draw()
       end
     end
     
-    love.graphics.print(tostring(math.floor(time)),l + 550,t+10,0,0.3,0.3)
+    love.graphics.print(string.sub(tostring(time), 1, 4),l + 550,t+10,0,0.3,0.3)
     player:draw(cam)
-     
+    dlgBox:draw(cam)
     
   end)
 end
