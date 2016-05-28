@@ -15,17 +15,17 @@ local anim8 = require 'lib/anim8'
 --Create a new world in bump called lvl1, ikt will be used as the primary world in all collisions
 local lvl1 = bump.newWorld(50)
 --Create a new player based on the Player class (in player.lua)
-local player = Player:new(lvl1,60,1295,30,45,0,0)
+local player = Player:new(lvl1,60,2890,30,45,0,0)
 --Create a new empty list that later will be used to manage the enemies
 local enemyList = {}
 --Create a new camera based on the Gamera library in lib
-local cam = Camera:new(0,0,2560,1440)
+local cam = Camera:new(0,0,2469,3228)
 --Require the objects file, a .lua file that contain in tables all the informations need to add the objects to the world
 local objects = require "levels/1/obj1"
 
 function level1.load()
   song = love.audio.newSource("assets/06.mp3", "stream")
-  bg = love.graphics.newImage("assets/Background1.png")
+  bg = love.graphics.newImage("assets/cenario01.png")
   lvlend = love.graphics.newImage('assets/portal.png')
   local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
   Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
@@ -37,12 +37,13 @@ function level1.load()
     print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
   end
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
-  for i=1,#objects.enemys do
+  --[[for i=1,#objects.enemys do
     local t = objects.enemys
     table.insert(enemyList, Enemy:new(lvl1, t[i].x, t[i].y, t[i].w,t[i].h,t[i].spdx))
     print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h,t[i].spdx)
     
   end
+  -]]
   --Go through the triggers table and add the to the world one by one
   for i=1,#objects.triggers do
     local t = objects.triggers
@@ -53,7 +54,7 @@ function level1.load()
   --The list of levels that can be used in the change_scene function
   levels = {level1 = level1} 
   time = 0
-  love.audio.play(song)
+  --love.audio.play(song)
 end
 --[[ 
         change_level
@@ -101,7 +102,7 @@ function level1.update(dt)
   end
   
   cam:update(player:getX(),player:getY(),dt)
-  if player:getY() > 1440 then
+  if player:getY() > 3330 then
     player:die()
   end
     for i,enemy in ipairs(enemyList) do
@@ -164,7 +165,7 @@ function level1.draw()
     love.graphics.setColor(112,112,112)
     for i=1,#objects.plataformas,1 do
       local t = objects.plataformas
-      love.graphics.rectangle("fill",t[i].x,t[i].y,t[i].w,t[i].h)   
+      love.graphics.rectangle("line",t[i].x,t[i].y,t[i].w,t[i].h)   
     end
     love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
     for i=1,#objects.triggers,1 do
