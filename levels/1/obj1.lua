@@ -11,14 +11,14 @@ plataformas =
 
 {
   
-{name = "wall1",x=0,y=0,w=50,h=1440,tipo = "wall"},
-{name = "wall2",x=2510,y=0,w=50,h=1440,tipo = "wall"},
-{name = "plat1",x=50,y=1340,w=1300,h=100,tipo = "plat"},
-{name = "plat2",x=1750,y=1340,w=760,h=100,tipo = "plat"},
-{name = "plat3",x=50,y=950,w=2150,h=100,tipo = "plat"},
-{name = "plat4",x=400,y=560,w=2110,h=100,tipo = "plat"},
-{name = "plat5",x=50,y=200,w=550,h=100,tipo = "plat"},
-{name = "plat6",x=960,y=200,w=1200,h=100,tipo = "plat"}
+{name = "wall1",x=0,y=0,w=1,h=3060,tipo = "wall"},
+{name = "wall2",x=2468,y=0,w=1,h=3060,tipo = "wall"},
+{name = "plat1",x=1,y=3060,w=2469,h=168,tipo = "plat"},
+{name = "plat2",x=1,y=2280,w=2095,h=100,tipo = "plat"},
+{name = "plat3",x=1,y=1472,w=82,h=80,tipo = "plat"},
+{name = "plat4",x=372,y=1472,w=2097,h=80,tipo = "plat"},
+{name = "plat5",x=1,y=744,w=2080,h=100,tipo = "plat"},
+{name = "plat6",x=1,y=0,w=2468,h=124,tipo = "plat"}
 
 }
 
@@ -33,7 +33,7 @@ enemys =
 triggers = 
 
 {
-  {name = "levelend",x=140,y=40,w=107,h=143,tipo = "levelend"},
+  {name = "levelend",x=334,y=512,w=107,h=143,tipo = "levelend"},
 }
 
 return {plataformas = plataformas,enemys = enemys,triggers = triggers}

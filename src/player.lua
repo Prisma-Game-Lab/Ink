@@ -20,7 +20,7 @@ local GRAVITY = 980
 local dashin_counter = 0
 local DASH_TIME = 0.25
 local direction = { right = 1, left = -1 }
-local HP_TIME_SEC = 30
+local HP_TIME_SEC = 250
 
 --[[Player:initialize
 - inizializes all the variables of the class 'player'
