@@ -40,8 +40,8 @@ Parameters:
 function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.x = x
   self.y = y
-  self.w = w
-  self.h = h
+  self.w = IDLE_KAI_WIDTH -- width da primeira animação
+  self.h = IDLE_KAI_HEIGHT -- height da primeira animação
   self.speedX = speedX
   self.speedY = speedY
   self.dir = direction.right
