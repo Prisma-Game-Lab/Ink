@@ -3,6 +3,8 @@
 --  Created by RPG Programming Team
 --  Copyright © 2016 Rio PUC Games. All rights reserved.
 
+require 'src/art-config'
+
 local class = require 'lib/middleclass'
 local cron = require 'lib/cron'
 local anim8 = require "lib/anim8"
@@ -55,40 +57,40 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
   
-  self.SBR = love.graphics.newImage('assets/SBR.png')
-  self.SBL = love.graphics.newImage('assets/SBL.png')
-  local gr = anim8.newGrid(30, 45, self.SBR:getWidth(), self.SBR:getHeight())
-  local gl = anim8.newGrid(30, 45, self.SBL:getWidth(), self.SBL:getHeight())
-  self.WalkanimationR = anim8.newAnimation(gr('1-8',1), 0.1)
-  self.WalkanimationL = anim8.newAnimation(gl('1-8',1), 0.1)
+  self.SBR = love.graphics.newImage(WALK_RIGHT_SPRITE)
+  self.SBL = love.graphics.newImage(WALK_LEFT_SPRITE)
+  local gr = anim8.newGrid(WALK_KAI_WIDTH, WALK_KAI_HEIGHT, self.SBR:getWidth(), self.SBR:getHeight())
+  local gl = anim8.newGrid(WALK_KAI_WIDTH, WALK_KAI_HEIGHT, self.SBL:getWidth(), self.SBL:getHeight())
+  self.WalkanimationR = anim8.newAnimation(gr(WALK_RIGHT_SPRITE_COLUMNS,WALK_RIGHT_SPRITE_LINE), 0.1)
+  self.WalkanimationL = anim8.newAnimation(gl(WALK_LEFT_SPRITE_COLUMNS, WALK_LEFT_SPRITE_LINE), 0.1)
   
-  self.SBIR = love.graphics.newImage('assets/SBIR.png')
-  self.SBIL = love.graphics.newImage('assets/SBIL.png')
-  local gir = anim8.newGrid(30, 45, self.SBIR:getWidth(), self.SBIR:getHeight())
-  local gil = anim8.newGrid(30, 45, self.SBIL:getWidth(), self.SBIL:getHeight())
-  self.IdleanimationR = anim8.newAnimation(gir('1-4',1), 0.1)
-  self.IdleanimationL = anim8.newAnimation(gil('1-4',1), 0.1) 
+  self.SBIR = love.graphics.newImage(IDLE_RIGHT_SPRITE)
+  self.SBIL = love.graphics.newImage(IDLE_LEFT_SPRITE)
+  local gir = anim8.newGrid(IDLE_KAI_WIDTH, IDLE_KAI_HEIGHT, self.SBIR:getWidth(), self.SBIR:getHeight())
+  local gil = anim8.newGrid(IDLE_KAI_WIDTH, IDLE_KAI_HEIGHT, self.SBIL:getWidth(), self.SBIL:getHeight())
+  self.IdleanimationR = anim8.newAnimation(gir(IDLE_RIGHT_SPRITE_COLUMNS,IDLE_RIGHT_SPRITE_LINE), 0.1)
+  self.IdleanimationL = anim8.newAnimation(gil(IDLE_LEFT_SPRITE_COLUMNS,IDLE_LEFT_SPRITE_LINE), 0.1) 
   
-  self.DASHR = love.graphics.newImage('assets/DASHR.png')
-  self.DASHL = love.graphics.newImage('assets/DASHL.png')
-  local gdr = anim8.newGrid(60, 45, self.DASHR:getWidth(), self.DASHR:getHeight())
-  local gdl = anim8.newGrid(60, 45, self.DASHL:getWidth(), self.DASHL:getHeight())
-  self.DashanimationR = anim8.newAnimation(gdr('1-6',1), 0.033333)
-  self.DashanimationL = anim8.newAnimation(gdl('1-6',1), 0.033333)
+  self.DASHR = love.graphics.newImage(DASH_RIGHT_SPRITE)
+  self.DASHL = love.graphics.newImage(DASH_LEFT_SPRITE)
+  local gdr = anim8.newGrid(DASH_KAI_WIDTH, DASH_KAI_HEIGHT, self.DASHR:getWidth(), self.DASHR:getHeight())
+  local gdl = anim8.newGrid(DASH_KAI_WIDTH, DASH_KAI_HEIGHT, self.DASHL:getWidth(), self.DASHL:getHeight())
+  self.DashanimationR = anim8.newAnimation(gdr(DASH_RIGHT_SPRITE_COLUMNS,DASH_RIGHT_SPRITE_LINE), 0.033333)
+  self.DashanimationL = anim8.newAnimation(gdl(DASH_LEFT_SPRITE_COLUMNS,DASH_LEFT_SPRITE_LINE), 0.033333)
   
-  self.jumpImageR = love.graphics.newImage('assets/JumpR.png')
-  self.jumpImageL = love.graphics.newImage('assets/JumpL.png')
-  local gjr = anim8.newGrid(self.jumpImageR:getWidth(), self.jumpImageR:getHeight(), self.jumpImageR:getWidth(), self.jumpImageR:getHeight())
-  local gjl = anim8.newGrid(self.jumpImageL:getWidth(), self.jumpImageL:getHeight(), self.jumpImageL:getWidth(), self.jumpImageL:getHeight())
-  self.JumpAnimationR = anim8.newAnimation(gjr(1,1), 0.033333)
-  self.JumpAnimationL = anim8.newAnimation(gjl(1,1), 0.033333)
+  self.jumpImageR = love.graphics.newImage(JUMP_RIGHT_SPRITE)
+  self.jumpImageL = love.graphics.newImage(JUMP_LEFT_SPRITE)
+  local gjr = anim8.newGrid(JUMP_KAI_WIDTH, JUMP_KAI_HEIGHT, self.jumpImageR:getWidth(), self.jumpImageR:getHeight())
+  local gjl = anim8.newGrid(JUMP_KAI_WIDTH, JUMP_KAI_HEIGHT, self.jumpImageL:getWidth(), self.jumpImageL:getHeight())
+  self.JumpAnimationR = anim8.newAnimation(gjr(JUMP_RIGHT_SPRITE_COLUMNS,JUMP_RIGHT_SPRITE_LINE), 0.033333)
+  self.JumpAnimationL = anim8.newAnimation(gjl(JUMP_LEFT_SPRITE_COLUMNS,JUMP_LEFT_SPRITE_LINE), 0.033333)
   
-  self.fallImageR = love.graphics.newImage('assets/FallR.png')
-  self.fallImageL = love.graphics.newImage('assets/FallL.png')
-  local gfr = anim8.newGrid(self.fallImageR:getWidth(), self.fallImageR:getHeight(), self.fallImageR:getWidth(), self.fallImageR:getHeight())
-  local gfl = anim8.newGrid(self.fallImageL:getWidth(), self.fallImageL:getHeight(), self.fallImageL:getWidth(), self.fallImageL:getHeight())
-  self.FallAnimationR = anim8.newAnimation(gfr(1,1), 0.033333)
-  self.FallAnimationL = anim8.newAnimation(gfl(1,1), 0.033333)
+  self.fallImageR = love.graphics.newImage(FALL_RIGHT_SPRITE)
+  self.fallImageL = love.graphics.newImage(FALL_LEFT_SPRITE)
+  local gfr = anim8.newGrid(FALL_KAI_WIDTH, FALL_KAI_HEIGHT, self.fallImageR:getWidth(), self.fallImageR:getHeight())
+  local gfl = anim8.newGrid(FALL_KAI_WIDTH, FALL_KAI_HEIGHT, self.fallImageL:getWidth(), self.fallImageL:getHeight())
+  self.FallAnimationR = anim8.newAnimation(gfr(FALL_RIGHT_SPRITE_COLUMNS,FALL_RIGHT_SPRITE_LINE), 0.033333)
+  self.FallAnimationL = anim8.newAnimation(gfl(FALL_LEFT_SPRITE_COLUMNS,FALL_LEFT_SPRITE_LINE), 0.033333)
 
   self.currentAnimation = self.IdleanimationR
   self.currentImage = self.SBIR
