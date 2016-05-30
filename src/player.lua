@@ -20,7 +20,7 @@ local WALK_SPD = 500
 local DASH_SPD = 1000
 local GRAVITY = 980
 local dashin_counter = 0
-local DASH_TIME = 0.25
+local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 250
 
@@ -40,8 +40,8 @@ Parameters:
 function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.x = x
   self.y = y
-  self.w = IDLE_KAI_WIDTH -- width da primeira animação
-  self.h = IDLE_KAI_HEIGHT -- height da primeira animação
+  self.w = w -- width da primeira animação
+  self.h = h -- height da primeira animação
   self.speedX = speedX
   self.speedY = speedY
   self.dir = direction.right
@@ -56,44 +56,30 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
+  self.sheet = love.graphics.newImage('assets/kaiTest/spritesheet_kai.png')
   
-  self.SBR = love.graphics.newImage(WALK_RIGHT_SPRITE)
-  self.SBL = love.graphics.newImage(WALK_LEFT_SPRITE)
-  local gr = anim8.newGrid(WALK_KAI_WIDTH, WALK_KAI_HEIGHT, self.SBR:getWidth(), self.SBR:getHeight())
-  local gl = anim8.newGrid(WALK_KAI_WIDTH, WALK_KAI_HEIGHT, self.SBL:getWidth(), self.SBL:getHeight())
-  self.WalkanimationR = anim8.newAnimation(gr(WALK_RIGHT_SPRITE_COLUMNS,WALK_RIGHT_SPRITE_LINE), 0.1)
-  self.WalkanimationL = anim8.newAnimation(gl(WALK_LEFT_SPRITE_COLUMNS, WALK_LEFT_SPRITE_LINE), 0.1)
+  local g = anim8.newGrid(264,352, self.sheet:getWidth(), self.sheet:getHeight())
+  self.WalkanimationR = anim8.newAnimation(g('1-16',3), 0.0625)
+  self.WalkanimationL = anim8.newAnimation(g('1-16',2), 0.0625)
   
-  self.SBIR = love.graphics.newImage(IDLE_RIGHT_SPRITE)
-  self.SBIL = love.graphics.newImage(IDLE_LEFT_SPRITE)
-  local gir = anim8.newGrid(IDLE_KAI_WIDTH, IDLE_KAI_HEIGHT, self.SBIR:getWidth(), self.SBIR:getHeight())
-  local gil = anim8.newGrid(IDLE_KAI_WIDTH, IDLE_KAI_HEIGHT, self.SBIL:getWidth(), self.SBIL:getHeight())
-  self.IdleanimationR = anim8.newAnimation(gir(IDLE_RIGHT_SPRITE_COLUMNS,IDLE_RIGHT_SPRITE_LINE), 0.1)
-  self.IdleanimationL = anim8.newAnimation(gil(IDLE_LEFT_SPRITE_COLUMNS,IDLE_LEFT_SPRITE_LINE), 0.1) 
+  self.IdleanimationR = anim8.newAnimation(g('1-8',1),0.125)
+  self.IdleanimationL = anim8.newAnimation(g('1-8',1),0.125)
   
-  self.DASHR = love.graphics.newImage(DASH_RIGHT_SPRITE)
-  self.DASHL = love.graphics.newImage(DASH_LEFT_SPRITE)
-  local gdr = anim8.newGrid(DASH_KAI_WIDTH, DASH_KAI_HEIGHT, self.DASHR:getWidth(), self.DASHR:getHeight())
-  local gdl = anim8.newGrid(DASH_KAI_WIDTH, DASH_KAI_HEIGHT, self.DASHL:getWidth(), self.DASHL:getHeight())
-  self.DashanimationR = anim8.newAnimation(gdr(DASH_RIGHT_SPRITE_COLUMNS,DASH_RIGHT_SPRITE_LINE), 0.033333)
-  self.DashanimationL = anim8.newAnimation(gdl(DASH_LEFT_SPRITE_COLUMNS,DASH_LEFT_SPRITE_LINE), 0.033333)
-  
-  self.jumpImageR = love.graphics.newImage(JUMP_RIGHT_SPRITE)
-  self.jumpImageL = love.graphics.newImage(JUMP_LEFT_SPRITE)
-  local gjr = anim8.newGrid(JUMP_KAI_WIDTH, JUMP_KAI_HEIGHT, self.jumpImageR:getWidth(), self.jumpImageR:getHeight())
-  local gjl = anim8.newGrid(JUMP_KAI_WIDTH, JUMP_KAI_HEIGHT, self.jumpImageL:getWidth(), self.jumpImageL:getHeight())
-  self.JumpAnimationR = anim8.newAnimation(gjr(JUMP_RIGHT_SPRITE_COLUMNS,JUMP_RIGHT_SPRITE_LINE), 0.033333)
-  self.JumpAnimationL = anim8.newAnimation(gjl(JUMP_LEFT_SPRITE_COLUMNS,JUMP_LEFT_SPRITE_LINE), 0.033333)
-  
-  self.fallImageR = love.graphics.newImage(FALL_RIGHT_SPRITE)
-  self.fallImageL = love.graphics.newImage(FALL_LEFT_SPRITE)
-  local gfr = anim8.newGrid(FALL_KAI_WIDTH, FALL_KAI_HEIGHT, self.fallImageR:getWidth(), self.fallImageR:getHeight())
-  local gfl = anim8.newGrid(FALL_KAI_WIDTH, FALL_KAI_HEIGHT, self.fallImageL:getWidth(), self.fallImageL:getHeight())
-  self.FallAnimationR = anim8.newAnimation(gfr(FALL_RIGHT_SPRITE_COLUMNS,FALL_RIGHT_SPRITE_LINE), 0.033333)
-  self.FallAnimationL = anim8.newAnimation(gfl(FALL_LEFT_SPRITE_COLUMNS,FALL_LEFT_SPRITE_LINE), 0.033333)
+  self.DASH = love.graphics.newImage('assets/kaiTest/spritesheet_kai2.png')
+  local gd = anim8.newGrid(310,264, self.DASH:getWidth(), self.DASH:getHeight())
 
-  self.currentAnimation = self.IdleanimationR
-  self.currentImage = self.SBIR
+  self.DashanimationR = anim8.newAnimation(gd('1-11',1), 0.08)
+  self.DashanimationL = anim8.newAnimation(gd('1-11',2), 0.08)
+  
+  self.JumpAnimationL = anim8.newAnimation(g('5-7',6), 0.5)
+  self.JumpAnimationR = anim8.newAnimation(g('5-7',7), 0.5)
+  
+
+  self.FallAnimationR = anim8.newAnimation(g('7-13',7), 0.16)
+  self.FallAnimationL = anim8.newAnimation(g('7-13',6), 0.16)
+
+  self.currentAnimation = self.IdleanimationL
+  self.currentImage = self.sheet
 
   world:add(self, self.x, self.y, self.w, self.h)
 end
@@ -222,7 +208,7 @@ function Player:moveRight()
   
   if not self.jumping then
     self.currentAnimation = self.WalkanimationR
-    self.currentImage = self.SBR
+    self.currentImage = self.sheet
   end
 end
 
@@ -242,7 +228,6 @@ function Player:moveLeft()
   
   if not self.jumping then
     self.currentAnimation = self.WalkanimationL
-    self.currentImage = self.SBL
   end
 end
 
@@ -271,10 +256,8 @@ returns nothing
 function Player:stop()
   if self.dir == direction.right then
     self.currentAnimation = self.IdleanimationR
-    self.currentImage = self.SBIR
   elseif self.dir == direction.left then
     self.currentAnimation = self.IdleanimationL
-    self.currentImage = self.SBIL
   end
   self.speedX = 0
   self.walking = false
@@ -296,10 +279,10 @@ function Player:dash()
     
     if self.dir == direction.right then
       self.currentAnimation = self.DashanimationR
-      self.currentImage = self.DASHR
+      self.currentImage = self.DASH
     elseif self.dir == direction.left then
       self.currentAnimation = self.DashanimationL
-      self.currentImage = self.DASHL
+      self.currentImage = self.DASH
     end
     
     self.hp = self.hp - 5
@@ -318,6 +301,7 @@ function Player:draw(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
   self.w,self.h = self.currentAnimation:getDimensions()
+  love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
   self:drawHp(cam)
   if not self.alive then
     love.graphics.draw(self.deathImg,camLeft,camTop + 360)
@@ -384,10 +368,10 @@ function Player:update(world,dt)
           self.speedX = 0        
           if self.dir == direction.right then  
             self.currentAnimation = self.IdleanimationR
-            self.currentImage = self.SBIR
+            self.currentImage = self.sheet
           elseif self.dir == direction.left then
             self.currentAnimation = self.IdleanimationL
-            self.currentImage = self.SBIL
+            self.currentImage = self.sheet
           end
         end
         self.jumping = false
@@ -397,7 +381,8 @@ function Player:update(world,dt)
       self.speedY = 100
       tempWallJump = true
     elseif other.tipo == "enemy" and self.dashing then
-      other:die(world)
+      other:deathAnimation()
+      other:die(world)       
       self:increaseHp(20)
     end
   end
@@ -407,18 +392,21 @@ function Player:update(world,dt)
   if self.speedY > 0 then
     if self.dir == direction.right then
       self.currentAnimation = self.FallAnimationR
-      self.currentImage = self.fallImageR
+      self.currentImage = self.sheet
+
     elseif self.dir == direction.left then
       self.currentAnimation = self.FallAnimationL
-      self.currentImage = self.fallImageL
+      self.currentImage = self.sheet
+
     end
   elseif self.speedY < 0 then -- Executa a animação do personagem pulando atualizando a direção.
     if self.dir == direction.right then
       self.currentAnimation = self.JumpAnimationR
-      self.currentImage = self.jumpImageR
+      self.currentImage = self.sheet
     elseif self.dir == direction.left then
       self.currentAnimation = self.JumpAnimationL
-      self.currentImage = self.jumpImageL
+      self.currentImage = self.sheet
+      
     end
   end
   

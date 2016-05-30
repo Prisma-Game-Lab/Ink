@@ -15,7 +15,7 @@ plataformas =
 {name = "wall2",x=2468,y=0,w=1,h=3060,tipo = "wall"},
 {name = "plat1",x=1,y=3060,w=2469,h=168,tipo = "plat"},
 {name = "plat2",x=1,y=2280,w=2095,h=100,tipo = "plat"},
-{name = "plat3",x=1,y=1472,w=82,h=80,tipo = "plat"},
+--{name = "plat3",x=1,y=1472,w=82,h=80,tipo = "plat"},
 {name = "plat4",x=372,y=1472,w=2097,h=80,tipo = "plat"},
 {name = "plat5",x=1,y=744,w=2080,h=100,tipo = "plat"},
 {name = "plat6",x=1,y=0,w=2468,h=124,tipo = "plat"}
@@ -25,8 +25,8 @@ plataformas =
 enemys = 
 
 {
-  {name = "enemy1",x=2410,y=1240,w=68,h=94,spdx = -100,tipo = "enemy"},
-  {name = "enemy2",x=800,y=850,w=68,h=94,spdx = 50,tipo = "enemy"}
+  {name = "enemy1",x=545,y=1925,w=248,h=350,spdx = 0,tipo = "enemy"},
+  {name = "enemy2",x=900,y=1125,w=248,h=350,spdx = 0,tipo = "enemy"}
   
 }
 

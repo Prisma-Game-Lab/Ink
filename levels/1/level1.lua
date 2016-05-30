@@ -16,7 +16,7 @@ require 'lib/dialogbox'
 --Create a new world in bump called lvl1, ikt will be used as the primary world in all collisions
 local lvl1 = bump.newWorld(50)
 --Create a new player based on the Player class (in player.lua)
-local player = Player:new(lvl1,60,2890,30,45,0,0)
+local player = Player:new(lvl1,60,2400,264,352,0,0)
 --Create a new empty list that later will be used to manage the enemies
 local enemyList = {}
 --Create a new camera based on the Gamera library in lib
@@ -40,13 +40,13 @@ function level1.load()
     print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
   end
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
-  --[[for i=1,#objects.enemys do
+  for i=1,#objects.enemys do
     local t = objects.enemys
     table.insert(enemyList, Enemy:new(lvl1, t[i].x, t[i].y, t[i].w,t[i].h,t[i].spdx))
     print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h,t[i].spdx)
     
   end
-  -]]
+  
   --Go through the triggers table and add the to the world one by one
   for i=1,#objects.triggers do
     local t = objects.triggers

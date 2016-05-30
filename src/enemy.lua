@@ -20,16 +20,21 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.dir = direction.right
   self.alive = true
   self.tipo = "enemy"
-
-  self.WalkR = love.graphics.newImage('assets/enemyR.png')
-  self.WalkL = love.graphics.newImage('assets/enemyL.png')
-  local gr = anim8.newGrid(68, 94, self.WalkR:getWidth(), self.WalkR:getHeight())
-  local gl = anim8.newGrid(68, 94, self.WalkL:getWidth(), self.WalkL:getHeight())
-  self.WalkanimationR = anim8.newAnimation(gr('1-2',1), 0.4)
-  self.WalkanimationL = anim8.newAnimation(gl('1-2',1), 0.4)
   
-  self.currentAnimation = self.WalkanimationR
-  self.currentImage = self.WalkR
+  self.idle = love.graphics.newImage('assets/enemyTest/enemy_idleT2.png')
+  self.death = love.graphics.newImage('assets/enemyTest/inimigo_morte.png')
+  
+  local gi = anim8.newGrid(248,350, self.idle:getWidth(), self.idle:getHeight())
+  self.IndleanimationR = anim8.newAnimation(gi('1-4',2), 0.1)
+  self.IndleanimationL = anim8.newAnimation(gi('4-1',1), 0.1)
+  
+  local gd = anim8.newGrid(620,880, self.death:getWidth(), self.death:getHeight())
+  self.deathAnimationR = anim8.newAnimation(gd('10-1',1), 0.25)
+  self.deathAnimationL = anim8.newAnimation(gd('1-10',2), 0.25)   
+  
+  
+  self.currentAnimation = self.IndleanimationL
+  self.currentImage = self.idle
 
   self.tipo = "enemy"
   world:add(self, self.x, self.y, self.w, self.h)
@@ -50,7 +55,11 @@ function Enemy:moveLeft(world)
 end
 
 function Enemy:draw()
+  if self.alive then
   self.currentAnimation:draw(self.currentImage,self.x,self.y)
+  elseif not self.alive then
+  self.currentAnimation:draw(self.currentImage,self.x,self.y,0,0.4,0.4)
+  end
 end
 
 function Enemy:update(world,dt)
@@ -63,7 +72,9 @@ function Enemy:update(world,dt)
   end
   self.x, self.y, cols, len = world:move(self, self.x + self.speedX * dt, self.y)
   
-  self.currentAnimation:update(dt)
+  
+
+self.currentAnimation:update(dt)
 end
 
 function Enemy:getX()
@@ -78,4 +89,13 @@ function Enemy:die(world)
   self.alive = false
   
   world:remove(self)
+end
+function Enemy:deathAnimation()
+  if self.dir == 1 then
+  self.currentAnimation = self.deathAnimationR
+  self.currentImage = self.death
+  elseif self.dir == -1 then
+  self.currentAnimation = self.deathAnimationL
+  self.currentImage = self.death
+  end
 end
