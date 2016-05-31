@@ -34,10 +34,12 @@ end
 
 function DialogBox:draw()
   self:updatePosition()
-
-  love.graphics.setColor(155, 155, 155, 100)
-  love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
-  love.graphics.setColor(155, 0, 0, 255)
-  love.graphics.print(string.sub(self.text, 1, math.floor(self.visibleText)), self.x + 10, self.y + 25, 0, self.textScale, self.textScale)
-  love.graphics.setColor(155, 155, 155)
+  
+  if self.visibleText < string.len(self.text)+5 then
+    love.graphics.setColor(155, 155, 155, 100)
+    love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
+    love.graphics.setColor(155, 0, 0, 255)
+    love.graphics.print(string.sub(self.text, 1, math.floor(self.visibleText)), self.x + 10, self.y + 25, 0, self.textScale, self.textScale)
+    love.graphics.setColor(155, 155, 155)
+  end
 end
