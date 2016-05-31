@@ -24,7 +24,7 @@ local cam = Camera:new(0,0,2469,3228)
 --Require the objects file, a .lua file that contain in tables all the informations need to add the objects to the world
 local objects = require "levels/1/obj1"
 
-local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift", "bottom", 4)
+local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift\n MUAHAHAHA", "bottom", 4, 0.5)
 
 function level1.load()
   song = love.audio.newSource("assets/06.mp3", "stream")

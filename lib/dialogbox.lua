@@ -2,11 +2,12 @@ local class = require("lib/middleclass")
 
 DialogBox = class('DialogBox')
 
-function DialogBox:initialize(cam, text, position, textSpeed)
+function DialogBox:initialize(cam, text, position, textSpeed, textScale)
   self.cam = cam
   self.text = text
   self.position = position
   self.textSpeed = textSpeed
+  self.textScale = textScale
   self.visibleText = 1
 
   self:updatePosition()
@@ -37,6 +38,6 @@ function DialogBox:draw()
   love.graphics.setColor(155, 155, 155, 100)
   love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
   love.graphics.setColor(155, 0, 0, 255)
-  love.graphics.print(string.sub(self.text, 1, math.floor(self.visibleText)), self.x + 10, self.y + 25, 0, 0.5, 0.5)
+  love.graphics.print(string.sub(self.text, 1, math.floor(self.visibleText)), self.x + 10, self.y + 25, 0, self.textScale, self.textScale)
   love.graphics.setColor(155, 155, 155)
 end
