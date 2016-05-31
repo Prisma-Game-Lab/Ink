@@ -16,7 +16,7 @@ require 'lib/dialogbox'
 --Create a new world in bump called lvl1, ikt will be used as the primary world in all collisions
 local lvl1 = bump.newWorld(50)
 --Create a new player based on the Player class (in player.lua)
-local player = Player:new(lvl1,60,2400,264,352,0,0)
+local player = Player:new(lvl1,60,2400,160,245,0,0)
 --Create a new empty list that later will be used to manage the enemies
 local enemyList = {}
 --Create a new camera based on the Gamera library in lib

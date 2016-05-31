@@ -24,6 +24,9 @@ local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 250
 
+local sounds = require "assets/sound/soundTest"
+
+
 --[[Player:initialize
 - inizializes all the variables of the class 'player'
 
@@ -59,11 +62,11 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.sheet = love.graphics.newImage('assets/kaiTest/spritesheet_kai.png')
   
   local g = anim8.newGrid(264,352, self.sheet:getWidth(), self.sheet:getHeight())
-  self.WalkanimationR = anim8.newAnimation(g('1-16',3), 0.0625)
-  self.WalkanimationL = anim8.newAnimation(g('1-16',2), 0.0625)
+  self.WalkanimationR = anim8.newAnimation(g('1-16',3), 0.05)
+  self.WalkanimationL = anim8.newAnimation(g('1-16',2), 0.05)
   
   self.IdleanimationR = anim8.newAnimation(g('1-8',1),0.125)
-  self.IdleanimationL = anim8.newAnimation(g('1-8',1),0.125)
+  self.IdleanimationL = anim8.newAnimation(g('9-16',1),0.125)
   
   self.DASH = love.graphics.newImage('assets/kaiTest/spritesheet_kai2.png')
   local gd = anim8.newGrid(310,264, self.DASH:getWidth(), self.DASH:getHeight())
@@ -74,9 +77,13 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.JumpAnimationL = anim8.newAnimation(g('5-7',6), 0.5)
   self.JumpAnimationR = anim8.newAnimation(g('5-7',7), 0.5)
   
+  self.WallAnimationR = anim8.newAnimation(g(1,4), 0.5)
+  self.WallAnimationL = anim8.newAnimation(g(1,5), 0.5)  
 
   self.FallAnimationR = anim8.newAnimation(g('7-13',7), 0.16)
   self.FallAnimationL = anim8.newAnimation(g('7-13',6), 0.16)
+  
+  
 
   self.currentAnimation = self.IdleanimationL
   self.currentImage = self.sheet
@@ -150,17 +157,26 @@ Parameters:
 function Player:keypressed(lvl, key)
   
   if key == "up" or key == "w" or key == "space" then
+    love.audio.stop(sounds.kai.walk)
+    love.audio.stop(sounds.kai.wall)
+    love.audio.play(sounds.kai.pulo2)
     self:jump(lvl)
+    
   end
 
   if key == "right" then
+    love.audio.play(sounds.kai.walk)
     self:moveRight()
   end
   
   if key == "left" then
+    love.audio.play(sounds.kai.walk)
     self:moveLeft()
   end
   if key == 'd' then
+    local r = math.random(1,3)
+    print(sounds.kai.dash[r].dash)
+    love.audio.play(sounds.kai.dash[r].dash)
     self:dash()  
   end
   
@@ -181,12 +197,14 @@ function Player:keyreleased(key)
   
   if key == "right" then
     if self.speedX > 0 and self.dashing == false then
+      love.audio.stop(sounds.kai.walk)
       self:stop()
     end
   end
   
   if key == "left" then
     if self.speedX < 0 and self.dashing == false then
+      love.audio.stop(sounds.kai.walk)
       self:stop()
     end
   end
@@ -299,9 +317,12 @@ Parameters:
 ]]--
 function Player:draw(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
-  self.currentAnimation:draw(self.currentImage,self.x,self.y)
-  self.w,self.h = self.currentAnimation:getDimensions()
-  love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+  local wI,hI = self.currentAnimation:getDimensions()
+  local ofx,ofy = wI-self.w,hI-self.h
+  
+  self.currentAnimation:draw(self.currentImage,self.x-ofx+40,self.y-ofy)  -- Player ANIMATION BOX
+  love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
+  
   self:drawHp(cam)
   if not self.alive then
     love.graphics.draw(self.deathImg,camLeft,camTop + 360)
@@ -342,6 +363,7 @@ function Player:update(world,dt)
   actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
   
   local tempWallJump = false
+  
   for i=1,len do
     local other = cols[i].other
     
@@ -380,6 +402,15 @@ function Player:update(world,dt)
     elseif other.tipo == "wall" and self.jumping or self.speedY > 100 then
       self.speedY = 100
       tempWallJump = true
+      if self.dir == direction.right then
+            love.audio.play(sounds.kai.wall)
+            self.currentAnimation = self.WallAnimationR
+            self.currentImage = self.sheet
+          elseif self.dir == direction.left then
+            love.audio.play(sounds.kai.wall)
+            self.currentAnimation = self.WallAnimationL
+            self.currentImage = self.sheet
+      end
     elseif other.tipo == "enemy" and self.dashing then
       other:deathAnimation()
       other:die(world)       
@@ -389,12 +420,12 @@ function Player:update(world,dt)
   
   self.canWallJump = tempWallJump
 
-  if self.speedY > 0 then
+  if self.speedY > 0 and not self.canWallJump then
     if self.dir == direction.right then
       self.currentAnimation = self.FallAnimationR
       self.currentImage = self.sheet
 
-    elseif self.dir == direction.left then
+    elseif self.dir == direction.left and not self.canWallJump  then
       self.currentAnimation = self.FallAnimationL
       self.currentImage = self.sheet
 
