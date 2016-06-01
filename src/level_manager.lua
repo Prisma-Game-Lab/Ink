@@ -33,7 +33,9 @@ local enemyList = {}
 local levels = 
 {
  
-level1 = require "levels/1/obj1"
+level1 = require "levels/1/obj1",
+
+level2 = require "levels/2/level2"
 
 }
 
@@ -43,7 +45,7 @@ function level_manager.load(level)
    if i == 1 then
      current_level = levels.level1
    elseif i == 2 then
-     change_scene("menu")
+     current_level = levels.level2
    elseif i == 3 then
      change_scene("menu")
    end
@@ -138,16 +140,14 @@ function level_manager.update(dt)
   end
   
   cam:update(player:getX(),player:getY(),dt)
-  if player:getY() > 3330 then
-    player:die()
-  end
+  
     for i,enemy in ipairs(enemyList) do
       if enemy.alive then
         enemy:update(lvl, dt)
       end
     end
    else 
-    love.audio.stop(song) 
+    love.audio.stop(current_level.sounds.song) 
   end
 end
 function level_manager.keypressed(key)
