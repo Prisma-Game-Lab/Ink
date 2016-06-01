@@ -7,6 +7,40 @@
 --This file contains all the objects present in the level
 --The objects contain the information in tables inside the corresponding table (sorted by type)
 
+--Create a new player based on the Player class (in player.lua)
+
+background = 
+
+{
+  
+bg = love.graphics.newImage("assets/cenario01.png")
+  
+}
+
+sounds = 
+{
+  
+  song = love.audio.newSource("assets/06.mp3", "stream")
+  
+}
+
+
+player =
+
+{
+  
+name = "player",x=60,y=2400,w=160,h=245,speedx = 0, speedy = 0, tipo = "player"
+
+}
+
+
+--Create a new camera based on the Gamera library in lib
+camera = 
+{
+
+name = "camera",x = 0,y = 0,w = 2469,h = 3228,scale = 0.5
+
+}
 plataformas = 
 
 {
@@ -36,4 +70,4 @@ triggers =
   {name = "levelend",x=334,y=512,w=107,h=143,tipo = "levelend"},
 }
 
-return {plataformas = plataformas,enemys = enemys,triggers = triggers}
+return {plataformas = plataformas,enemys = enemys,triggers = triggers, player = player,camera = camera,background = background,sounds = sounds}

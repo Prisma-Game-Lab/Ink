@@ -4,7 +4,6 @@
 --  Copyright © 2016 Rio PUC Games. All rights reserved.
 
 local buttons = require "Menu/buttons"
-local game = require "src/game"
 local menu = {}
 
 --[[local variables used to get the title image file's width and height]]--
@@ -43,7 +42,7 @@ function menu.keypressed(key)
   buttons.keypressed(key)
   if key == "return" and buttons.pressed == 1 then
     buttons.remove()
-    change_scene("level")
+    change_scene("level_selector",0)
   elseif key == "return" and buttons.pressed == 2 then
     love.event.push("quit")
   end

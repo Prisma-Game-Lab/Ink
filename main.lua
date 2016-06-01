@@ -12,7 +12,7 @@ love.filesystem.setRequirePath("?.lua;?/init.lua;" .. dir .. "?.lua;")
 local RPG_Logo = require "RPG_Full_Logo/RPG_Logo"
 local game = require "src/game"
 local menu = require "Menu/menu"
-local level = require "Menu/Level Selector/level_selector"
+local level_selector = require "Menu/Level Selector/level_selector"
 
 local scene
 
@@ -31,7 +31,7 @@ function love.load()
     RPG_Logo.load(1.5,1.5,1.5,function ()
     	change_scene("menu")
   	end)
-    scenes = { logo = RPG_Logo, game = game, menu = menu, level = level }
+    scenes = { logo = RPG_Logo, game = game, menu = menu, level_selector = level_selector }
     change_scene("logo")
 end
 
@@ -45,9 +45,13 @@ end
         -Change the scene based on the string in the parameter and calls that scene start function
 ]]
 
-function change_scene(new,...)
+function change_scene(new,num)
+    if num ~= 0 then
+      local numero = num
+      
+    end
     scene = new
-    scenes[scene].start(...)
+    scenes[scene].start(num)
 end
 
 function love.update(dt)

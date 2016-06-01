@@ -1,5 +1,5 @@
 local buttons = require "Menu/Level Selector/buttons_level"
-local game = require "src/game"
+--local game = require "src/game"
 
 local level_selector = {}
 
@@ -7,6 +7,8 @@ local level_selector = {}
 
 local tw = love.graphics.getWidth()
 local th = love.graphics.getHeight()
+
+
 
 
 --[[
@@ -46,11 +48,17 @@ end
 function level_selector.keypressed(key)
   buttonsl.keypressed(key)
   if key == "return" and buttonsl.pressed == 1 then
-    change_scene("game")
+    level_selector.choosed_level = 1
+    --print(level_selector.choosed_level)
+    change_scene("game",level_selector.choosed_level)
   elseif key == "return" and buttonsl.pressed == 2 then
-    change_scene("game")
+    level_selector.choosed_level = 2
+    --print(level_selector.choosed_level)
+    change_scene("game",level_selector.choosed_level)
     elseif key == "return" and buttonsl.pressed == 3 then
-    change_scene("game")
+    level_selector.choosed_level = 3
+    --print(level_selector.choosed_level)
+    change_scene("game",level_selector.choosed_level)
   end
   
 end
