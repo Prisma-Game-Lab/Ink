@@ -15,6 +15,8 @@ local anim8 = require 'lib/anim8'
 --require 'lib/dialogbox'
 local lselect =  require 'Menu/level selector/level_selector'
 
+local direction = { right = 1, left = -1 }
+
 --Require the current_level file, a .lua file that contain in tables all the informations need to add the current_level to the world
 
 
@@ -94,6 +96,86 @@ function level_manager.load(level)
   love.audio.play(current_level.sounds.song)
   
 end
+
+function computePlayerCollisions(actualX, actualY, cols, len)
+  local canWallJump = false
+  
+  -- percorre a lista de colisões
+  for i=1,len do
+    local other = cols[i].other
+    
+    for l=1,len do
+      local oother = cols[l].other
+      
+      -- resolve o bug de colidir com a parede e o chão ao mesmo tempo, no canto da tela
+      if other.tipo == "plat" and oother.tipo == "wall" then
+        canWallJump = true
+      end
+    end
+    
+    if other.tipo == "plat" then
+      -- colisão com plataformas
+      
+      -- checa se é uma colisão lateral
+      if (player.y + player.h - 1 > other.y and player.y + player.h - 1 < other.y + other.h) or (player.y - 1 > other.y and player.y - 1 < other.y + other.h) then
+        -- se foi uma colisão lateral diminui a speedY para o walljump
+        player.speedY = 100
+        canWallJump = true
+      else
+        -- se foi uma colisão vertical
+        -- batemos no chão, não temos mais velocidade de queda
+        player.speedY = 0
+        
+        -- checa se o botão de mover está pressionado (MELHORAR)
+        if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
+          player:moveRight()
+        elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
+          player:moveLeft()
+        else
+          player.speedX = 0
+          if player.dir == direction.right then  
+            player.currentAnimation = player.IdleanimationR
+            player.currentImage = player.sheet
+          elseif player.dir == direction.left then
+            player.currentAnimation = player.IdleanimationL
+            player.currentImage = player.sheet
+          end
+        end
+        
+        -- não estamos mais pulando
+        player.jumping = false
+        break
+      end
+    elseif other.tipo == "wall" and player.jumping or player.speedY > 0 then
+      -- se batemos numa parede, e estamos pulando ou caindo
+      player.speedY = 100
+      canWallJump = true
+    elseif other.tipo == "enemy" and player.dashing then
+      -- se batemos em um inimigo dando dash
+      other:deathAnimation()
+      other:die(lvl)       
+      player:increaseHp(20)
+    end
+  end
+  
+  if canWallJump then
+    -- seta a animação e o estado do player  
+    if player.dir == direction.right then
+        --love.audio.play(sounds.kai.wall)
+        player.currentAnimation = player.WallAnimationR
+        player.currentImage = player.sheet
+      elseif player.dir == direction.left then
+        --love.audio.play(sounds.kai.wall)
+        player.currentAnimation = player.WallAnimationL
+        player.currentImage = player.sheet
+      end
+  end
+  
+  player.canWallJump = canWallJump
+  player.x = actualX
+  player.y = actualY
+end
+
 --[[ 
         change_level
         -This function is based on the "change_scene" function. When it changes all the functions in game changes and use now the current level to load,update,draw,...
@@ -120,11 +202,31 @@ function level_manager.update(dt)
   local levelend = false
   
   if player.alive then
-  player:update(lvl, dt)
-  Portalanimation:update(dt)
-  time =  time + dt
-  local items, len = lvl:queryRect(player:getX()-1,player:getY(),player:getW()+2,player:getH()+1)
-  if len > 1 then
+    time =  time + dt
+    
+    -- update do player
+    player:update(dt)
+    
+    -- update da animação do portal
+    Portalanimation:update(dt)
+  
+    -- update da posição da câmera
+    cam:update(player:getX(),player:getY(),dt)
+  
+    -- update dos inimigos
+    for i,enemy in ipairs(enemyList) do
+      if enemy.alive then
+        enemy:update(lvl, dt)
+      end
+    end
+    
+    actualX, actualY, cols, len = lvl:move(player, player.x + player.speedX * dt, player.y + player.speedY * dt)
+    
+    computePlayerCollisions(actualX, actualY, cols, len)
+    
+    -- Gambiarra para fazer com que o player tome dano --
+    local items, len = lvl:queryRect(player:getX()-1,player:getY(),player:getW()+2,player:getH()+1)
+    if len > 1 then
       for i=1,len,1 do
           if items[i].tipo == "player" then
             playerin = true
@@ -134,34 +236,21 @@ function level_manager.update(dt)
             player:die()
           end
       end
-    if playerin and enemyin and not player.dashing then
-      player:push(lvl,100,-player.dir)
-      print("dano")
-      player:takeDamage(10)
-    end
-  end
-  
-  cam:update(player:getX(),player:getY(),dt)
-  
-    for i,enemy in ipairs(enemyList) do
-      if enemy.alive then
-        enemy:update(lvl, dt)
+      
+      if playerin and enemyin and not player.dashing then
+        player:push(lvl,100,-player.dir)
+        print("dano")
+        player:takeDamage(10)
       end
     end
-   else 
+
+  else 
     love.audio.stop(current_level.sounds.song) 
-    
-    
     savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","w")
     
     io.output(savefile)
-    
     io.write(player.hp,"\n",time,"\n")
-    
-  end
-  
-  
-  
+  end 
 end
 function level_manager.keypressed(key)
   --if key == "r" then

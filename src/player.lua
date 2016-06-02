@@ -14,10 +14,10 @@ require "lib/bump"
 
 Player = class('Player')
 
-local JMP_SPD = -700
-local HOP_SPD = -200
-local WALK_SPD = 500
-local DASH_SPD = 1000
+local JMP_SPD = -1000
+local HOP_SPD = -500
+local WALK_SPD = 800
+local DASH_SPD = 1200
 local GRAVITY = 980
 local dashin_counter = 0
 local DASH_TIME = 0.88
@@ -290,6 +290,7 @@ returns nothing
 ]]--
 function Player:dash()
   if not self.dashing and not self.canWallJump then
+    dashin_counter = 0
     self:move(self.speedX + self.dir*DASH_SPD)
     
     self.walking = false
@@ -338,111 +339,55 @@ Parameters:
   
   returns nothing
 ]]--
-function Player:update(world,dt)
+function Player:update(dt)
  
-  if self.dashing and dashin_counter > DASH_TIME then
-    self.dashing = false
-    self:stop()
-    dashin_counter = 0
-    if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
-      self:moveRight()
-    elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
-      self:moveLeft()
-    end 
-  end
-  
   self.currentAnimation:update(dt)
-  
+ 
   if self.dashing then
-    dashin_counter = dashin_counter + dt
-    self.speedY = 0
+    if dashin_counter > DASH_TIME then
+      -- se acabou o dash --
+      -- para o dash
+      self.dashing = false
+      self:stop()
+      
+      -- atualiza para moveRight ou moveLeft se a tecla left ou right estiverem pressionadas
+      if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
+        self:moveRight()
+      elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
+        self:moveLeft()
+      end 
+    else
+      -- se o dash ainda não acabou
+      -- atualiza o contador de tempo e não sofre a ação da gravidade
+      dashin_counter = dashin_counter + dt
+      self.speedY = 0
+    end
   else
+    -- se o player não está dando dash ele sofre a ação da gravidade
     self.speedY = self.speedY + GRAVITY*dt
   end
-  
-  actualX, self.y, cols, len = world:move(self, self.x + self.speedX*dt, self.y + self.speedY*dt)
-  
-  local tempWallJump = false
-  
-  for i=1,len do
-    local other = cols[i].other
-    
-    for l=1,len do
-      local oother = cols[l].other
-      if other.tipo == "plat" and oother.tipo == "wall" then
-        tempWallJump = true
-      end
-    end
-    
-    if other.tipo == "plat" then
-      if (self.y + self.h - 1 > other.y and self.y + self.h - 1 < other.y + other.h) or (self.y - 1 > other.y and self.y - 1 < other.y + other.h) then
-        self.speedY = 100
-        tempWallJump = true
-      else
-        -- Se foi uma colisão vertical
-        self.speedY = 0
-        
-        if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
-          self:moveRight()
-        elseif love.keyboard.isDown('left') or joystick1 and joystick1:isGamepadDown('dpleft') then
-          self:moveLeft()
-        else
-          self.speedX = 0        
-          if self.dir == direction.right then  
-            self.currentAnimation = self.IdleanimationR
-            self.currentImage = self.sheet
-          elseif self.dir == direction.left then
-            self.currentAnimation = self.IdleanimationL
-            self.currentImage = self.sheet
-          end
-        end
-        self.jumping = false
-        break
-      end
-    elseif other.tipo == "wall" and self.jumping or self.speedY > 100 then
-      self.speedY = 100
-      tempWallJump = true
-      if self.dir == direction.right then
-            love.audio.play(sounds.kai.wall)
-            self.currentAnimation = self.WallAnimationR
-            self.currentImage = self.sheet
-          elseif self.dir == direction.left then
-            love.audio.play(sounds.kai.wall)
-            self.currentAnimation = self.WallAnimationL
-            self.currentImage = self.sheet
-      end
-    elseif other.tipo == "enemy" and self.dashing then
-      other:deathAnimation()
-      other:die(world)       
-      self:increaseHp(20)
-    end
-  end
-  
-  self.canWallJump = tempWallJump
 
   if self.speedY > 0 and not self.canWallJump then
+    -- speedY > 0 significa que estamos caindo, então atualizamos a animação
     if self.dir == direction.right then
       self.currentAnimation = self.FallAnimationR
       self.currentImage = self.sheet
-
     elseif self.dir == direction.left and not self.canWallJump  then
       self.currentAnimation = self.FallAnimationL
       self.currentImage = self.sheet
-
     end
-  elseif self.speedY < 0 then -- Executa a animação do personagem pulando atualizando a direção.
+  elseif self.speedY < 0 then
+    -- speedY < 0 significa que estamos pulando, então atualizamos a animação
     if self.dir == direction.right then
       self.currentAnimation = self.JumpAnimationR
       self.currentImage = self.sheet
     elseif self.dir == direction.left then
       self.currentAnimation = self.JumpAnimationL
       self.currentImage = self.sheet
-      
     end
   end
   
   self:decreaseHp(dt)
-  self.x = actualX
 end
 
 --[[Player:getX
