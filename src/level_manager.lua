@@ -35,7 +35,9 @@ local levels =
  
 level1 = require "levels/1/obj1",
 
-level2 = require "levels/2/level2"
+level2 = require "levels/2/level2",
+
+level3 = require "levels/3/level3"
 
 }
 
@@ -47,7 +49,7 @@ function level_manager.load(level)
    elseif i == 2 then
      current_level = levels.level2
    elseif i == 3 then
-     change_scene("menu")
+     current_level = levels.level3
    end
    print(current_level.player)
    player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
@@ -148,14 +150,25 @@ function level_manager.update(dt)
     end
    else 
     love.audio.stop(current_level.sounds.song) 
+    
+    
+    savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","w")
+    
+    io.output(savefile)
+    
+    io.write(player.hp,"\n",time,"\n")
+    
   end
+  
+  
+  
 end
 function level_manager.keypressed(key)
-  --[[if key == "r" then
-    level_manager.reset()  
-    change_scene("logo")
-  end
-  -]]
+  --if key == "r" then
+    --level_manager.reset()  
+    --change_scene("logo")
+  --end
+  
   if player.keypressed then
     player:keypressed(lvl, key)
   end
@@ -236,13 +249,17 @@ function level_manager.reset()
   end
   
   for i, enemy in ipairs(enemyList) do
+    local t = current_level.enemys
     lvl:remove(enemy)
+    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h,t[i].spdx)
   end
   for i=1,#current_level.triggers do
     local t = current_level.triggers
     lvl:remove(t[i])
     print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)    
   end
-  --player:removePlayer(lvl)
+  player:removePlayer(lvl)
+  love.audio.stop(current_level.sounds.song) 
+  
 end
 return level_manager
