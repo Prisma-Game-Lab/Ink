@@ -120,7 +120,7 @@ function computePlayerCollisions(actualX, actualY, cols, len)
       -- colisão com plataformas
       
       -- checa se é uma colisão lateral
-      if (player.y + player.h - 1 > other.y and player.y + player.h - 1 < other.y + other.h) or (player.y - 1 > other.y and player.y - 1 < other.y + other.h) then
+      if player.x == actualX and player.speedX > 0 then
         -- se foi uma colisão lateral diminui a speedY para o walljump
         player.speedY = 100
         canWallJump = true
@@ -226,7 +226,6 @@ function level_manager.update(dt)
     end
     
     actualX, actualY, cols, len = lvl:move(player, player.x + player.speedX * dt, player.y + player.speedY * dt)
-    
     
     computePlayerCollisions(actualX, actualY, cols, len)
     
