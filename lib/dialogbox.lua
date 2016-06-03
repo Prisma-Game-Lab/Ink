@@ -2,14 +2,15 @@ local class = require("lib/middleclass")
 
 DialogBox = class('DialogBox')
 
-function DialogBox:initialize(cam, text, position, textSpeed, textScale)
+function DialogBox:initialize(cam, text, position, textSpeed, textScale, textSize)
   self.cam = cam
   self.text = text
   self.position = position
   self.textSpeed = textSpeed
   self.textScale = textScale
   self.visibleText = 1
-
+   
+  self.font = love.graphics.newFont("Assets/TimeMachino.ttf", textSize)
   self:updatePosition()
 end
 
@@ -34,7 +35,9 @@ end
 
 function DialogBox:draw()
   self:updatePosition()
-  
+
+  love.graphics.setFont(self.font)
+  -- text appear while its not completed
   if self.visibleText < string.len(self.text)+5 then
     love.graphics.setColor(155, 155, 155, 100)
     love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
