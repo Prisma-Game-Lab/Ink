@@ -48,10 +48,13 @@ function level_manager.load(level)
   print(i)
    if i == 1 then
      current_level = levels.level1
+     curr_level = 1
    elseif i == 2 then
      current_level = levels.level2
+     curr_level = 2
    elseif i == 3 then
      current_level = levels.level3
+     curr_level = 3
    end
    print(current_level.player)
    player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
@@ -246,10 +249,11 @@ function level_manager.update(dt)
 
   else 
     love.audio.stop(current_level.sounds.song) 
-    savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","w")
+    savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","r+")
+           
     
     io.output(savefile)
-    io.write(player.hp,"\n",time,"\n")
+    io.write("Level "..curr_level.."\n",player.hp,"\n",time,"\n")
   end 
 end
 function level_manager.keypressed(key)
