@@ -24,7 +24,7 @@ local cam = Camera:new(0,0,2469,3228)
 --Require the objects file, a .lua file that contain in tables all the informations need to add the objects to the world
 local objects = require "levels/1/obj1"
 
-local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift", "bottom", 4, 0.5)
+local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift", "bottom", 4, 0.5, 100)
 
 function level1.load()
   song = love.audio.newSource("assets/06.mp3", "stream")
@@ -84,7 +84,8 @@ function level1.update(dt)
   local enemyin = false
   local levelend = false
   
-  if player.alive then
+  cam:update(player:getX(),player:getY(),dt)
+  if player.alive and dlgBox.visibleText > string.len(dlgBox.text)+5 then
   player:update(lvl1, dt)
   Portalanimation:update(dt)
   time =  time + dt
@@ -105,7 +106,7 @@ function level1.update(dt)
       player:takeDamage(10)
     end
   end
-  
+
   cam:update(player:getX(),player:getY(),dt)
   if player:getY() > 3330 then
     player:die()
