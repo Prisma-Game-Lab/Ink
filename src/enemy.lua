@@ -40,14 +40,14 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   world:add(self, self.x, self.y, self.w, self.h)
 end
 
-function Enemy:moveRight(world)
+function Enemy:moveRight()
   self.dir = direction.right
   
   self.currentAnimation = self.WalkanimationR
   self.currentImage = self.WalkR
 end
 
-function Enemy:moveLeft(world)
+function Enemy:moveLeft()
   self.dir = direction.left
   
   self.currentAnimation = self.WalkanimationL
@@ -56,13 +56,13 @@ end
 
 function Enemy:draw()
   if self.alive then
-  self.currentAnimation:draw(self.currentImage,self.x,self.y)
+    self.currentAnimation:draw(self.currentImage,self.x,self.y)
   elseif not self.alive then
-  self.currentAnimation:draw(self.currentImage,self.x,self.y,0,0.4,0.4)
+    self.currentAnimation:draw(self.currentImage,self.x,self.y,0,0.4,0.4)
   end
 end
 
-function Enemy:update(world,dt)
+function Enemy:update(dt)
   if self.speedX  > 0 then
     self.currentAnimation = self.WalkanimationR
     self.currentImage = self.WalkR
@@ -70,11 +70,8 @@ function Enemy:update(world,dt)
     self.currentAnimation = self.WalkanimationL
     self.currentImage = self.WalkL
   end
-  self.x, self.y, cols, len = world:move(self, self.x + self.speedX * dt, self.y)
   
-  
-
-self.currentAnimation:update(dt)
+  self.currentAnimation:update(dt)
 end
 
 function Enemy:getX()
@@ -85,10 +82,8 @@ function Enemy:getY()
   return self.y
 end
 
-function Enemy:die(world)
+function Enemy:die()
   self.alive = false
-  
-  world:remove(self)
 end
 function Enemy:deathAnimation()
   if self.dir == 1 then

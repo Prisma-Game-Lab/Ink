@@ -153,7 +153,8 @@ function computePlayerCollisions(actualX, actualY, cols, len)
     elseif other.tipo == "enemy" and player.dashing then
       -- se batemos em um inimigo dando dash
       other:deathAnimation()
-      other:die(lvl)       
+      other:die()
+      lvl:remove(other)
       player:increaseHp(20)
     end
   end
@@ -216,11 +217,13 @@ function level_manager.update(dt)
     -- update dos inimigos
     for i,enemy in ipairs(enemyList) do
       if enemy.alive then
-        enemy:update(lvl, dt)
+        enemy:update(dt)
+        enemy.x, enemy.y, cols, len = lvl:move(enemy, enemy.x + enemy.speedX * dt, enemy.y)
       end
     end
     
     actualX, actualY, cols, len = lvl:move(player, player.x + player.speedX * dt, player.y + player.speedY * dt)
+    
     
     computePlayerCollisions(actualX, actualY, cols, len)
     
