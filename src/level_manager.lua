@@ -35,18 +35,22 @@ local enemyList = {}
 local levels = 
 {
  
-level1 = require "levels/1/obj1",
-
-level2 = require "levels/2/level2",
-
-level3 = require "levels/3/level3"
+require "levels/1/obj1",
+require "levels/1/leveltest",
+require "levels/2/level2",
+require "levels/3/level3"
 
 }
 
 function level_manager.load(level)
   i=level
   print(i)
-   if i == 1 then
+  current_level = levels[i]
+  print(levels[i].table)
+  print(levels[i].table.worldSize.height)
+ print("obj   "..levels[i].table.layers[1].objects[6].position.x)
+  print("Ze")
+   --[[if i == 1 then
      current_level = levels.level1
      curr_level = 1
    elseif i == 2 then
@@ -55,7 +59,7 @@ function level_manager.load(level)
    elseif i == 3 then
      current_level = levels.level3
      curr_level = 3
-   end
+   end]]--
    print(current_level.player)
    player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
    
@@ -71,12 +75,12 @@ function level_manager.load(level)
   local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
   Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
   
-  --Go through the platforms table and add the to the world one by one
-  for i=1,#current_level.plataformas do
-    local t = current_level.plataformas
-    lvl:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
-    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
-  end
+  --Go through the objects table and add the to the world one by one
+  local obj_l1 = levels[i].table.layers[1].objects
+  for k=1, #obj_l1 do
+   print(k.." "..obj_l1[k].name.." H".. obj_l1[k].size.height.." W".. obj_l1[k].size.width.." X".. obj_l1[k].position.x.." Y"..    obj_l1[k].position.y)
+   lvl:add(obj_l1[k],obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+    end
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
   for i=1,#current_level.enemys do
     local t = current_level.enemys
