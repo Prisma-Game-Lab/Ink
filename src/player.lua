@@ -321,7 +321,7 @@ function Player:draw(cam)
   local wI,hI = self.currentAnimation:getDimensions()
   local ofx,ofy = wI-self.w,hI-self.h
   
-  self.currentAnimation:draw(self.currentImage,self.x-ofx+40,self.y-ofy)  -- Player ANIMATION BOX
+  self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)  -- Player ANIMATION BOX
   love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
   
   self:drawHp(cam)

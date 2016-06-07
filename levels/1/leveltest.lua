@@ -45,15 +45,12 @@ local plataformas =
 
 {
   
-{name = "wall1",x=0,y=0,w=1,h=3060,tipo = "wall"},
-{name = "wall2",x=2468,y=0,w=1,h=3060,tipo = "wall"},
-{name = "plat1",x=1,y=3060,w=2469,h=168,tipo = "plat"},
-{name = "plat2",x=1,y=2280,w=2095,h=100,tipo = "plat"},
---{name = "plat3",x=1,y=1472,w=82,h=80,tipo = "plat"},
-{name = "plat4",x=372,y=1472,w=2097,h=80,tipo = "plat"},
-{name = "plat5",x=1,y=744,w=2080,h=100,tipo = "plat"},
-{name = "plat6",x=1,y=0,w=2468,h=124,tipo = "plat"}
-
+  love.graphics.newImage("assets/TilesDemo/1.png"),
+  love.graphics.newImage("assets/TilesDemo/2.png"),
+  love.graphics.newImage("assets/TilesDemo/3.png"),
+  love.graphics.newImage("assets/TilesDemo/4.png"),
+  love.graphics.newImage("assets/TilesDemo/5.png"),
+  love.graphics.newImage("assets/TilesDemo/floor.png")
 }
 
 local enemys = 

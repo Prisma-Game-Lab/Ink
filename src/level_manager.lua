@@ -37,6 +37,7 @@ local levels =
  
 require "levels/1/obj1",
 require "levels/1/leveltest",
+require "levels/3/leveltest2",
 require "levels/2/level2",
 require "levels/3/level3"
 
@@ -46,10 +47,9 @@ function level_manager.load(level)
   i=level
   print(i)
   current_level = levels[i]
-  print(levels[i].table)
-  print(levels[i].table.worldSize.height)
- print("obj   "..levels[i].table.layers[1].objects[6].position.x)
-  print("Ze")
+  obj_l1 = levels[i].table.layers[1].objects
+  print("World W:"..levels[i].table.worldSize.width)
+  print("World H:"..levels[i].table.worldSize.height)
    --[[if i == 1 then
      current_level = levels.level1
      curr_level = 1
@@ -64,7 +64,7 @@ function level_manager.load(level)
    player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
    
    
-   cam = Camera:new(current_level.camera.x,current_level.camera.y,current_level.camera.w,current_level.camera.h)
+   cam = Camera:new(current_level.camera.x,current_level.camera.y,levels[i].table.worldSize.width,levels[i].table.worldSize.height)
    cam:changeScale(current_level.camera.scale)
    
    
@@ -76,11 +76,12 @@ function level_manager.load(level)
   Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
   
   --Go through the objects table and add the to the world one by one
-  local obj_l1 = levels[i].table.layers[1].objects
+  
   for k=1, #obj_l1 do
    print(k.." "..obj_l1[k].name.." H".. obj_l1[k].size.height.." W".. obj_l1[k].size.width.." X".. obj_l1[k].position.x.." Y"..    obj_l1[k].position.y)
    lvl:add(obj_l1[k],obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
-    end
+  end
+  
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
   for i=1,#current_level.enemys do
     local t = current_level.enemys
@@ -99,8 +100,8 @@ function level_manager.load(level)
   --The list of levels that can be used in the change_scene function
   levels = {level_manager = level_manager} 
   time = 0
-  print(current_level.sounds)
-  love.audio.play(current_level.sounds.song)
+  --print(current_level.sounds)
+  --love.audio.play(current_level.sounds.song)
   
 end
 
@@ -110,7 +111,12 @@ function computePlayerCollisions(actualX, actualY, cols, len)
   -- percorre a lista de colisões
   for i=1,len do
     local other = cols[i].other
-    
+    if other.name == "2" or other.name == "5" then
+      other.tipo = "plat" 
+    elseif other.name == "floor"  then
+      other.tipo = "wall" 
+    end
+    print(other.tipo)
     for l=1,len do
       local oother = cols[l].other
       
@@ -304,7 +310,7 @@ end
 function level_manager.draw()
   cam:getCamera():draw(function(l,t,w,h)
     --DRAW STUFF HERE
-    love.graphics.draw(current_level.background.bg,0,0)
+    --love.graphics.draw(current_level.background.bg,0,0)
     
     for i,enemy in ipairs(enemyList) do
       if enemy.alive then
@@ -312,10 +318,19 @@ function level_manager.draw()
       end
     end
     love.graphics.setColor(112,112,112)
-    for i=1,#current_level.plataformas,1 do
-      local t = current_level.plataformas
-      love.graphics.rectangle("line",t[i].x,t[i].y,t[i].w,t[i].h)   
+    
+
+    for k=1, #obj_l1 do
+    love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+    if obj_l1[k].name == "2" then
+    love.graphics.draw(current_level.plataformas[2],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif obj_l1[k].name == "5" then
+    love.graphics.draw(current_level.plataformas[5],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif obj_l1[k].name == "floor" then
+    love.graphics.draw(current_level.plataformas[6],obj_l1[k].position.x,obj_l1[k].position.y)
     end
+   end
+    
     love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
     for i=1,#current_level.triggers,1 do
       local t = current_level.triggers
@@ -375,7 +390,7 @@ function level_manager.showStats()
   h = love.graphics.getHeight()
   love.graphics.rectangle('fill', x1 + w/2, y1+h/2, 1000, 700)
   love.graphics.setColor(155, 0, 0, 255)
-  love.graphics.printf("Level: " ..curr_level.. "\n\nHP: " ..math.floor(player.hp).. "\n\nTime: " ..string.sub(time,1,4).. "\n", x1 + w/2, y1+h/2 + 50, 1000, 'center')
+  love.graphics.printf("Level: " ..tostring(curr_level).. "\n\nHP: " ..math.floor(player.hp).. "\n\nTime: " ..string.sub(time,1,4).. "\n", x1 + w/2, y1+h/2 + 50, 1000, 'center')
   love.graphics.setColor(155, 155, 155)
   
 end
