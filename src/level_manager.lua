@@ -239,6 +239,7 @@ function level_manager.update(dt)
             enemyin = true
           elseif items[i].tipo == "levelend" then
             player:die()
+            level_manager.isFinished = true
           end
       end
       
@@ -251,11 +252,11 @@ function level_manager.update(dt)
 
   else 
     love.audio.stop(current_level.sounds.song) 
-    savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","r+")
+    --savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","w")
            
     
-    io.output(savefile)
-    io.write("Level "..curr_level.."\n",player.hp,"\n",time,"\n")
+    --io.output(savefile)
+    --io.write("Level "..curr_level.."\n",player.hp,"\n",time,"\n")
   end 
 end
 function level_manager.keypressed(key)
@@ -322,6 +323,11 @@ function level_manager.draw()
     love.graphics.print(string.sub(tostring(time), 1, 4),l + 550,t+10,0,0.3,0.3)
     player:draw(cam)
    -- dlgBox:draw(cam)
+   
+   if level_manager.isFinished then
+     level_manager.showStats()
+   end
+   
     
   end)
 end
@@ -357,4 +363,17 @@ function level_manager.reset()
   love.audio.stop(current_level.sounds.song) 
   
 end
+
+function level_manager.showStats()
+  love.graphics.setColor(155, 155, 155, 100)
+  x1,y1,x2,y2,x3,y3,x4,y4 = cam:getCamCorners()
+  w = love.graphics.getWidth()
+  h = love.graphics.getHeight()
+  love.graphics.rectangle('fill', x1 + w/2, y1+h/2, 1000, 700)
+  love.graphics.setColor(155, 0, 0, 255)
+  love.graphics.printf("Level: " ..curr_level.. "\n\nHP: " ..math.floor(player.hp).. "\n\nTime: " ..string.sub(time,1,4).. "\n", x1 + w/2, y1+h/2 + 50, 1000, 'center')
+  love.graphics.setColor(155, 155, 155)
+  
+end
+
 return level_manager

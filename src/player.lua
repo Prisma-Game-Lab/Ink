@@ -326,7 +326,7 @@ function Player:draw(cam)
   
   self:drawHp(cam)
   if not self.alive then
-    love.graphics.draw(self.deathImg,camLeft,camTop + 360)
+    --love.graphics.draw(self.deathImg,camLeft,camTop + 360)
   end
 end
 

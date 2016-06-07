@@ -29,3 +29,8 @@ end
 function Camera:changeScale(scale)
   self.cam:setScale(scale)
 end
+
+function Camera:getCamCorners()
+  return self.cam:getVisibleCorners()
+end
+
