@@ -37,7 +37,7 @@ local levels =
  
 require "levels/1/obj1",
 require "levels/1/leveltest",
-require "levels/3/leveltest2",
+require "levels/3/leveltest_fodase_3",
 require "levels/2/level2",
 require "levels/3/level3"
 
@@ -111,9 +111,9 @@ function computePlayerCollisions(actualX, actualY, cols, len)
   -- percorre a lista de colisões
   for i=1,len do
     local other = cols[i].other
-    if other.name == "2" or other.name == "5" then
+    if string.find(other.name, "plat_") then
       other.tipo = "plat" 
-    elseif other.name == "floor"  then
+    elseif string.find(other.name, "wall_")  then
       other.tipo = "wall" 
     end
     print(other.tipo)
@@ -322,11 +322,11 @@ function level_manager.draw()
 
     for k=1, #obj_l1 do
     love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
-    if obj_l1[k].name == "2" then
+    if string.find(other.name, "2") then
     love.graphics.draw(current_level.plataformas[2],obj_l1[k].position.x,obj_l1[k].position.y)
-    elseif obj_l1[k].name == "5" then
+    elseif string.find(other.name, "5") then
     love.graphics.draw(current_level.plataformas[5],obj_l1[k].position.x,obj_l1[k].position.y)
-    elseif obj_l1[k].name == "floor" then
+    elseif string.find(other.name, "wall_1") then
     love.graphics.draw(current_level.plataformas[6],obj_l1[k].position.x,obj_l1[k].position.y)
     end
    end
