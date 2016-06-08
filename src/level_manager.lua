@@ -116,7 +116,7 @@ function computePlayerCollisions(actualX, actualY, cols, len)
     elseif string.find(other.name, "wall_")  then
       other.tipo = "wall" 
     end
-    print(other.tipo)
+    --print(other.tipo)
     for l=1,len do
       local oother = cols[l].other
       
@@ -322,12 +322,12 @@ function level_manager.draw()
 
     for k=1, #obj_l1 do
     love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
-    if string.find(other.name, "2") then
-    love.graphics.draw(current_level.plataformas[2],obj_l1[k].position.x,obj_l1[k].position.y)
-    elseif string.find(other.name, "5") then
-    love.graphics.draw(current_level.plataformas[5],obj_l1[k].position.x,obj_l1[k].position.y)
-    elseif string.find(other.name, "wall_1") then
-    love.graphics.draw(current_level.plataformas[6],obj_l1[k].position.x,obj_l1[k].position.y)
+    if string.find(obj_l1[k].name, "plat_") then
+        local index = tonumber(string.match(obj_l1[k].name, "%d+"))
+        --print("index : "..index)
+          love.graphics.draw(current_level.plataformas[index],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "wall_") then
+    love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
     end
    end
     

@@ -44,12 +44,23 @@ name = "camera",x = 0,y = 0,w = 2469,h = 3228,scale = 0.5
 local plataformas = 
 
 {
-  love.graphics.newImage("assets/TilesDemo/1.png"),
-  love.graphics.newImage("assets/TilesDemo/2.png"),
-  love.graphics.newImage("assets/TilesDemo/3.png"),
-  love.graphics.newImage("assets/TilesDemo/4.png"),
-  love.graphics.newImage("assets/TilesDemo/5.png"),
-  love.graphics.newImage("assets/TilesDemo/floor.png")
+  love.graphics.newImage("assets/TilesDemo/plat_1.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_2.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_3.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_4.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_5.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_6.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_7.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_8.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_9.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_10.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_11.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_12.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_13.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_14.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_15.png"),
+  love.graphics.newImage("assets/TilesDemo/plat_16.png"),
+  love.graphics.newImage("assets/TilesDemo/wall_1.png")
   
 }
 
