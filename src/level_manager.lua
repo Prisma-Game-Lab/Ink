@@ -38,7 +38,7 @@ local levels =
  
 require "levels/1/obj1",
 require "levels/1/leveltest",
-require "levels/3/leveltest_fodase_3",
+require "levels/3/leveltest_playground_3",
 require "levels/2/level2",
 require "levels/3/level3"
 
