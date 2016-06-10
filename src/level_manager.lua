@@ -35,12 +35,10 @@ local enemyList = {}
 
 local levels = 
 {
- 
-require "levels/1/obj1",
-require "levels/1/leveltest",
-require "levels/3/leveltest_playground_3",
-require "levels/2/level2",
-require "levels/3/level3"
+require "levels/1/level_playground_1",
+require "levels/2/level_playground_2",
+require "levels/3/level_playground_3",
+require "levels/2/obj1",
 
 }
 
@@ -255,7 +253,7 @@ function level_manager.update(dt)
       end
       
       if playerin and enemyin and not player.dashing then
-        player:push(lvl,100,-player.dir)
+        player:push(lvl,250,-player.dir)
         print("dano")
         player:takeDamage(10)
       end

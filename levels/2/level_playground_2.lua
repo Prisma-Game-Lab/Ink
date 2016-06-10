@@ -99,7 +99,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 0
@@ -110,7 +110,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 120
@@ -121,7 +121,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 240
@@ -132,7 +132,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 360
@@ -143,7 +143,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 480
@@ -154,7 +154,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 600
@@ -165,7 +165,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 720
@@ -176,7 +176,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 840
@@ -187,7 +187,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 960
@@ -198,7 +198,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 1080
@@ -209,7 +209,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 1680
@@ -220,7 +220,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 1800
@@ -231,7 +231,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 1920
@@ -242,7 +242,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 2040
@@ -253,7 +253,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 2160
@@ -264,7 +264,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '2',
+     name = 'plat_2',
      position = {
       y = 2160,
       x = 2280
@@ -275,7 +275,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 0
@@ -286,7 +286,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 120
@@ -297,7 +297,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 240
@@ -308,7 +308,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 360
@@ -319,7 +319,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 480
@@ -330,7 +330,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 600
@@ -341,7 +341,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 720
@@ -352,7 +352,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 840
@@ -363,7 +363,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 960
@@ -374,7 +374,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 1080
@@ -385,7 +385,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 1680
@@ -396,7 +396,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 1800
@@ -407,7 +407,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 1920
@@ -418,7 +418,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 2040
@@ -429,7 +429,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 2160
@@ -440,7 +440,7 @@ local table = {
       height = 120,
       width = 120
      },
-     name = '5',
+     name = 'plat_5',
      position = {
       y = 2280,
       x = 2280

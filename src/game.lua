@@ -1,4 +1,3 @@
-local level1 = require ('levels/1/level1')
 local level_manager = require ('src/level_manager')
 local game = {}
 

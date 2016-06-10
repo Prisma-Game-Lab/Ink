@@ -1,15 +1,3 @@
-<<<<<<< .mine
---  obj1.lua
---  Project Nanquim
---  Created by RPG Programming Team
---  Copyright © 2016 Rio PUC Games. All rights reserved.
-
-
---This file contains all the objects present in the level
---The objects contain the information in tables inside the corresponding table (sorted by type)
-
---Create a new player based on the Player class (in player.lua)
-
 local background = 
 
 {
@@ -30,7 +18,7 @@ local player =
 
 {
   
-name = "player",x=60,y=1900,w=120,h=240,speedx = 0, speedy = 0, tipo = "player"
+name = "player",x=60,y=1900,w=120,h=238,speedx = 0, speedy = 0, tipo = "player"
 
 }
 
@@ -39,1089 +27,7 @@ name = "player",x=60,y=1900,w=120,h=240,speedx = 0, speedy = 0, tipo = "player"
 local camera = 
 {
 
-name = "camera",x = 0,y = 0,w = 2469,h = 3228,scale = 0.5
-
-}
-local plataformas = 
-
-{
-  love.graphics.newImage("assets/TilesDemo/1.png"),
-  love.graphics.newImage("assets/TilesDemo/2.png"),
-  love.graphics.newImage("assets/TilesDemo/3.png"),
-  love.graphics.newImage("assets/TilesDemo/4.png"),
-  love.graphics.newImage("assets/TilesDemo/5.png"),
-  love.graphics.newImage("assets/TilesDemo/floor.png")
-  
-}
-
-local enemys = 
-
-{
-  {name = "enemy1",x=545,y=1925,w=248,h=350,spdx = 0,tipo = "enemy"},
-  {name = "enemy2",x=900,y=1125,w=248,h=350,spdx = 0,tipo = "enemy"}
-  
-}
-
-local triggers = 
-
-{
-  {name = "levelend",x=334,y=512,w=107,h=143,tipo = "levelend"},
-}
-local table = {
-	cellSize = {
-		height = 120,
-		width = 120
-	},
-	cellsQuant = {
-		n_lines = 3,
-		n_cols = 4
-	},
-	worldSize = {
-		height = 2400,
-		width = 2400
-	},
-	layers = {
-		{
-			name = 'default',
-			objects = {
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 0,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 0,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 120,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 120,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 240,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 240,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 360,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 360,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 480,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 480,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 600,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 600,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 720,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 720,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 840,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 840,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 960,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 960,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1080,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_13',
-					position = {
-						y = 1080,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1080
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1200
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_15',
-					position = {
-						y = 1080,
-						x = 1320
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_13',
-					position = {
-						y = 1080,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_15',
-					position = {
-						y = 1080,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1080,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1200,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1200,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1320,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1320,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1440,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_13',
-					position = {
-						y = 1440,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1440,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1440,
-						x = 1080
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1440,
-						x = 1200
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_15',
-					position = {
-						y = 1440,
-						x = 1320
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1440,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1560,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1560,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1680,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_13',
-					position = {
-						y = 1680,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1680,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1680,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1680,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_15',
-					position = {
-						y = 1680,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1680,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1800,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1800,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1920,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1920,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 2040,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 2040,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 120
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 240
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 360
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 480
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 600
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 720
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_3',
-					position = {
-						y = 2160,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_1',
-					position = {
-						y = 2160,
-						x = 1440
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 1560
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 120
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 240
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 360
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 480
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 600
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 720
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_6',
-					position = {
-						y = 2280,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_4',
-					position = {
-						y = 2280,
-						x = 1440
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1560
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2280
-					}
-				}
-			}
-		}
-	}
-}
-
-return {table = table,plataformas = plataformas,enemys = enemys,triggers = triggers, player = player,camera = camera,background = background,sounds = sounds}||||||| .r0
-=======
---  obj1.lua
---  Project Nanquim
---  Created by RPG Programming Team
---  Copyright © 2016 Rio PUC Games. All rights reserved.
-
-
---This file contains all the objects present in the level
---The objects contain the information in tables inside the corresponding table (sorted by type)
-
---Create a new player based on the Player class (in player.lua)
-
-local background = 
-
-{
-  
-bg = love.graphics.newImage("assets/cenario01.png")
-  
-}
-
-local sounds = 
-{
-  
-  song = love.audio.newSource("assets/06.mp3", "stream")
-  
-}
-
-
-local player =
-
-{
-  
-name = "player",x=60,y=1900,w=120,h=240,speedx = 0, speedy = 0, tipo = "player"
-
-}
-
-
---Create a new camera based on the Gamera library in lib
-local camera = 
-{
-
-name = "camera",x = 0,y = 0,w = 2469,h = 3228,scale = 0.5
+name = "camera",x = 0,y = 0,w = 2469,h = 3228,scale = 0.3
 
 }
 local plataformas = 
@@ -1158,8 +64,9 @@ local enemys =
 local triggers = 
 
 {
-  {name = "levelend",x=334,y=512,w=107,h=143,tipo = "levelend"},
+  {name = "levelend",x=4560,y=1920,w=120,h=120,tipo = "levelend"},
 }
+
 local table = {
 	cellSize = {
 		height = 120,
@@ -1170,8 +77,8 @@ local table = {
 		n_cols = 4
 	},
 	worldSize = {
-		height = 2400,
-		width = 2400
+		height = 2160,
+		width = 4800
 	},
 	layers = {
 		{
@@ -1196,7 +103,7 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 0,
-						x = 2280
+						x = 4680
 					}
 				},
 				{
@@ -1218,7 +125,7 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 120,
-						x = 2280
+						x = 4680
 					}
 				},
 				{
@@ -1237,10 +144,76 @@ local table = {
 						height = 120,
 						width = 120
 					},
+					name = 'plat_2',
+					position = {
+						y = 240,
+						x = 2520
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 240,
+						x = 3000
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 240,
+						x = 3120
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 240,
+						x = 4200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 240,
+						x = 4320
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
 					name = 'wall_1',
 					position = {
 						y = 240,
-						x = 2280
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 240,
+						x = 4680
 					}
 				},
 				{
@@ -1259,10 +232,120 @@ local table = {
 						height = 120,
 						width = 120
 					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 600
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 720
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 840
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 1440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 1560
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 1680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 2040
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 360,
+						x = 2160
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
 					name = 'wall_1',
 					position = {
 						y = 360,
-						x = 2280
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 360,
+						x = 4680
 					}
 				},
 				{
@@ -1284,7 +367,62 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 480,
-						x = 2280
+						x = 480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 480,
+						x = 2760
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 480,
+						x = 3480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 480,
+						x = 3600
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 480,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 480,
+						x = 4680
 					}
 				},
 				{
@@ -1306,7 +444,51 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 600,
-						x = 2280
+						x = 480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 600,
+						x = 4080
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 600,
+						x = 4200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 600,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 600,
+						x = 4680
 					}
 				},
 				{
@@ -1328,7 +510,29 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 720,
-						x = 2280
+						x = 480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 720,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 720,
+						x = 4680
 					}
 				},
 				{
@@ -1347,10 +551,43 @@ local table = {
 						height = 120,
 						width = 120
 					},
+					name = 'plat_2',
+					position = {
+						y = 840,
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
 					name = 'wall_1',
 					position = {
 						y = 840,
-						x = 2280
+						x = 480
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 840,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 840,
+						x = 4680
 					}
 				},
 				{
@@ -1372,7 +609,194 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 960,
-						x = 2280
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1320
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1560
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1800
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 1920
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 2040
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 2160
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 2520
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 2640
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 3240
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 3360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 4080
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 960,
+						x = 4200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 960,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 960,
+						x = 4680
 					}
 				},
 				{
@@ -1391,10 +815,10 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_13',
+					name = 'wall_1',
 					position = {
 						y = 1080,
-						x = 840
+						x = 360
 					}
 				},
 				{
@@ -1402,29 +826,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1080
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
+					name = 'wall_1',
 					position = {
 						y = 1080,
 						x = 1200
@@ -1435,62 +837,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_15',
-					position = {
-						y = 1080,
-						x = 1320
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_13',
-					position = {
-						y = 1080,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1080,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_15',
+					name = 'wall_1',
 					position = {
 						y = 1080,
 						x = 2160
@@ -1504,7 +851,18 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1080,
-						x = 2280
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1080,
+						x = 4680
 					}
 				},
 				{
@@ -1526,7 +884,40 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1200,
-						x = 2280
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1200,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1200,
+						x = 2160
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1200,
+						x = 4680
 					}
 				},
 				{
@@ -1548,7 +939,95 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1320,
-						x = 2280
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1320,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1320,
+						x = 1560
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1320,
+						x = 1680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1320,
+						x = 1800
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1320,
+						x = 1920
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1320,
+						x = 2040
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1320,
+						x = 2160
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1320,
+						x = 4680
 					}
 				},
 				{
@@ -1567,10 +1046,10 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_13',
+					name = 'wall_1',
 					position = {
 						y = 1440,
-						x = 840
+						x = 360
 					}
 				},
 				{
@@ -1578,29 +1057,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_14',
-					position = {
-						y = 1440,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
-					position = {
-						y = 1440,
-						x = 1080
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_14',
+					name = 'wall_1',
 					position = {
 						y = 1440,
 						x = 1200
@@ -1611,9 +1068,141 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_15',
+					name = 'wall_1',
 					position = {
 						y = 1440,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1440,
+						x = 4680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1560,
+						x = 0
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1560,
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1560,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1560,
+						x = 3000
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1560,
+						x = 3600
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1560,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1560,
+						x = 4680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1680,
+						x = 0
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1680,
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1680,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 1680,
 						x = 1320
 					}
 				},
@@ -1622,43 +1211,10 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'wall_1',
-					position = {
-						y = 1440,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1560,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
-					position = {
-						y = 1560,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'wall_1',
+					name = 'plat_2',
 					position = {
 						y = 1680,
-						x = 0
+						x = 1440
 					}
 				},
 				{
@@ -1666,7 +1222,18 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_13',
+					name = 'plat_2',
+					position = {
+						y = 1680,
+						x = 1560
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
 					position = {
 						y = 1680,
 						x = 1680
@@ -1677,7 +1244,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_14',
+					name = 'plat_2',
 					position = {
 						y = 1680,
 						x = 1800
@@ -1688,7 +1255,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_14',
+					name = 'plat_2',
 					position = {
 						y = 1680,
 						x = 1920
@@ -1699,7 +1266,7 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_14',
+					name = 'plat_2',
 					position = {
 						y = 1680,
 						x = 2040
@@ -1710,10 +1277,10 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_15',
+					name = 'wall_1',
 					position = {
 						y = 1680,
-						x = 2160
+						x = 4440
 					}
 				},
 				{
@@ -1724,7 +1291,7 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1680,
-						x = 2280
+						x = 4680
 					}
 				},
 				{
@@ -1746,7 +1313,29 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1800,
-						x = 2280
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1800,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1800,
+						x = 4680
 					}
 				},
 				{
@@ -1768,7 +1357,29 @@ local table = {
 					name = 'wall_1',
 					position = {
 						y = 1920,
-						x = 2280
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1920,
+						x = 4440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 1920,
+						x = 4680
 					}
 				},
 				{
@@ -1787,7 +1398,172 @@ local table = {
 						height = 120,
 						width = 120
 					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 120
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 240
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 360
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 840
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 960
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1080
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
 					name = 'wall_1',
+					position = {
+						y = 2040,
+						x = 1200
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1320
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1440
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1560
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1680
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1800
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 1920
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 2040
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
+					position = {
+						y = 2040,
+						x = 2160
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'plat_2',
 					position = {
 						y = 2040,
 						x = 2280
@@ -1800,8 +1576,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 0
+						y = 2040,
+						x = 2400
 					}
 				},
 				{
@@ -1811,8 +1587,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 120
+						y = 2040,
+						x = 2520
 					}
 				},
 				{
@@ -1822,8 +1598,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 240
+						y = 2040,
+						x = 2640
 					}
 				},
 				{
@@ -1833,8 +1609,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 360
+						y = 2040,
+						x = 2760
 					}
 				},
 				{
@@ -1844,8 +1620,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 480
+						y = 2040,
+						x = 2880
 					}
 				},
 				{
@@ -1855,8 +1631,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 600
+						y = 2040,
+						x = 3840
 					}
 				},
 				{
@@ -1866,8 +1642,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 720
+						y = 2040,
+						x = 3960
 					}
 				},
 				{
@@ -1877,30 +1653,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_3',
-					position = {
-						y = 2160,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_1',
-					position = {
-						y = 2160,
-						x = 1440
+						y = 2040,
+						x = 4080
 					}
 				},
 				{
@@ -1910,8 +1664,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 1560
+						y = 2040,
+						x = 4200
 					}
 				},
 				{
@@ -1921,8 +1675,19 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 1680
+						y = 2040,
+						x = 4320
+					}
+				},
+				{
+					size = {
+						height = 120,
+						width = 120
+					},
+					name = 'wall_1',
+					position = {
+						y = 2040,
+						x = 4440
 					}
 				},
 				{
@@ -1932,8 +1697,8 @@ local table = {
 					},
 					name = 'plat_2',
 					position = {
-						y = 2160,
-						x = 1800
+						y = 2040,
+						x = 4560
 					}
 				},
 				{
@@ -1941,230 +1706,10 @@ local table = {
 						height = 120,
 						width = 120
 					},
-					name = 'plat_2',
+					name = 'wall_1',
 					position = {
-						y = 2160,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_2',
-					position = {
-						y = 2160,
-						x = 2280
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 0
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 120
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 240
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 360
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 480
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 600
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 720
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 840
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_6',
-					position = {
-						y = 2280,
-						x = 960
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_4',
-					position = {
-						y = 2280,
-						x = 1440
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1560
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1680
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1800
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 1920
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2040
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2160
-					}
-				},
-				{
-					size = {
-						height = 120,
-						width = 120
-					},
-					name = 'plat_5',
-					position = {
-						y = 2280,
-						x = 2280
+						y = 2040,
+						x = 4680
 					}
 				}
 			}
@@ -2172,4 +1717,4 @@ local table = {
 	}
 }
 
-return {table = table,plataformas = plataformas,enemys = enemys,triggers = triggers, player = player,camera = camera,background = background,sounds = sounds}>>>>>>> .r125
+return {table = table,plataformas = plataformas,enemys = enemys,triggers = triggers, player = player,camera = camera,background = background,sounds = sounds}
