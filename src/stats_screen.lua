@@ -1,3 +1,14 @@
+--[[
+showStats
+it shows the statistics of the player in the level
+
+parameters:
+curr_level: the current level that the player is playing
+
+
+--]]
+
+
 function showStats(curr_level)
   love.graphics.setColor(155, 155, 155, 100)
   x1,y1,x2,y2,x3,y3,x4,y4 = cam:getCamCorners()

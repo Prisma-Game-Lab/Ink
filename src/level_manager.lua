@@ -8,6 +8,7 @@ local level_manager = {}
 require "src/player"
 require "src/enemy"
 require "src/camera"
+require "src/save_game"
 require "src/stats_screen"
 require "lib/middleclass"
 local bump = require 'lib/bump'
@@ -344,6 +345,7 @@ function level_manager.draw()
    
    if level_manager.isFinished then
      showStats(i)
+     saveFile(i,time,player.hp)
    end
    
     
