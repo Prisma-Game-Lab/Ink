@@ -19,7 +19,7 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.speedX = spdX
   self.dir = direction.right
   self.alive = true
-  self.tipo = "enemy"
+  self.name = "enemy"
   
   self.idle = love.graphics.newImage('assets/enemyTest/enemy_idleT2.png')
   self.death = love.graphics.newImage('assets/enemyTest/inimigo_morte.png')
@@ -37,6 +37,7 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.currentImage = self.idle
 
   self.tipo = "enemy"
+  
   world:add(self, self.x, self.y, self.w, self.h)
 end
 

@@ -18,7 +18,7 @@ local JMP_SPD = -1000
 local HOP_SPD = -500
 local WALK_SPD = 800
 local DASH_SPD = 1200
-local GRAVITY = 980
+local GRAVITY = 2000
 local dashin_counter = 0
 local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
@@ -155,31 +155,31 @@ Parameters:
   returns: -nothing-
 ]]--
 function Player:keypressed(lvl, key)
-  
-  if key == "up" or key == "w" or key == "space" then
-    love.audio.stop(sounds.kai.walk)
-    love.audio.stop(sounds.kai.wall)
-    love.audio.play(sounds.kai.pulo2)
-    self:jump(lvl)
-    
-  end
+  if self.alive then
+    if key == "up" or key == "w" or key == "space" then
+      love.audio.stop(sounds.kai.walk)
+      love.audio.stop(sounds.kai.wall)
+      love.audio.play(sounds.kai.pulo2)
+      self:jump(lvl)
+      
+    end
 
-  if key == "right" then
-    love.audio.play(sounds.kai.walk)
-    self:moveRight()
+    if key == "right" then
+      love.audio.play(sounds.kai.walk)
+      self:moveRight()
+    end
+    
+    if key == "left" then
+      love.audio.play(sounds.kai.walk)
+      self:moveLeft()
+    end
+    if key == 'd' then
+      local r = math.random(1,3)
+      print(sounds.kai.dash[r].dash)
+      love.audio.play(sounds.kai.dash[r].dash)
+      self:dash()  
+    end
   end
-  
-  if key == "left" then
-    love.audio.play(sounds.kai.walk)
-    self:moveLeft()
-  end
-  if key == 'd' then
-    local r = math.random(1,3)
-    print(sounds.kai.dash[r].dash)
-    love.audio.play(sounds.kai.dash[r].dash)
-    self:dash()  
-  end
-  
 end
 
 --[[Player:keyreleased
@@ -191,21 +191,23 @@ Parameters:
   returns: -nothing-
 ]]--
 function Player:keyreleased(key)
-  if key == 'up' then
-    self:shortHop()
-  end
-  
-  if key == "right" then
-    if self.speedX > 0 and self.dashing == false then
-      love.audio.stop(sounds.kai.walk)
-      self:stop()
+  if self.alive then
+    if key == 'up' then
+      self:shortHop()
     end
-  end
-  
-  if key == "left" then
-    if self.speedX < 0 and self.dashing == false then
-      love.audio.stop(sounds.kai.walk)
-      self:stop()
+    
+    if key == "right" then
+      if self.speedX > 0 and self.dashing == false then
+        love.audio.stop(sounds.kai.walk)
+        self:stop()
+      end
+    end
+    
+    if key == "left" then
+      if self.speedX < 0 and self.dashing == false then
+        love.audio.stop(sounds.kai.walk)
+        self:stop()
+      end
     end
   end
 end 
@@ -291,6 +293,7 @@ returns nothing
 function Player:dash()
   if not self.dashing and not self.canWallJump then
     dashin_counter = 0
+    self:stop()
     self:move(self.speedX + self.dir*DASH_SPD)
     
     self.walking = false
@@ -321,7 +324,20 @@ function Player:draw(cam)
   local wI,hI = self.currentAnimation:getDimensions()
   local ofx,ofy = wI-self.w,hI-self.h
   
-  self.currentAnimation:draw(self.currentImage,self.x-ofx+40,self.y-ofy)  -- Player ANIMATION BOX
+  self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)-- Player ANIMATION BOX
+  
+   if self.dashing and self.dir == 1 then 
+    for i=1,8 do
+    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
+    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    end
+  elseif self.dashing and self.dir == -1 then    
+     for i=1,8 do
+    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
+    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    end    
+  end
+  
   love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
   
   self:drawHp(cam)

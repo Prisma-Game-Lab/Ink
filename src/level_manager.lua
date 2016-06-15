@@ -8,6 +8,7 @@ local level_manager = {}
 require "src/player"
 require "src/enemy"
 require "src/camera"
+require "src/save_game"
 require "src/stats_screen"
 require "lib/middleclass"
 local bump = require 'lib/bump'
@@ -35,19 +36,21 @@ local enemyList = {}
 
 local levels = 
 {
- 
-level1 = require "levels/1/obj1",
-
-level2 = require "levels/2/level2",
-
-level3 = require "levels/3/level3"
+require "levels/1/level_playground_1",
+require "levels/2/level_playground_2",
+require "levels/3/level_playground_3",
+require "levels/2/obj1",
 
 }
 
 function level_manager.load(level)
   i=level
   print(i)
-   if i == 1 then
+  current_level = levels[i]
+  obj_l1 = levels[i].table.layers[1].objects
+  print("World W:"..levels[i].table.worldSize.width)
+  print("World H:"..levels[i].table.worldSize.height)
+   --[[if i == 1 then
      current_level = levels.level1
      curr_level = 1
    elseif i == 2 then
@@ -56,12 +59,12 @@ function level_manager.load(level)
    elseif i == 3 then
      current_level = levels.level3
      curr_level = 3
-   end
+   end]]--
    print(current_level.player)
    player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
    
    
-   cam = Camera:new(current_level.camera.x,current_level.camera.y,current_level.camera.w,current_level.camera.h)
+   cam = Camera:new(current_level.camera.x,current_level.camera.y,levels[i].table.worldSize.width,levels[i].table.worldSize.height)
    cam:changeScale(current_level.camera.scale)
    
    
@@ -72,12 +75,13 @@ function level_manager.load(level)
   local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
   Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
   
-  --Go through the platforms table and add the to the world one by one
-  for i=1,#current_level.plataformas do
-    local t = current_level.plataformas
-    lvl:add(t[i],t[i].x,t[i].y,t[i].w,t[i].h)
-    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h)
+  --Go through the objects table and add the to the world one by one
+  
+  for k=1, #obj_l1 do
+   print(k.." "..obj_l1[k].name.." H".. obj_l1[k].size.height.." W".. obj_l1[k].size.width.." X".. obj_l1[k].position.x.." Y"..    obj_l1[k].position.y)
+   lvl:add(obj_l1[k],obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
   end
+  
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
   for i=1,#current_level.enemys do
     local t = current_level.enemys
@@ -96,8 +100,8 @@ function level_manager.load(level)
   --The list of levels that can be used in the change_scene function
   levels = {level_manager = level_manager} 
   time = 0
-  print(current_level.sounds)
-  love.audio.play(current_level.sounds.song)
+  --print(current_level.sounds)
+  --love.audio.play(current_level.sounds.song)
   
 end
 
@@ -107,7 +111,12 @@ function computePlayerCollisions(actualX, actualY, cols, len)
   -- percorre a lista de colisões
   for i=1,len do
     local other = cols[i].other
-    
+    if string.find(other.name, "plat_") then
+      other.tipo = "plat" 
+    elseif string.find(other.name, "wall_")  then
+      other.tipo = "wall" 
+    end
+    --print(other.tipo)
     for l=1,len do
       local oother = cols[l].other
       
@@ -245,7 +254,7 @@ function level_manager.update(dt)
       end
       
       if playerin and enemyin and not player.dashing then
-        player:push(lvl,100,-player.dir)
+        player:push(lvl,250,-player.dir)
         print("dano")
         player:takeDamage(10)
       end
@@ -301,7 +310,7 @@ end
 function level_manager.draw()
   cam:getCamera():draw(function(l,t,w,h)
     --DRAW STUFF HERE
-    love.graphics.draw(current_level.background.bg,0,0)
+    --love.graphics.draw(current_level.background.bg,0,0)
     
     for i,enemy in ipairs(enemyList) do
       if enemy.alive then
@@ -309,10 +318,19 @@ function level_manager.draw()
       end
     end
     love.graphics.setColor(112,112,112)
-    for i=1,#current_level.plataformas,1 do
-      local t = current_level.plataformas
-      love.graphics.rectangle("line",t[i].x,t[i].y,t[i].w,t[i].h)   
+    
+
+    for k=1, #obj_l1 do
+    love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+    if string.find(obj_l1[k].name, "plat_") then
+        local index = tonumber(string.match(obj_l1[k].name, "%d+"))
+        --print("index : "..index)
+          love.graphics.draw(current_level.plataformas[index],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "wall_") then
+    love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
     end
+   end
+    
     love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
     for i=1,#current_level.triggers,1 do
       local t = current_level.triggers
@@ -326,7 +344,8 @@ function level_manager.draw()
    -- dlgBox:draw(cam)
    
    if level_manager.isFinished then
-      showStats()
+     showStats(i)
+     saveFile(i,time,player.hp)
    end
    
     
