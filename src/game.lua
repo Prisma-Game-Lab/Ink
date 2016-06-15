@@ -1,4 +1,3 @@
-local level1 = require ('levels/1/level1')
 local level_manager = require ('src/level_manager')
 local game = {}
 
@@ -22,9 +21,6 @@ function game.load(level)
   level_manager.load(level)
         
 end
-
-
-
 function game.update(dt)
     level_manager.update(dt)
 end

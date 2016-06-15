@@ -18,11 +18,12 @@ local JMP_SPD = -1000
 local HOP_SPD = -500
 local WALK_SPD = 800
 local DASH_SPD = 1200
-local GRAVITY = 980
+local GRAVITY = 2000
 local dashin_counter = 0
 local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 250
+local DASH_CD = 0
 
 local sounds = require "assets/sound/soundTest"
 
@@ -55,6 +56,8 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.hp = 100
   self.alive = true
   self.tipo = "player"
+  
+  self.dash_indicator = love.graphics.newImage('assets/Dash_CD.png')
   
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
@@ -155,31 +158,31 @@ Parameters:
   returns: -nothing-
 ]]--
 function Player:keypressed(lvl, key)
-  
-  if key == "up" or key == "w" or key == "space" then
-    love.audio.stop(sounds.kai.walk)
-    love.audio.stop(sounds.kai.wall)
-    love.audio.play(sounds.kai.pulo2)
-    self:jump(lvl)
-    
-  end
+  if self.alive then
+    if key == "up" or key == "w" or key == "space" then
+      love.audio.stop(sounds.kai.walk)
+      love.audio.stop(sounds.kai.wall)
+      love.audio.play(sounds.kai.pulo2)
+      self:jump(lvl)
+      
+    end
 
-  if key == "right" then
-    love.audio.play(sounds.kai.walk)
-    self:moveRight()
+    if key == "right" then
+      love.audio.play(sounds.kai.walk)
+      self:moveRight()
+    end
+    
+    if key == "left" then
+      love.audio.play(sounds.kai.walk)
+      self:moveLeft()
+    end
+    if key == 'd' then
+      local r = math.random(1,3)
+      print(sounds.kai.dash[r].dash)
+      love.audio.play(sounds.kai.dash[r].dash)
+      self:dash()  
+    end
   end
-  
-  if key == "left" then
-    love.audio.play(sounds.kai.walk)
-    self:moveLeft()
-  end
-  if key == 'd' then
-    local r = math.random(1,3)
-    print(sounds.kai.dash[r].dash)
-    love.audio.play(sounds.kai.dash[r].dash)
-    self:dash()  
-  end
-  
 end
 
 --[[Player:keyreleased
@@ -191,21 +194,23 @@ Parameters:
   returns: -nothing-
 ]]--
 function Player:keyreleased(key)
-  if key == 'up' then
-    self:shortHop()
-  end
-  
-  if key == "right" then
-    if self.speedX > 0 and self.dashing == false then
-      love.audio.stop(sounds.kai.walk)
-      self:stop()
+  if self.alive then
+    if key == 'up' then
+      self:shortHop()
     end
-  end
-  
-  if key == "left" then
-    if self.speedX < 0 and self.dashing == false then
-      love.audio.stop(sounds.kai.walk)
-      self:stop()
+    
+    if key == "right" then
+      if self.speedX > 0 and self.dashing == false then
+        love.audio.stop(sounds.kai.walk)
+        self:stop()
+      end
+    end
+    
+    if key == "left" then
+      if self.speedX < 0 and self.dashing == false then
+        love.audio.stop(sounds.kai.walk)
+        self:stop()
+      end
     end
   end
 end 
@@ -273,8 +278,10 @@ returns nothing
 ]]--
 function Player:stop()
   if self.dir == direction.right then
+    self.currentImage = self.sheet
     self.currentAnimation = self.IdleanimationR
   elseif self.dir == direction.left then
+    self.currentImage = self.sheet
     self.currentAnimation = self.IdleanimationL
   end
   self.speedX = 0
@@ -289,8 +296,10 @@ Don't uses parameters
 returns nothing
 ]]--
 function Player:dash()
+  if DASH_CD == 0 then
   if not self.dashing and not self.canWallJump then
     dashin_counter = 0
+    self:stop()
     self:move(self.speedX + self.dir*DASH_SPD)
     
     self.walking = false
@@ -306,6 +315,7 @@ function Player:dash()
     
     self.hp = self.hp - 5
   end
+  end
 end
 
 --[[Player:draw
@@ -317,11 +327,25 @@ Parameters:
   returns nothing
 ]]--
 function Player:draw(cam)
+  print(DASH_CD)
   local camLeft, camTop = cam:getCamera():getVisible()
   local wI,hI = self.currentAnimation:getDimensions()
   local ofx,ofy = wI-self.w,hI-self.h
   
-  self.currentAnimation:draw(self.currentImage,self.x-ofx+40,self.y-ofy)  -- Player ANIMATION BOX
+  self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)-- Player ANIMATION BOX
+  
+   if self.dashing and self.dir == 1 and not self.canWallJump  then 
+    for i=1,8 do
+    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
+    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    end
+  elseif self.dashing and self.dir == -1 and not self.canWallJump  then    
+     for i=1,8 do
+    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
+    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    end    
+  end
+  
   love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
   
   self:drawHp(cam)
@@ -349,6 +373,7 @@ function Player:update(dt)
       -- para o dash
       self.dashing = false
       self:stop()
+      DASH_CD = 0.5
       
       -- atualiza para moveRight ou moveLeft se a tecla left ou right estiverem pressionadas
       if love.keyboard.isDown('right') or joystick1 and joystick1:isGamepadDown('dpright') then
@@ -363,6 +388,10 @@ function Player:update(dt)
       self.speedY = 0
     end
   else
+    DASH_CD = DASH_CD - dt
+    if DASH_CD < 0 then
+      DASH_CD = 0 
+    end
     -- se o player não está dando dash ele sofre a ação da gravidade
     self.speedY = self.speedY + GRAVITY*dt
   end
@@ -512,5 +541,9 @@ function Player:drawHp(cam)
   love.graphics.setColor(0, 0, 0)
   love.graphics.rectangle("line", camLeft + 20, camTop + 20, 500, 30)
   love.graphics.setColor(255, 255, 255)
+  if DASH_CD == 0 then
+  love.graphics.draw(self.dash_indicator,camLeft+650,camTop + 20,0,0.2,0.2)
+  end
+
 end
 
