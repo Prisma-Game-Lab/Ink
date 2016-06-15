@@ -24,6 +24,7 @@ local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 250
 local DASH_CD = 0
+local WALLJUMP_CD = 0
 
 local sounds = require "assets/sound/soundTest"
 
@@ -122,6 +123,7 @@ function Player:jump(world)
   if canJump or self.canWallJump then
     
     if self.canWallJump then
+      WALLJUMP_CD = 0.2
       if self.dir == direction.right then
         self:moveLeft()
       elseif self.dir == direction.left then
@@ -366,7 +368,18 @@ Parameters:
 function Player:update(dt)
  
   self.currentAnimation:update(dt)
- 
+  
+  if love.keyboard.isDown('right') and WALLJUMP_CD == 0 then
+    self:moveRight()
+  elseif love.keyboard.isDown('left') and WALLJUMP_CD == 0 then
+    self:moveLeft()
+  end
+  
+  WALLJUMP_CD = WALLJUMP_CD - dt
+    if WALLJUMP_CD < 0 then
+      WALLJUMP_CD = 0
+    end
+
   if self.dashing then
     if dashin_counter > DASH_TIME then
       -- se acabou o dash --
