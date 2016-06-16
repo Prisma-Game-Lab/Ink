@@ -49,7 +49,7 @@ function level_manager.load(level)
   
   level_id = level
   current_level = levels[level_id]
-  print("level", level_id)
+  print("level", level_id, #levels)
   
   obj_l1 = current_level.table.layers[1].objects
   
@@ -103,7 +103,7 @@ function level_manager.load(level)
     
   end
   --The list of levels that can be used in the change_scene function
-  levels = {level_manager = level_manager} 
+  levels.level_manager = level_manager
   time = 0
   --print(current_level.sounds)
   --love.audio.play(current_level.sounds.song)
