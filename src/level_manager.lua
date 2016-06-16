@@ -170,8 +170,7 @@ function computePlayerCollisions(actualX, actualY, cols, len)
       canWallJump = true
     elseif other.tipo == "enemy" and player.dashing then
       -- se batemos em um inimigo dando dash
-      other:deathAnimation()
-      other:die()
+      other:dying()
       lvl:remove(other)
       player:increaseHp(20)
     end
@@ -234,9 +233,11 @@ function level_manager.update(dt)
   
     -- update dos inimigos
     for i,enemy in ipairs(enemyList) do
-      if enemy.alive then
+      if enemy.alive and not enemy.dyingstate then
         enemy:update(dt)
         enemy.x, enemy.y, cols, len = lvl:move(enemy, enemy.x + enemy.speedX * dt, enemy.y)
+      elseif enemy.dyingstate then
+        enemy:update(dt)
       end
     end
     
@@ -266,12 +267,10 @@ function level_manager.update(dt)
 
   else 
     love.audio.stop(current_level.sounds.song) 
-    --savefile = io.open("D:\\Users\\rudaf\\Documents\\Zero Brane Projects\\Project Nanquim\\branches\\level_loader\\savegame\\SAVE01.txt","w")
-           
-    
-    --io.output(savefile)
-    --io.write("Level "..curr_level.."\n",player.hp,"\n",time,"\n")
   end 
+  if level_manager.isFinished then
+    level_manager.prepareSave()
+  end
 end
 function level_manager.keypressed(key)
   if key == "r" then
@@ -348,7 +347,6 @@ function level_manager.draw()
    
    if level_manager.isFinished then
      showStats(i)
-     saveFile(i,time,player.hp)
    end
    
     
