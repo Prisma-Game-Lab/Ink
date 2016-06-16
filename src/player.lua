@@ -329,7 +329,6 @@ Parameters:
   returns nothing
 ]]--
 function Player:draw(cam)
-  print(DASH_CD)
   local camLeft, camTop = cam:getCamera():getVisible()
   local wI,hI = self.currentAnimation:getDimensions()
   local ofx,ofy = wI-self.w,hI-self.h

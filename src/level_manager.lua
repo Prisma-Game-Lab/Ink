@@ -23,7 +23,7 @@ local direction = { right = 1, left = -1 }
 
 
 --Create a new world in bump called lvl, ikt will be used as the primary world in all collisions
-local lvl = bump.newWorld(50)
+local lvl = nil
 --Create a new player based on the Player class (in player.lua)
 --local player = Player:new(lvl,60,2400,160,245,0,0)
 --Create a new empty list that later will be used to manage the enemies
@@ -40,16 +40,21 @@ require "levels/1/level_playground_1",
 require "levels/2/level_playground_2",
 require "levels/3/level_playground_3",
 require "levels/1/obj1",
-
 }
 
+local level_id = 0
 function level_manager.load(level)
-  i=level
-  print(i)
-  current_level = levels[i]
-  obj_l1 = levels[i].table.layers[1].objects
-  print("World W:"..levels[i].table.worldSize.width)
-  print("World H:"..levels[i].table.worldSize.height)
+  -- Cria um mundo zerado
+  lvl = bump.newWorld(50)
+  
+  level_id = level
+  current_level = levels[level_id]
+  print("level", level_id)
+  
+  obj_l1 = current_level.table.layers[1].objects
+  
+  print("World W:"..current_level.table.worldSize.width)
+  print("World H:"..current_level.table.worldSize.height)
    --[[if i == 1 then
      current_level = levels.level1
      curr_level = 1
@@ -61,10 +66,10 @@ function level_manager.load(level)
      curr_level = 3
    end]]--
    print(current_level.player)
-   player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,player.speedy)
+   player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,current_level.player.speedy)
    
    
-   cam = Camera:new(current_level.camera.x,current_level.camera.y,levels[i].table.worldSize.width,levels[i].table.worldSize.height)
+   cam = Camera:new(current_level.camera.x, current_level.camera.y, current_level.table.worldSize.width, current_level.table.worldSize.height)
    cam:changeScale(current_level.camera.scale)
    
    
@@ -83,11 +88,11 @@ function level_manager.load(level)
   end
   
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
+  enemyList = {}
   for i=1,#current_level.enemys do
     local t = current_level.enemys
-    table.insert(enemyList, Enemy:new(lvl, t[i].x, t[i].y, t[i].w,t[i].h,t[i].spdx))
-    print(t[i].name,t[i].x,t[i].y,t[i].w,t[i].h,t[i].spdx)
-    
+    local e = Enemy:new(lvl, t[i].x, t[i].y, t[i].w,t[i].h,t[i].spdx)
+    table.insert(enemyList, e)
   end
   
   --Go through the triggers table and add the to the world one by one
@@ -255,7 +260,6 @@ function level_manager.update(dt)
       
       if playerin and enemyin and not player.dashing then
         player:push(lvl,250,-player.dir)
-        print("dano")
         player:takeDamage(10)
       end
     end
@@ -270,10 +274,9 @@ function level_manager.update(dt)
   end 
 end
 function level_manager.keypressed(key)
-  --if key == "r" then
-    --level_manager.reset()  
-    --change_scene("logo")
-  --end
+  if key == "r" then
+    level_manager.load(level_id)
+  end
   
   if player.keypressed then
     player:keypressed(lvl, key)
