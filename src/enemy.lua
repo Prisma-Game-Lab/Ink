@@ -19,7 +19,10 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.speedX = spdX
   self.dir = direction.right
   self.alive = true
+  self.dyingstate = false
   self.name = "enemy"
+  
+  self.death_delay = 2.5
   
   self.idle = love.graphics.newImage('assets/enemyTest/enemy_idleT2.png')
   self.death = love.graphics.newImage('assets/enemyTest/inimigo_morte.png')
@@ -37,6 +40,7 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.currentImage = self.idle
 
   self.tipo = "enemy"
+  
   world:add(self, self.x, self.y, self.w, self.h)
 end
 
@@ -55,9 +59,9 @@ function Enemy:moveLeft()
 end
 
 function Enemy:draw()
-  if self.alive then
+  if self.alive and not self.dyingstate then
     self.currentAnimation:draw(self.currentImage,self.x,self.y)
-  elseif not self.alive then
+  elseif self.dyingstate then
     self.currentAnimation:draw(self.currentImage,self.x,self.y,0,0.4,0.4)
   end
 end
@@ -70,8 +74,13 @@ function Enemy:update(dt)
     self.currentAnimation = self.WalkanimationL
     self.currentImage = self.WalkL
   end
-  
   self.currentAnimation:update(dt)
+  if self.dyingstate then
+    self.death_delay = self.death_delay - dt
+  end
+  if self.death_delay <= 0  then
+    self:die()
+  end
 end
 
 function Enemy:getX()
@@ -85,12 +94,13 @@ end
 function Enemy:die()
   self.alive = false
 end
-function Enemy:deathAnimation()
-  if self.dir == 1 then
+function Enemy:dying()
+  self.dyingstate = true
+  if self.dir == -1 then
   self.currentAnimation = self.deathAnimationR
   self.currentImage = self.death
-  elseif self.dir == -1 then
+  elseif self.dir == 1 then
   self.currentAnimation = self.deathAnimationL
   self.currentImage = self.death
-  end
+  end  
 end
