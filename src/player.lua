@@ -57,7 +57,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.hp = 100
   self.alive = true
   self.tipo = "player"
-  
+  print("Player :"..self.x,self.y,self.w,self.w)
   self.dash_indicator = love.graphics.newImage('assets/Dash_CD.png')
   
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 

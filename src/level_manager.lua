@@ -36,6 +36,7 @@ local enemyList = {}
 
 local levels = 
 {
+require "levels/1/demo1",
 require "levels/1/level_playground_1",
 require "levels/2/level_playground_2",
 require "levels/3/level_playground_3",
@@ -65,17 +66,14 @@ function level_manager.load(level)
      current_level = levels.level3
      curr_level = 3
    end]]--
-   print(current_level.player)
-   player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,current_level.player.speedy)
+   --print(current_level.player)
    
    
    cam = Camera:new(current_level.camera.x, current_level.camera.y, current_level.table.worldSize.width, current_level.table.worldSize.height)
    cam:changeScale(current_level.camera.scale)
    
    
-   
-  --song = love.audio.newSource("assets/06.mp3", "stream")
-  --bg = love.graphics.newImage("assets/cenario01.png")
+  level_manager.isFinished = false
   lvlend = love.graphics.newImage('assets/portal.png')
   local ge = anim8.newGrid(107, 155, lvlend:getWidth(), lvlend:getHeight())
   Portalanimation = anim8.newAnimation(ge(1,'1-4'), 0.1)
@@ -84,7 +82,9 @@ function level_manager.load(level)
   
   for k=1, #obj_l1 do
    print(k.." "..obj_l1[k].name.." H".. obj_l1[k].size.height.." W".. obj_l1[k].size.width.." X".. obj_l1[k].position.x.." Y"..    obj_l1[k].position.y)
+   if string.find(obj_l1[k].name, "chao") then
    lvl:add(obj_l1[k],obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+   end
   end
   
   --Go through the enemies table and add the to the world one by one, the are also added to the enemyList table for further management
@@ -105,6 +105,8 @@ function level_manager.load(level)
   --The list of levels that can be used in the change_scene function
   levels.level_manager = level_manager
   time = 0
+  player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,current_level.player.speedy)
+
   --print(current_level.sounds)
   --love.audio.play(current_level.sounds.song)
   
@@ -120,6 +122,10 @@ function computePlayerCollisions(actualX, actualY, cols, len)
       other.tipo = "plat" 
     elseif string.find(other.name, "wall_")  then
       other.tipo = "wall" 
+    elseif string.find(other.name, "chao")  then
+      other.tipo = "plat"
+    elseif string.find(other.name, "parede")  then
+      other.tipo = "wall"
     end
     --print(other.tipo)
     for l=1,len do
@@ -269,7 +275,7 @@ function level_manager.update(dt)
     love.audio.stop(current_level.sounds.song) 
   end 
   if level_manager.isFinished then
-    level_manager.prepareSave()
+    print("YOU WIN")
   end
 end
 function level_manager.keypressed(key)
@@ -312,26 +318,37 @@ end
 function level_manager.draw()
   cam:getCamera():draw(function(l,t,w,h)
     --DRAW STUFF HERE
-    --love.graphics.draw(current_level.background.bg,0,0)
+    love.graphics.draw(current_level.background.bg,0,0)
     
-    for i,enemy in ipairs(enemyList) do
-      if enemy.alive then
-        enemy:draw()
-      end
-    end
-    love.graphics.setColor(112,112,112)
+  
+    --love.graphics.setColor(112,112,112)
     
 
     for k=1, #obj_l1 do
-    love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+    --love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
     if string.find(obj_l1[k].name, "plat_") then
         local index = tonumber(string.match(obj_l1[k].name, "%d+"))
         --print("index : "..index)
           love.graphics.draw(current_level.plataformas[index],obj_l1[k].position.x,obj_l1[k].position.y)
     elseif string.find(obj_l1[k].name, "wall_") then
-    love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
+      love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "chao") then
+      love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+      love.graphics.draw(current_level.plataformas[1],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "parede") then
+      love.graphics.draw(current_level.plataformas[2],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "janela") then
+      love.graphics.draw(current_level.plataformas[3],obj_l1[k].position.x,obj_l1[k].position.y)
+    elseif string.find(obj_l1[k].name, "pergaminho") then
+      --love.graphics.draw(current_level.plataformas[4],obj_l1[k].position.x,obj_l1[k].position.y)
     end
+    
    end
+     for i,enemy in ipairs(enemyList) do
+      if enemy.alive then
+        enemy:draw()
+      end
+    end
     
     love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
     for i=1,#current_level.triggers,1 do

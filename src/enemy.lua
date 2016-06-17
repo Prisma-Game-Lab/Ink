@@ -22,7 +22,7 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.dyingstate = false
   self.name = "enemy"
   
-  self.death_delay = 2.5
+  self.death_delay = 1.0
   
   self.idle = love.graphics.newImage('assets/enemyTest/enemy_idleT2.png')
   self.death = love.graphics.newImage('assets/enemyTest/inimigo_morte.png')
@@ -32,8 +32,8 @@ function Enemy:initialize(world, x, y, w, h, spdX)
   self.IndleanimationL = anim8.newAnimation(gi('4-1',1), 0.1)
   
   local gd = anim8.newGrid(620,880, self.death:getWidth(), self.death:getHeight())
-  self.deathAnimationR = anim8.newAnimation(gd('10-1',1), 0.25)
-  self.deathAnimationL = anim8.newAnimation(gd('1-10',2), 0.25)   
+  self.deathAnimationR = anim8.newAnimation(gd('10-1',1), 0.1)
+  self.deathAnimationL = anim8.newAnimation(gd('1-10',2), 0.1)   
   
   
   self.currentAnimation = self.IndleanimationL
@@ -59,6 +59,7 @@ function Enemy:moveLeft()
 end
 
 function Enemy:draw()
+  love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
   if self.alive and not self.dyingstate then
     self.currentAnimation:draw(self.currentImage,self.x,self.y)
   elseif self.dyingstate then
