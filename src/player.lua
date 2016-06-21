@@ -25,6 +25,8 @@ local direction = { right = 1, left = -1 }
 local HP_TIME_SEC = 250
 local DASH_CD = 0
 local WALLJUMP_CD = 0
+local INV_CD = 0
+
 
 local sounds = require "assets/sound/soundTest"
 
@@ -60,6 +62,10 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   print("Player :"..self.x,self.y,self.w,self.w)
   self.dash_indicator = love.graphics.newImage('assets/Dash_CD.png')
   
+  self.vulnerable = true
+  self.TK_HIT = false
+  
+  
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
@@ -94,6 +100,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
 
   world:add(self, self.x, self.y, self.w, self.h)
 end
+
 
 --[[Player:jump
 - makes tha player jump
@@ -335,6 +342,11 @@ function Player:draw(cam)
   
   self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)-- Player ANIMATION BOX
   
+  if not self.vulnerable then
+    love.graphics.setColor(153,0,0)
+  else love.graphics.setColor(255,255,255)
+    end
+  
    if self.dashing and self.dir == 1 and not self.canWallJump  then 
     for i=1,8 do
     self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
@@ -522,9 +534,9 @@ Parameters:
   
   returns nothing
 ]]--
-function Player:push(world,amount,dir)
+function Player:push(world,speed,dir,dt)
   print("push") 
-  self.x, self.y, cols, len = world:move(self, self.x +(dir*amount), self.y-10) 
+  self.x, self.y, cols, len = world:move(self, self.x +(dir*speed*dt), self.y-10*dt) 
 end
 --[[Player:removePlayer
 - still doesn't do anything, but its meant to remove the player from its actual world(in case of death or something else)
@@ -559,3 +571,19 @@ function Player:drawHp(cam)
 
 end
 
+
+function Player:change_vul()
+  if player.vulnerable then
+    player.vulnerable = false
+  elseif not player.vulnerable then
+    player.vulnerable = true
+    end
+  end
+  
+  function Player:change_hit()
+  if player.TK_HIT then
+    player.TK_HIT = false
+  elseif not player.TK_HIT then
+    player.TK_HIT = true
+    end
+  end

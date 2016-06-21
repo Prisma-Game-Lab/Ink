@@ -19,6 +19,8 @@ local lselect =  require 'Menu/level selector/level_selector'
 
 local direction = { right = 1, left = -1 }
 
+
+
 --Require the current_level file, a .lua file that contain in tables all the informations need to add the current_level to the world
 
 
@@ -106,6 +108,9 @@ function level_manager.load(level)
   levels.level_manager = level_manager
   time = 0
   player = Player:new(lvl,current_level.player.x,current_level.player.y,current_level.player.w,current_level.player.h,current_level.player.speedx,current_level.player.speedy)
+  
+  VUL_CLOCK = cron.after(3,player.change_vul)
+  HIT_CLOCK = cron.after(1,player.change_hit)
 
   --print(current_level.sounds)
   --love.audio.play(current_level.sounds.song)
@@ -265,11 +270,14 @@ function level_manager.update(dt)
           end
       end
       
-      if playerin and enemyin and not player.dashing then
-        player:push(lvl,250,-player.dir)
+      if playerin and enemyin and not player.dashing and player.vulnerable then
+        player:change_hit()
         player:takeDamage(10)
+        player:change_vul()
       end
     end
+    
+    print(player.TK_HIT)
 
   else 
     love.audio.stop(current_level.sounds.song) 
@@ -277,6 +285,20 @@ function level_manager.update(dt)
   if level_manager.isFinished then
     print("YOU WIN")
   end
+  if not player.vulnerable then
+  VUL_CLOCK:update(dt)
+elseif player.vulnerable then
+  VUL_CLOCK:reset()
+end
+ --player:push(lvl,2000,player.dir,dt)
+  if not player.TK_HIT then
+   HIT_CLOCK:reset()
+ elseif player.TK_HIT then
+   HIT_CLOCK:update(dt)
+   player:push(lvl,500,player.dir,dt)
+  end
+
+  
 end
 function level_manager.keypressed(key)
   if key == "r" then
@@ -363,7 +385,7 @@ function level_manager.draw()
    -- dlgBox:draw(cam)
    
    if level_manager.isFinished then
-     showStats(i)
+     showStats(level_id)
    end
    
     
