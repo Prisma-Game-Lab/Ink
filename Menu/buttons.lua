@@ -175,7 +175,7 @@ function buttons.create(n, tipo, but1_pos_x, but1_pos_y, but1_w, but1_h)
     end
   else
     for i=1, n do
-      table.insert(buttons, {x = but1_pos_x , y = but1_pos_y + (spacing + but1_h)*(i-1), width = but1_w, height = but1_h})
+      table.insert(buttons, {x = 0, y = 0, width = but1_w, height = but1_h})
     end
   end
 end
