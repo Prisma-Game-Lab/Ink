@@ -65,6 +65,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   self.vulnerable = true
   self.TK_HIT = false
   
+  self.inkGained = 0
   
   self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
   self.deathImg = love.graphics.newImage('assets/youdied.png')  
@@ -587,3 +588,8 @@ function Player:change_vul()
     player.TK_HIT = true
     end
   end
+  
+  function Player:gainInk(ink)
+    self.inkGained = self.inkGained + ink
+  end
+  

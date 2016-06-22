@@ -184,6 +184,7 @@ function computePlayerCollisions(actualX, actualY, cols, len)
       other:dying()
       lvl:remove(other)
       player:increaseHp(20)
+      player:gainInk(20)
     end
   end
   
