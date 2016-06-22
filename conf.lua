@@ -2,7 +2,7 @@
 function love.conf(t)
   
   
-    t.title = "Ink" 
+    t.title = "Irezumi: O Legado dos Caçadores" 
     --definiçao da area da janela
     t.window.width = 1280
     t.window.height = 720

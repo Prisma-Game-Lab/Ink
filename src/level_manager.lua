@@ -272,7 +272,7 @@ function level_manager.update(dt)
       
       if playerin and enemyin and not player.dashing and player.vulnerable then
         player:change_hit()
-        player:takeDamage(10)
+        player:takeDamage(50)
         player:change_vul()
       end
     end
@@ -280,7 +280,7 @@ function level_manager.update(dt)
     print(player.TK_HIT)
 
   else 
-    love.audio.stop(current_level.sounds.song) 
+    love.audio.stop(current_level.sounds.song)
   end 
   if level_manager.isFinished then
     print("YOU WIN")
