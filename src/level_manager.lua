@@ -310,6 +310,11 @@ function level_manager.keypressed(key)
     gameRunning = false
   end
   
+  if key == "m" then
+    change_scene("logo")
+    gameRunning = false
+    end
+  
   if key == "w" or key == "a" or key == "s" or key == "d" or key == "return" or key == "up" or key == "down" or key == "right" or key == "left" then
     gameRunning = true
   end
