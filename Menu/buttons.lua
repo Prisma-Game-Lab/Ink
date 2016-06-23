@@ -53,7 +53,7 @@ function buttons.load()
   title.height = titleImg:getHeight()
   
   title.pos = {x = (tw-title.width)/2, 
-              y = (th-title.height)/2
+              y = (th-title.height)/2+100
     }
   
 end
