@@ -26,6 +26,7 @@ local HP_TIME_SEC = 250
 local DASH_CD = 0
 local WALLJUMP_CD = 0
 local INV_CD = 0
+ 
 
 
 local sounds = require "assets/sound/soundTest"
@@ -64,6 +65,7 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   
   self.vulnerable = true
   self.TK_HIT = false
+  self.can_move = false
   
   self.inkGained = 0
   
@@ -378,6 +380,7 @@ Parameters:
   returns nothing
 ]]--
 function Player:update(dt)
+  
  
   self.currentAnimation:update(dt)
   
@@ -440,8 +443,9 @@ function Player:update(dt)
       self.currentImage = self.sheet
     end
   end
-  
-  self:decreaseHp(dt)
+  if self.can_move then
+    self:decreaseHp(dt)
+  end
 end
 
 --[[Player:getX
@@ -588,6 +592,7 @@ function Player:change_vul()
     player.TK_HIT = true
     end
   end
+  
   
   function Player:gainInk(ink)
     self.inkGained = self.inkGained + ink

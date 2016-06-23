@@ -235,13 +235,15 @@ function level_manager.update(dt)
   if player.alive then
     
     if gameRunning then
-    time =  time + dt
+      time =  time + dt
+    end
+    
     -- update do player
     player:update(dt)
     
     -- update da animação do portal
     Portalanimation:update(dt)
-    end
+    
     -- update da posição da câmera
     cam:update(player:getX(),player:getY(),dt)
     
@@ -285,6 +287,7 @@ function level_manager.update(dt)
   else 
     love.audio.stop(current_level.sounds.song)
     gameRunning = false
+    player.can_move = false
   end 
   if level_manager.isFinished then
     print("YOU WIN")
@@ -308,15 +311,18 @@ function level_manager.keypressed(key)
   if key == "r" then
     level_manager.load(level_id)
     gameRunning = false
+    player.can_move = false
   end
   
   if key == "m" then
     change_scene("logo")
-    gameRunning = false
+    gameRunning = false 
+    player.can_move = false
     end
   
   if key == "w" or key == "a" or key == "s" or key == "d" or key == "return" or key == "up" or key == "down" or key == "right" or key == "left" then
     gameRunning = true
+    player.can_move = true
   end
     
   if player.keypressed then
