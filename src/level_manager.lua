@@ -33,6 +33,7 @@ local enemyList = {}
 --Create a new camera based on the Gamera library in lib
 --local cam = Camera:new(0,0,2469,3228)
 
+local gameRunning = false
 
 --local dlgBox = DialogBox:new(cam, "Welcome to Samuel's Drift\n MUAHAHAHA", "bottom", 4, 0.5)
 
@@ -232,17 +233,18 @@ function level_manager.update(dt)
   local levelend = false
   
   if player.alive then
-    time =  time + dt
     
+    if gameRunning then
+    time =  time + dt
     -- update do player
     player:update(dt)
     
     -- update da animação do portal
     Portalanimation:update(dt)
-  
+    end
     -- update da posição da câmera
     cam:update(player:getX(),player:getY(),dt)
-  
+    
     -- update dos inimigos
     for i,enemy in ipairs(enemyList) do
       if enemy.alive and not enemy.dyingstate then
@@ -282,6 +284,7 @@ function level_manager.update(dt)
 
   else 
     love.audio.stop(current_level.sounds.song)
+    gameRunning = false
   end 
   if level_manager.isFinished then
     print("YOU WIN")
@@ -304,8 +307,13 @@ end
 function level_manager.keypressed(key)
   if key == "r" then
     level_manager.load(level_id)
+    gameRunning = false
   end
   
+  if key == "w" or key == "a" or key == "s" or key == "d" or key == "return" or key == "up" or key == "down" or key == "right" or key == "left" then
+    gameRunning = true
+  end
+    
   if player.keypressed then
     player:keypressed(lvl, key)
   end
