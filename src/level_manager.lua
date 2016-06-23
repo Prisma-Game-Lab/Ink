@@ -146,7 +146,7 @@ function computePlayerCollisions(actualX, actualY, cols, len)
       -- colisão com plataformas
       
       -- checa se é uma colisão lateral
-      if player.x == actualX and player.speedX > 0 then
+      if player.x == actualX and not (player.speedX == 0) then
         -- se foi uma colisão lateral diminui a speedY para o walljump
         player.speedY = 100
         canWallJump = true
