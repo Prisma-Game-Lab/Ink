@@ -15,7 +15,8 @@ function showStats(level_id)
   love.graphics.setColor(255,255,255)
   draw(x1,y1)
   love.graphics.setColor(162, 30, 29, 255)
-  love.graphics.printf("\n\n\n\t   " ..string.sub(time,1,4).. "\t\t        " ..math.floor(player.inkGained).. "\n", x1 + (2*w/4), y1+h/2 + 50, w)
+  love.graphics.printf("" ..string.sub(time,1,4).. "", x1 + (2*w/4)+200, y1+h/2 + 350, w)
+  love.graphics.printf("" ..math.floor(player.inkGained).. "", x1 + (2*w/4)+900, y1+h/2 + 350, w)
   
   love.graphics.printf("Obrigado Por Jogar",x1 + (2*w/4)-150, y1+h/2 +550, w,'center',0,1.2,1.2)
   
