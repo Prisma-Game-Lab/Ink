@@ -19,7 +19,7 @@ function showStats(level_id)
   
   love.graphics.printf("Obrigado Por Jogar",x1 + (2*w/4)-150, y1+h/2 +550, w,'center',0,1.2,1.2)
   
-  love.graphics.printf("Aperte 'm' para ir ao menu",x1 + (2*w/4)+100, y1+h/2 +700,w)
+  love.graphics.printf("Aperte 'm' para ir ao menu",x1 + (2*w/4)+300, y1+h/2 +750,w,'left',0,0.5,0.5)
   
   
   love.graphics.setColor(155, 155, 155)
