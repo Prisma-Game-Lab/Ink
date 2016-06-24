@@ -42,6 +42,8 @@ local levels =
 require "levels/1/demofinal",
 }
 
+local overlay = require "levels/1/Teste_Overlays"
+
 local level_id = 0
 function level_manager.load(level)
   -- Cria um mundo zerado
@@ -52,6 +54,7 @@ function level_manager.load(level)
   print("level", level_id, #levels)
   
   obj_l1 = current_level.table.layers[1].objects
+  --over = table.layers[2]
   
   print("World W:"..current_level.table.worldSize.width)
   print("World H:"..current_level.table.worldSize.height)
@@ -161,10 +164,14 @@ function computePlayerCollisions(actualX, actualY, cols, len)
           player.speedX = 0
           if player.dir == direction.right then  
             player.currentAnimation = player.IdleanimationR
-            player.currentImage = player.sheet
+            player.currentImage = player.idle_sheet
+            player.offsetx = 0
+            player.offsety = 0
           elseif player.dir == direction.left then
             player.currentAnimation = player.IdleanimationL
-            player.currentImage = player.sheet
+            player.currentImage = player.idle_sheet
+            player.offsetx = 0
+            player.offsety = 0
           end
         end
         
@@ -190,11 +197,15 @@ function computePlayerCollisions(actualX, actualY, cols, len)
     if player.dir == direction.right then
         --love.audio.play(sounds.kai.wall)
         player.currentAnimation = player.WallAnimationR
-        player.currentImage = player.sheet
+        player.currentImage = player.wall_sheet
+        player.offsetx = 65
+        player.offsety = -40
       elseif player.dir == direction.left then
         --love.audio.play(sounds.kai.wall)
         player.currentAnimation = player.WallAnimationL
-        player.currentImage = player.sheet
+        player.currentImage = player.wall_sheet
+        player.offsetx = 45
+        player.offsety = -40
       end
   end
   
@@ -276,10 +287,11 @@ function level_manager.update(dt)
         player:change_hit()
         player:takeDamage(50)
         player:change_vul()
+        --player:move(-player.dir*1000)
       end
     end
     
-    print(player.TK_HIT)
+    --print(player.TK_HIT)
 
   else 
     love.audio.stop(current_level.sounds.song)
@@ -370,9 +382,9 @@ function level_manager.draw()
         --print("index : "..index)
           love.graphics.draw(current_level.plataformas[index],obj_l1[k].position.x,obj_l1[k].position.y)
     elseif string.find(obj_l1[k].name, "wall_") then
-      love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
+      --love.graphics.draw(current_level.plataformas[17],obj_l1[k].position.x,obj_l1[k].position.y)
     elseif string.find(obj_l1[k].name, "chao") then
-      love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
+      --love.graphics.rectangle("line",obj_l1[k].position.x,obj_l1[k].position.y,obj_l1[k].size.width,obj_l1[k].size.height)
       love.graphics.draw(current_level.plataformas[1],obj_l1[k].position.x,obj_l1[k].position.y)
     elseif string.find(obj_l1[k].name, "parede") then
       love.graphics.draw(current_level.plataformas[2],obj_l1[k].position.x,obj_l1[k].position.y)

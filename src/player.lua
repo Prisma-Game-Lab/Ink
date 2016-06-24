@@ -34,12 +34,12 @@ local HPQuads = {}
 local HPQuads2 = {}
 local HPBar1 = love.graphics.newImage('assets/HUD/HP_black.png')
 for i=0,100,1 do
-HPQuads[i] = love.graphics.newQuad(20 + (4.8*i),20, 4.8, 79, 480,79)
+HPQuads[i] = love.graphics.newQuad((4.8*i),0, 4.8, 158, 480,79)
 end
 
 local HPBar2 = love.graphics.newImage('assets/HUD/HP_red.png')
 for i=0,100,1 do
-HPQuads2[i] = love.graphics.newQuad(20 + (4.8*i),20, 4.8, 79, 480,79)
+HPQuads2[i] = love.graphics.newQuad((4.8*i),0, 4.8, 79, 480,79)
 end
 
 
@@ -80,39 +80,55 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   
   self.inkGained = 0
   
-  self.hpBar = love.graphics.newImage('assets/HPBAR.png')
+
+  self.HPBase = love.graphics.newImage('assets/HUD/HP_base.png')
   self.HPLine = love.graphics.newImage('assets/HUD/HP_lineart.png')
   
-  self.HPBar2 = love.graphics.newImage('assets/HUD/HP_red.png')
   
-  self.sheet = love.graphics.newImage('assets/kaiTest/spritesheet_kai.png')
+  self.dash_sheet = love.graphics.newImage('assets/Kai/dash_spritesheet.png')
+  self.idle_sheet = love.graphics.newImage('assets/Kai/idle_spritesheet.png')
+  self.jump_sheet = love.graphics.newImage('assets/Kai/jump_spritesheet.png')
+  self.run_sheet = love.graphics.newImage('assets/Kai/run_spritesheet.png')
+  self.wall_sheet = love.graphics.newImage('assets/Kai/wall_spritesheet.png')
   
-  local g = anim8.newGrid(264,352, self.sheet:getWidth(), self.sheet:getHeight())
-  self.WalkanimationR = anim8.newAnimation(g('1-16',3), 0.05)
-  self.WalkanimationL = anim8.newAnimation(g('1-16',2), 0.05)
-  
-  self.IdleanimationR = anim8.newAnimation(g('1-8',1),0.125)
-  self.IdleanimationL = anim8.newAnimation(g('9-16',1),0.125)
-  
-  self.DASH = love.graphics.newImage('assets/kaiTest/spritesheet_kai2.png')
-  local gd = anim8.newGrid(310,264, self.DASH:getWidth(), self.DASH:getHeight())
+  self.offsetx = 0
+  self.offsety = 0
 
-  self.DashanimationR = anim8.newAnimation(gd('1-11',1), 0.08)
-  self.DashanimationL = anim8.newAnimation(gd('1-11',2), 0.08)
+  --self.sheet = love.graphics.newImage('assets/kaiTest/spritesheet_kai.png')
   
-  self.JumpAnimationL = anim8.newAnimation(g('5-7',6), 0.5)
-  self.JumpAnimationR = anim8.newAnimation(g('5-7',7), 0.5)
+  local gr = anim8.newGrid(240,240, self.run_sheet:getWidth(), self.run_sheet:getHeight())
+  self.WalkanimationR = anim8.newAnimation(gr('1-10',2), 0.1)
+  self.WalkanimationL = anim8.newAnimation(gr('1-10',1), 0.1)  
   
-  self.WallAnimationR = anim8.newAnimation(g(1,4), 0.5)
-  self.WallAnimationL = anim8.newAnimation(g(1,5), 0.5)  
+  local gi = anim8.newGrid(120,240, self.idle_sheet:getWidth(), self.idle_sheet:getHeight())
+  
+  self.IdleanimationR = anim8.newAnimation(gi('1-8',1),0.125)
+  self.IdleanimationL = anim8.newAnimation(gi('1-8',2),0.125)
+  
+  local gd = anim8.newGrid(320,250, self.dash_sheet:getWidth(), self.dash_sheet:getHeight())
 
-  self.FallAnimationR = anim8.newAnimation(g('7-13',7), 0.16)
-  self.FallAnimationL = anim8.newAnimation(g('7-13',6), 0.16)
+  self.DashanimationR = anim8.newAnimation(gd('1-11',2), 0.08)
+  self.DashanimationL = anim8.newAnimation(gd('1-11',1), 0.08)
+  
+  local gjf = anim8.newGrid(185,254, self.jump_sheet:getWidth(), self.jump_sheet:getHeight())
+  
+  self.JumpAnimationL = anim8.newAnimation(gjf('1-4',1), 0.5)
+  self.JumpAnimationR = anim8.newAnimation(gjf('1-4',3), 0.5)
+  
+  local gw = anim8.newGrid(240,300, self.wall_sheet:getWidth(), self.wall_sheet:getHeight())
+  
+  self.WallAnimationR = anim8.newAnimation(gw(1,1), 0.5)
+  self.WallAnimationL = anim8.newAnimation(gw(1,2), 0.5)  
+
+  
+  self.FallAnimationR = anim8.newAnimation(gjf('1-4',4), 0.16)
+  self.FallAnimationL = anim8.newAnimation(gjf('1-4',2), 0.16)
   
   
 
   self.currentAnimation = self.IdleanimationL
-  self.currentImage = self.sheet
+  self.currentImage = self.idle_sheet
+  --print(tostring(self.currentImage))
 
   world:add(self, self.x, self.y, self.w, self.h)
 end
@@ -193,12 +209,12 @@ function Player:keypressed(lvl, key)
     end
 
     if key == "right" then
-      love.audio.play(sounds.kai.walk)
+      --love.audio.play(sounds.kai.walk)
       self:moveRight()
     end
     
     if key == "left" then
-      love.audio.play(sounds.kai.walk)
+      --love.audio.play(sounds.kai.walk)
       self:moveLeft()
     end
     if key == 'd' then
@@ -226,14 +242,14 @@ function Player:keyreleased(key)
     
     if key == "right" then
       if self.speedX > 0 and self.dashing == false then
-        love.audio.stop(sounds.kai.walk)
+        --love.audio.stop(sounds.kai.walk)
         self:stop()
       end
     end
     
     if key == "left" then
       if self.speedX < 0 and self.dashing == false then
-        love.audio.stop(sounds.kai.walk)
+        --love.audio.stop(sounds.kai.walk)
         self:stop()
       end
     end
@@ -256,7 +272,9 @@ function Player:moveRight()
   
   if not self.jumping then
     self.currentAnimation = self.WalkanimationR
-    self.currentImage = self.sheet
+    self.currentImage = self.run_sheet
+    self.offsetx = 50
+    self.offsety = 0
   end
 end
 
@@ -276,6 +294,9 @@ function Player:moveLeft()
   
   if not self.jumping then
     self.currentAnimation = self.WalkanimationL
+    self.currentImage = self.run_sheet
+    self.offsetx = 50
+    self.offsety = 0
   end
 end
 
@@ -303,10 +324,10 @@ returns nothing
 ]]--
 function Player:stop()
   if self.dir == direction.right then
-    self.currentImage = self.sheet
+    self.currentImage = self.idle_sheet
     self.currentAnimation = self.IdleanimationR
   elseif self.dir == direction.left then
-    self.currentImage = self.sheet
+    self.currentImage = self.idle_sheet
     self.currentAnimation = self.IdleanimationL
   end
   self.speedX = 0
@@ -332,10 +353,12 @@ function Player:dash()
     
     if self.dir == direction.right then
       self.currentAnimation = self.DashanimationR
-      self.currentImage = self.DASH
+      self.currentImage = self.dash_sheet
+      self.offsetx = 60
     elseif self.dir == direction.left then
       self.currentAnimation = self.DashanimationL
-      self.currentImage = self.DASH
+      self.currentImage = self.dash_sheet
+      self.offsetx = 100
     end
     
     self.hp = self.hp - 5
@@ -353,26 +376,26 @@ Parameters:
 ]]--
 function Player:draw(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
-  local wI,hI = self.currentAnimation:getDimensions()
-  local ofx,ofy = wI-self.w,hI-self.h
+
   
-  self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)-- Player ANIMATION BOX
+  --print(tostring(self.currentImage))
+  self.currentAnimation:draw(self.currentImage,self.x-self.offsetx,self.y+self.offsety)-- Player ANIMATION BOX
   
   
   if self.dashing and self.dir == 1 and not self.canWallJump  then 
     for i=1,8 do
-    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
-    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    --self.currentAnimation:draw(self.currentImage,self.x+self.offsetx+80-(self.dir*20*i),self.y-self.offsety)
+    --love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
     end
   elseif self.dashing and self.dir == -1 and not self.canWallJump  then    
      for i=1,8 do
-    self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
-    love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
+    --self.currentAnimation:draw(self.currentImage,self.x+self.offsetx+80-(self.dir*20*i),self.y-self.offsety)
+    --love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
     end    
   end
   
   love.graphics.setColor(255,255,255)
-  love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
+  --love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
   
   self:drawHp(cam)
   if not self.alive then
@@ -438,19 +461,21 @@ function Player:update(dt)
     -- speedY > 0 significa que estamos caindo, então atualizamos a animação
     if self.dir == direction.right then
       self.currentAnimation = self.FallAnimationR
-      self.currentImage = self.sheet
+      self.currentImage = self.jump_sheet
+      self.offsetx = 50
     elseif self.dir == direction.left and not self.canWallJump  then
       self.currentAnimation = self.FallAnimationL
-      self.currentImage = self.sheet
+      self.currentImage = self.jump_sheet
     end
   elseif self.speedY < 0 then
     -- speedY < 0 significa que estamos pulando, então atualizamos a animação
     if self.dir == direction.right then
       self.currentAnimation = self.JumpAnimationR
-      self.currentImage = self.sheet
+      self.currentImage = self.jump_sheet
+      self.offsetx = 50
     elseif self.dir == direction.left then
       self.currentAnimation = self.JumpAnimationL
-      self.currentImage = self.sheet
+      self.currentImage = self.jump_sheet
     end
   end
   if self.can_move then
@@ -575,15 +600,17 @@ Parameters:
 function Player:drawHp(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   
+  love.graphics.draw(self.HPBase, camLeft + 20, camTop + 20)
+  
   for t=0,math.floor(self.hp),1 do    
     
-      love.graphics.draw(HPBar2,HPQuads[t], camLeft + 40 + (4.8*t), camTop + 40)
+      love.graphics.draw(HPBar2,HPQuads[t], camLeft + 20 + (4.8*t), camTop + 20)
       if self.hp > 30 then
-      love.graphics.draw(HPBar1,HPQuads[t], camLeft + 40 + (4.8*t), camTop + 40)
+      love.graphics.draw(HPBar1,HPQuads[t], camLeft + 20 + (4.8*t), camTop + 20)
       end
   end
   love.graphics.draw(self.HPLine, camLeft + 20, camTop + 20)
-  print(self.hp)
+  --print(self.hp)
   
   --if DASH_CD == 0 then
   --love.graphics.draw(self.dash_indicator,camLeft+650,camTop + 20,0,0.2,0.2)

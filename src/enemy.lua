@@ -59,7 +59,7 @@ function Enemy:moveLeft()
 end
 
 function Enemy:draw()
-  love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+  --love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
   if self.alive and not self.dyingstate then
     self.currentAnimation:draw(self.currentImage,self.x,self.y)
   elseif self.dyingstate then
