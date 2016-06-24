@@ -27,10 +27,20 @@ local HP_TIME_SEC = 15
 local DASH_CD = 0
 local WALLJUMP_CD = 0
 local INV_CD = 0
- 
 
 
 local sounds = require "assets/sound/soundTest"
+local HPQuads = {}
+local HPQuads2 = {}
+local HPBar1 = love.graphics.newImage('assets/HUD/HP_black.png')
+for i=0,100,1 do
+HPQuads[i] = love.graphics.newQuad(20 + (4.8*i),20, 4.8, 79, 480,79)
+end
+
+local HPBar2 = love.graphics.newImage('assets/HUD/HP_red.png')
+for i=0,100,1 do
+HPQuads2[i] = love.graphics.newQuad(20 + (4.8*i),20, 4.8, 79, 480,79)
+end
 
 
 --[[Player:initialize
@@ -70,9 +80,11 @@ function Player:initialize(world, x, y, w, h, speedX, speedY)
   
   self.inkGained = 0
   
-  self.deathSound = love.audio.newSource('assets/YouDied.mp3', 'static') 
-  self.deathImg = love.graphics.newImage('assets/youdied.png')  
   self.hpBar = love.graphics.newImage('assets/HPBAR.png')
+  self.HPLine = love.graphics.newImage('assets/HUD/HP_lineart.png')
+  
+  self.HPBar2 = love.graphics.newImage('assets/HUD/HP_red.png')
+  
   self.sheet = love.graphics.newImage('assets/kaiTest/spritesheet_kai.png')
   
   local g = anim8.newGrid(264,352, self.sheet:getWidth(), self.sheet:getHeight())
@@ -346,12 +358,8 @@ function Player:draw(cam)
   
   self.currentAnimation:draw(self.currentImage,self.x-ofx+80,self.y-ofy)-- Player ANIMATION BOX
   
-  if not self.vulnerable then
-    love.graphics.setColor(153,0,0)
-  else love.graphics.setColor(255,255,255)
-    end
   
-   if self.dashing and self.dir == 1 and not self.canWallJump  then 
+  if self.dashing and self.dir == 1 and not self.canWallJump  then 
     for i=1,8 do
     self.currentAnimation:draw(self.currentImage,self.x-ofx+80-(self.dir*20*i),self.y-ofy)
     love.graphics.setColor(255,255-(32*i),255-(32*i),232-(32*i))
@@ -363,6 +371,7 @@ function Player:draw(cam)
     end    
   end
   
+  love.graphics.setColor(255,255,255)
   love.graphics.rectangle("line",self.x,self.y,self.w,self.h) -- Player HITBOX
   
   self:drawHp(cam)
@@ -566,11 +575,16 @@ Parameters:
 function Player:drawHp(cam)
   local camLeft, camTop = cam:getCamera():getVisible()
   
-  love.graphics.setColor(155, 0, 0)  
-  love.graphics.rectangle("fill", camLeft + 20, camTop + 20, 500 * math.max(0, self.hp)/100, 30)
-  love.graphics.setColor(0, 0, 0)
-  love.graphics.rectangle("line", camLeft + 20, camTop + 20, 500, 30)
-  love.graphics.setColor(255, 255, 255)
+  for t=0,math.floor(self.hp),1 do    
+    
+      love.graphics.draw(HPBar2,HPQuads[t], camLeft + 40 + (4.8*t), camTop + 40)
+      if self.hp > 30 then
+      love.graphics.draw(HPBar1,HPQuads[t], camLeft + 40 + (4.8*t), camTop + 40)
+      end
+  end
+  love.graphics.draw(self.HPLine, camLeft + 20, camTop + 20)
+  print(self.hp)
+  
   if DASH_CD == 0 then
   love.graphics.draw(self.dash_indicator,camLeft+650,camTop + 20,0,0.2,0.2)
   end

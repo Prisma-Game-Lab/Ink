@@ -392,7 +392,6 @@ function level_manager.draw()
       end
     end
     
-    love.graphics.setColor(255,255,255) --Com (0,0,0) fica foda !!!
     for i=1,#current_level.triggers,1 do
       local t = current_level.triggers
       if t[i].tipo == "levelend" then
