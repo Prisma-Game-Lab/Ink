@@ -536,7 +536,7 @@ returns nothing
 ]]--
 function Player:die()
   self.alive = false
-  love.audio.play(self.deathSound)
+  --love.audio.play(self.deathSound)
 end
 
 --[[Player:push
@@ -585,9 +585,9 @@ function Player:drawHp(cam)
   love.graphics.draw(self.HPLine, camLeft + 20, camTop + 20)
   print(self.hp)
   
-  if DASH_CD == 0 then
-  love.graphics.draw(self.dash_indicator,camLeft+650,camTop + 20,0,0.2,0.2)
-  end
+  --if DASH_CD == 0 then
+  --love.graphics.draw(self.dash_indicator,camLeft+650,camTop + 20,0,0.2,0.2)
+  --end
 
 end
 

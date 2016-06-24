@@ -39,11 +39,7 @@ local gameRunning = false
 
 local levels = 
 {
-require "levels/1/demo1",
-require "levels/1/level_playground_1",
-require "levels/2/level_playground_2",
-require "levels/3/level_playground_3",
-require "levels/1/obj1",
+require "levels/1/demofinal",
 }
 
 local level_id = 0
@@ -227,6 +223,7 @@ end]]--
  --Only update enemies if they're alive in the moment
 function level_manager.update(dt)
   --dlgBox:update(dt)
+   
 
   local playerin = false
   local enemyin = false
@@ -399,16 +396,18 @@ function level_manager.draw()
       end
     end
     
-    love.graphics.print(string.sub(tostring(time), 1, 4),l + 550,t+10,0,0.3,0.3)
+    love.graphics.print(string.sub(tostring(time), 1, 4),l + 550,t+10,0,1,1)
     player:draw(cam)
    -- dlgBox:draw(cam)
    
    if level_manager.isFinished then
-     change_scene("stats")
+     showStats(i)
    end
    
     
   end)
+
+
 end
 
 --[[ 

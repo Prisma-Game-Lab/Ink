@@ -14,6 +14,7 @@ local game = require "src/game"
 local menu = require "Menu/menu"
 local level_selector = require "Menu/Level Selector/level_selector"
 local stats = require "Menu/Stats Screen/stats_screen"
+local agrad = require "Menu/agrad"
 
 --[[ 
     - Engine check for avaible Joysticks in PC and add them to a table
@@ -25,12 +26,12 @@ joystick1 = joystickList[1]
 
 function love.load()
     love.mouse.setVisible(false)
-    local font = love.graphics.setNewFont("Assets/DISTInking-Regular.otf", 100)
+     font = love.graphics.setNewFont("Assets/DISTInking-Regular.otf", 100)
     --love.keyboard.setKeyRepeat( true )
     RPG_Logo.load(1.5,1.5,1.5,function ()
     	change_scene("menu")
   	end)
-    scenes = { logo = RPG_Logo, game = game, menu = menu, level_selector = level_selector,stats = stats }
+    scenes = { logo = RPG_Logo, game = game, menu = menu, level_selector = level_selector,stats = stats, agrad = agrad }
     change_scene("logo")
 end
 
