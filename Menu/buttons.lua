@@ -24,6 +24,7 @@ local tw = love.graphics.getWidth()
 local th = love.graphics.getHeight()
 
 local title = {}
+local bground = {}
 
 local direction = {horizontal = 0, vertical = 1}
 
@@ -48,12 +49,22 @@ function buttons.load()
   --mouse.y = 0
   
   titleImg = love.graphics.newImage("assets/Menu/Title.png")
+  bgroundImg = love.graphics.newImage("assets/Menu/menu_background.png")
+  
+  bground.width = bgroundImg:getWidth()
+  
+  bground.height = bgroundImg:getHeight()
+  
+  bground.pos = {x = bground.weight, 
+              y = bground.height
+    }
+    
   title.width = titleImg:getWidth()
   
   title.height = titleImg:getHeight()
   
   title.pos = {x = (tw-title.width)/2, 
-              y = (th-title.height)/2+100
+              y = (th-title.height)/2
     }
   
 end
@@ -104,12 +115,12 @@ it draws the buttons and title images
 
 function buttons.draw()
 
-love.graphics.draw(titleImg, title.pos.x, title.pos.y - 100, 0, 1, 1)
-
+love.graphics.draw(bgroundImg, 0, 0, 0, 1, 1)
+love.graphics.draw(titleImg, title.pos.x-20, title.pos.y, 0, 1, 1)
 
 for i, but in ipairs(buttons) do
   
-    love.graphics.draw(but.imageCurrent, but.x, but.y)
+    love.graphics.draw(but.imageCurrent, but.x-20, but.y)
   
   end
 

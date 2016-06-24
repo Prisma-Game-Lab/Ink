@@ -14,15 +14,16 @@ require "lib/bump"
 
 Player = class('Player')
 
-local JMP_SPD = -1000
+
+local JMP_SPD = -1900
 local HOP_SPD = -500
 local WALK_SPD = 800
 local DASH_SPD = 1200
-local GRAVITY = 2000
+local GRAVITY = 4500
 local dashin_counter = 0
 local DASH_TIME = 0.88
 local direction = { right = 1, left = -1 }
-local HP_TIME_SEC = 250
+local HP_TIME_SEC = 15
 local DASH_CD = 0
 local WALLJUMP_CD = 0
 local INV_CD = 0

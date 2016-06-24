@@ -9,7 +9,7 @@ require "src/player"
 require "src/enemy"
 require "src/camera"
 require "src/save_game"
-require "src/stats_screen"
+--require "src/stats_screen"
 require "lib/middleclass"
 local bump = require 'lib/bump'
 local cron = require 'lib/cron'
@@ -315,7 +315,7 @@ function level_manager.keypressed(key)
   end
   
   if key == "m" then
-    change_scene("logo")
+    change_scene("menu")
     gameRunning = false 
     player.can_move = false
     end
@@ -405,7 +405,7 @@ function level_manager.draw()
    -- dlgBox:draw(cam)
    
    if level_manager.isFinished then
-     showStats(level_id)
+     change_scene("stats")
    end
    
     

@@ -51,7 +51,7 @@ function buttonsl.start()
   
   
   buttonsl.remove()
-  buttonsl.create(3, direction.horizontal, 250, 250 , 500, 250, 750, 250)
+  buttonsl.create(3, 0, 250, 250 , 500, 250, 750, 250)
   
   buttonsl.color = {{255,255,255}}
   
